@@ -7,7 +7,7 @@
   padding:18px;
 
   /* ✅ Background Image */
-  background: url("https://aniket-developer-001.github.io/Bima-Bondhu//background.png") center/cover no-repeat fixed;
+  background: url("https://aniket-developer-001.github.io/BimaCare/background.png") center/cover no-repeat fixed;
 }body::before{
   content:"";
   position:fixed;
