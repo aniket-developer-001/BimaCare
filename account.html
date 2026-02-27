@@ -773,6 +773,9 @@ color:#fff;
 /* =========================
     ACCOUNT (VIEW ONLY)
 ========================= */
+ if (localStorage.getItem("is_logged_in") === "no") {
+  window.location.href = "https://aniket-developer-001.github.io/BimaCare/register.html";
+ }
 const STORAGE_KEY = "user_streak_data";
 let state = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {
     currentStreak: 0,
