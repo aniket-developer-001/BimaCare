@@ -1279,7 +1279,9 @@ margin: 0 auto;
 /* ===========================
    SIMPLE DARK MODE LOADER
    =========================== */
-
+if (localStorage.getItem("is_logged_in") === "no") {
+  window.location.href = "https://aniket-developer-001.github.io/BimaCare/register.html";
+    }
 const THEME_KEY = "dark_mode"; // localStorage key
 
 function loadThemeFromStorage() {
