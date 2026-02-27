@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Insurance View - BimaCare</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="main.css">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;}
+  body{
+    background:#f5f7ff;
+    padding-bottom:90px;
+    color:#0A1A3C;
+  }
+
+  /* ===== Toast Popup ===== */
+  .toast{
+    position:fixed;
+    top:16px;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:9999;
+    background:#0A1A3C;
+    color:#fff;
+    padding:12px 14px;
+    border-radius:16px;
+    font-size:13px;
+    font-weight:900;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    box-shadow:0 18px 45px rgba(0,0,0,0.22);
+    opacity:0;
+    pointer-events:none;
+    transition:.25s ease;
+    min-width:240px;
+    max-width:92%;
+  }
+  .toast.show{opacity:1; pointer-events:auto;}
+  .toast i{font-size:16px;}
+
+  /* ===== Top Image Header ===== */
+  .hero{
+    width:100%;
+    height:240px;
+    position:relative;
+    border-bottom-left-radius:26px;
+    border-bottom-right-radius:26px;
+    overflow:hidden;
+    background:linear-gradient(135deg,#0A1A3C,#6AA2FF);
+  }
+
+  .hero img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    opacity:0.25;
+    transform:scale(1.03);
+  }
+
+  .heroTop{
+    position:absolute;
+    top:14px;
+    left:14px;
+    right:14px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    z-index:2;
+  }
+
+  .backBtn{
+    width:42px;
+    height:42px;
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(255,255,255,0.18);
+    border:1px solid rgba(255,255,255,0.25);
+    color:#fff;
+    text-decoration:none;
+    backdrop-filter: blur(10px);
+  }
+
+  .heroTitle{
+    font-size:14px;
+    font-weight:900;
+    color:#fff;
+    letter-spacing:0.2px;
+  }
+
+  .heroBadge{
+    padding:10px 12px;
+    border-radius:14px;
+    background:rgba(255,255,255,0.18);
+    border:1px solid rgba(255,255,255,0.25);
+    color:#fff;
+    font-size:12px;
+    font-weight:900;
+    backdrop-filter: blur(10px);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+
+  .heroText{
+    position:absolute;
+    bottom:16px;
+    left:16px;
+    right:16px;
+    z-index:2;
+    color:#fff;
+  }
+
+  .heroText h1{
+    font-size:22px;
+    font-weight:1000;
+    line-height:1.15;
+  }
+
+  .heroMeta{
+    margin-top:10px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+
+  .pill{
+    padding:9px 12px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:900;
+    background:rgba(255,255,255,0.18);
+    border:1px solid rgba(255,255,255,0.22);
+    backdrop-filter: blur(10px);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+
+  /* ===== Main ===== */
+  .wrap{
+    padding:16px;
+    max-width:920px;
+    margin:auto;
+  }
+
+  .card{
+    background:#fff;
+    border-radius:20px;
+    padding:16px;
+    border:1px solid rgba(0,0,0,0.06);
+    box-shadow:0 16px 40px rgba(0,0,0,0.06);
+    margin-top:14px;
+  }
+
+  .desc{
+    font-size:13.5px;
+    font-weight:750;
+    line-height:1.65;
+    color:#2c3a57;
+  }
+
+  /* ===== Calculator ===== */
+  .calcHead{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:10px;
+  }
+
+  .calcHead h2{
+    font-size:16px;
+    font-weight:1000;
+  }
+
+  .small{
+    font-size:12px;
+    font-weight:900;
+    color:#6b7280;
+  }
+
+  .row{
+    display:grid;
+    grid-template-columns: 1fr;
+    gap:12px;
+    margin-top:12px;
+  }
+
+  .inputBox{
+    width:100%;
+    background:#f6f8ff;
+    border:1px solid rgba(37,99,235,0.12);
+    border-radius:16px;
+    padding:12px;
+  }
+
+  .inputBox label{
+    display:block;
+    font-size:12px;
+    font-weight:950;
+    color:#0A1A3C;
+    margin-bottom:8px;
+  }
+
+  select, input[type="number"]{
+    width:100%;
+    border:none;
+    outline:none;
+    background:transparent;
+    font-size:14px;
+    font-weight:900;
+    color:#0A1A3C;
+  }
+
+  /* Amount Range */
+  .rangeWrap{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+
+  .rangeTop{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+  }
+
+  .amt{
+    font-size:15px;
+    font-weight:1000;
+    color:#2563eb;
+    background:#fff;
+    border:1px solid rgba(37,99,235,0.14);
+    padding:10px 12px;
+    border-radius:14px;
+    min-width:120px;
+    text-align:right;
+  }
+
+  input[type="range"]{
+    width:100%;
+    accent-color:#2563eb;
+  }
+
+  /* Buttons */
+  .btnRow{
+    display:flex;
+    gap:12px;
+    margin-top:14px;
+  }
+  .btn{
+    width:100%;
+    border:none;
+    outline:none;
+    cursor:pointer;
+    padding:14px;
+    border-radius:16px;
+    font-size:14px;
+    font-weight:1000;
+    transition:0.2s;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    user-select:none;
+  }
+
+  .btnPrimary{
+    background:linear-gradient(135deg,#2563eb,#7c3aed);
+    color:#fff;
+    box-shadow:0 18px 35px rgba(37,99,235,0.22);
+  }
+  .btnPrimary:active{transform:scale(0.985);}
+
+  .btnGhost{
+    background:#fff;
+    border:1px solid rgba(0,0,0,0.10);
+    color:#0A1A3C;
+  }
+  .btnGhost:active{transform:scale(0.985);}
+
+  .btnGreen{
+    background:linear-gradient(135deg,#16a34a,#22c55e);
+    color:#fff;
+    box-shadow:0 18px 35px rgba(34,197,94,0.22);
+  }
+
+  /* ===== Result (Hidden until calculate) ===== */
+  .resultBox{
+    margin-top:14px;
+    display:none;
+    grid-template-columns: 1fr;
+    gap:12px;
+  }
+  .resultBox.show{display:grid;}
+
+  /* Top blue premium effect */
+  .totalCard{
+    background:linear-gradient(135deg,#0b2b66,#2563eb,#7c3aed);
+    border:none;
+    color:#fff;
+    border-radius:20px;
+    padding:16px;
+    position:relative;
+    overflow:hidden;
+  }
+  .totalCard::after{
+    content:"";
+    position:absolute;
+    inset:-40px;
+    background:radial-gradient(circle at 30% 20%, rgba(255,255,255,0.25), transparent 45%);
+    transform:rotate(8deg);
+  }
+  .totalCard *{position:relative; z-index:2;}
+
+  .totalCard h3{
+    font-size:13px;
+    font-weight:1000;
+    opacity:0.95;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+
+  .bigMoney{
+    font-size:22px;
+    font-weight:1200;
+    margin-top:8px;
+    letter-spacing:0.2px;
+  }
+
+  .muted{
+    margin-top:10px;
+    font-size:12px;
+    font-weight:850;
+    color:rgba(255,255,255,0.90);
+    line-height:1.45;
+  }
+
+  .resultCard{
+    background:#fbfbff;
+    border:1px solid rgba(0,0,0,0.06);
+    border-radius:18px;
+    padding:14px;
+  }
+
+  .resultCard h3{
+    font-size:13px;
+    font-weight:1000;
+    margin-bottom:8px;
+  }
+
+  /* Pie */
+  .pieWrap{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  canvas{
+    width:220px !important;
+    height:220px !important;
+  }
+
+  /* Sections */
+  .sectionTitle{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:10px;
+  }
+
+  .sectionTitle h2{
+    font-size:15px;
+    font-weight:1000;
+  }
+
+  ul{padding-left:18px;}
+  li{
+    font-size:13px;
+    font-weight:800;
+    color:#2c3a57;
+    margin:8px 0;
+    line-height:1.6;
+  }
+
+  /* Tags */
+  .tags{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:10px;
+  }
+
+  .tag{
+    padding:10px 12px;
+    border-radius:999px;
+    background:#f6f8ff;
+    border:1px solid rgba(37,99,235,0.12);
+    font-size:12px;
+    font-weight:950;
+    color:#0A1A3C;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+
+  /* Responsive */
+  @media(min-width:800px){
+    .row{grid-template-columns: 1fr 1fr;}
+    .resultBox{
+      grid-template-columns: 1.1fr 0.9fr;
+      align-items:center;
+    }
+    canvas{width:250px !important;height:250px !important;}
+  }
+
+  /* Bottom Nav */
+  .bottomNav{
+    width:100%;
+    position:fixed;
+    bottom:0;
+    left:0;
+    background:#fff;
+    border-top:1px solid rgba(0,0,0,0.08);
+    display:flex;
+    justify-content:space-around;
+    padding:10px 8px;
+    z-index:999;
+  }
+
+  .navItem{
+    text-decoration:none;
+    color:#555;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:4px;
+    font-size:12px;
+    font-weight:900;
+    padding:8px 10px;
+    border-radius:16px;
+    transition:0.2s;
+  }
+
+  .navItem i{font-size:18px;}
+  .navItem.active{color:#2563eb;background:#eef2ff;}
+  body.dark .desc,body.dark ul li{
+    color: #fff;
+  }body.dark .tag, body.dark .resultCard, body.dark #shareBtn {
+  background: black;
+  color: #fff;
+}body.dark #mode, body.dark #years, body.dark #rate{
+  background: black;
+  border: transparent;
+}body.dark .amt{
+  background: #0A1A3C;
+color: #fff;
+}
+</style>
+</head>
+
+<body>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <i class="fa-solid fa-circle-info"></i>
+  <span id="toastText">Message</span>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <img id="heroImg" src="https://aniket-developer-001.github.io/BimaCare//India-Briefing-Filing-Income-Tax-Returns-in-India.jpg" alt="Insurance Cover">
+
+  <div class="heroTop">
+    <a class="backBtn" href="https://aniket-developer-001.github.io/BimaCare//insurance.html" title="Back">
+      <i class="fa-solid fa-arrow-left"></i>
+    </a>
+
+    <div class="heroTitle">Insurance Details</div>
+
+    <div class="heroBadge">
+      <i class="fa-solid fa-shield-heart"></i>
+      Secure Plan
+    </div>
+  </div>
+
+  <div class="heroText">
+    <h1 id="planTitle">LIC Jeevan Anand</h1>
+
+    <div class="heroMeta">
+      <div class="pill">
+        <i class="fa-solid fa-indian-rupee-sign"></i>
+        Monthly Premium: <b id="monthlyPremium">₹8,233</b>
+      </div>
+
+      <div class="pill">
+        <i class="fa-solid fa-chart-line"></i>
+        Interest: <b id="interestRate">13.82%</b> p.a.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="wrap">
+
+  <!-- Description -->
+  <div class="card">
+    <div class="sectionTitle">
+      <h2>About this Insurance</h2>
+      <span class="small">BimaCare Verified</span>
+    </div>
+
+    <p class="desc" id="descText">
+      This plan offers long-term financial protection, maturity benefits, and optional rider coverage.
+    </p>
+
+    <div class="tags">
+      <div class="tag"><i class="fa-solid fa-bolt"></i> Fast Approval</div>
+      <div class="tag"><i class="fa-solid fa-lock"></i> Secure Policy</div>
+      <div class="tag"><i class="fa-solid fa-file-shield"></i> Govt Supported</div>
+    </div>
+  </div>
+
+  <!-- Calculator -->
+  <div class="card">
+    <div class="calcHead">
+      <div>
+        <h2>Mini Premium Calculator</h2>
+        <div class="small">Select mode + amount → calculate returns</div>
+      </div>
+      <div class="small" id="calcHint">Result shows after Calculate</div>
+    </div>
+
+    <div class="row">
+      <div class="inputBox">
+        <label>Payment Mode</label>
+        <select id="mode">
+          <option value="monthly">Monthly</option>
+          <option value="quarterly">Quarterly</option>
+        </select>
+      </div>
+
+      <div class="inputBox">
+        <label>Plan Duration (Years)</label>
+        <select id="years">
+          <option value="5">5 Years</option>
+          <option value="10" selected>10 Years</option>
+          <option value="15">15 Years</option>
+          <option value="20">20 Years</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="inputBox">
+        <label>Premium Amount Range</label>
+
+        <div class="rangeWrap">
+          <div class="rangeTop">
+            <span class="small">Min ₹1,000</span>
+            <div class="amt" id="amtShow">₹8,000</div>
+          </div>
+
+          <input id="amountRange" type="range" min="1000" max="50000" step="500" value="8000">
+
+          <div class="rangeTop">
+            <span class="small">Max ₹50,000</span>
+            <span class="small">Step ₹500</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="inputBox">
+        <label>Interest (p.a.)</label>
+        <input id="rate" type="number" step="0.01" readonly>
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="btnRow">
+      <button class="btn btnPrimary" id="calcBtn">
+        <i class="fa-solid fa-calculator"></i> Calculate
+      </button>
+
+      <button class="btn btnGhost" id="shareBtn">
+        <i class="fa-solid fa-share-nodes"></i> Share
+      </button>
+    </div>
+
+    <!-- Result -->
+    <div class="resultBox" id="resultBox">
+
+      <div class="totalCard">
+        <h3><i class="fa-solid fa-crown"></i> Total Maturity Value</h3>
+        <div class="bigMoney" id="maturityValue">₹0</div>
+        <div class="muted" id="resultNote">
+          Click calculate to view result.
+        </div>
+      </div>
+
+      <div class="resultCard pieWrap">
+        <canvas id="pieChart" width="250" height="250"></canvas>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Eligible -->
+  <div class="card">
+    <div class="sectionTitle">
+      <h2>Who is eligible?</h2>
+      <span class="small"><i class="fa-solid fa-circle-check"></i> Easy</span>
+    </div>
+
+    <ul>
+      <li>Age: 18 years to 60 years</li>
+      <li>Indian citizen with valid ID proof</li>
+      <li>Basic income proof / occupation proof</li>
+      <li>Medical checkup may be required for higher coverage</li>
+    </ul>
+  </div>
+
+  <!-- Apply -->
+  <div class="card">
+    <div class="sectionTitle">
+      <h2>How to apply?</h2>
+      <span class="small"><i class="fa-solid fa-arrow-right"></i> Steps</span>
+    </div>
+
+    <ul>
+      <li>Choose premium amount and payment mode</li>
+      <li>Fill application form with correct personal details</li>
+      <li>Upload documents and submit</li>
+      <li>Pay premium online or via agent</li>
+      <li>Receive policy confirmation and documents</li>
+    </ul>
+  </div>
+
+  <!-- Documents -->
+  <div class="card">
+    <div class="sectionTitle">
+      <h2>Which documents are needed?</h2>
+      <span class="small"><i class="fa-solid fa-file"></i> Required</span>
+    </div>
+
+    <ul>
+      <li>Aadhaar Card / Voter ID / PAN Card</li>
+      <li>Passport size photo</li>
+      <li>Bank passbook / cancelled cheque</li>
+      <li>Income proof (salary slip / ITR / business proof)</li>
+      <li>Address proof (if different)</li>
+    </ul>
+  </div>
+  <div class="btnRow">
+    <button class="btn btnGreen" id="applyBtn">
+      <i class="fa-solid fa-paper-plane"></i> Apply Online
+    </button>
+  </div>
+  
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottomNav">
+  <a class="navItem" href="https://aniket-developer-001.github.io/BimaCare/home.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
+  <a class="navItem active" href="https://aniket-developer-001.github.io/BimaCare/insurance.html"><i class="fa-solid fa-shield"></i><span>Insurance</span></a>
+  <a class="navItem" href="https://aniket-developer-001.github.io/BimaCare/update.html"><i class="fa-solid fa-bullhorn"></i><span>Updates</span></a>
+  <a class="navItem" href="https://aniket-developer-001.github.io/BimaCare/reminder.html"><i class="fa-solid fa-clock"></i><span>Reminder</span></a>
+  <a class="navItem" href="https://aniket-developer-001.github.io/BimaCare/account.html"><i class="fa-solid fa-user"></i><span>Account</span></a>
+</nav>
+
+<script>
+/* ===========================
+   SIMPLE DARK MODE LOADER
+   =========================== */
+
+const THEME_KEY = "dark_mode"; // localStorage key
+
+function loadThemeFromStorage() {
+  const mode = localStorage.getItem(THEME_KEY);
+  
+  if (mode === "yes") {
+    document.body.classList.add("dark");
+  } else {
+    document.body.classList.remove("dark");
+  }
+}
+
+/* Run when page loads */
+document.addEventListener("DOMContentLoaded", loadThemeFromStorage);
+/* ==========================
+   PROFESSIONAL INSURANCE VIEW
+========================== */
+
+const INSURANCE_LIST = [
+  {
+    id: 1,
+    title: "LIC Jeevan Anand",
+    premium: "₹8,233",
+    interest: "13.82%",
+    image: "https://images.unsplash.com/photo-1554224154-26032ffc0d07?q=80&w=1400&auto=format&fit=crop",
+    desc: "A popular long-term plan with maturity + life cover benefits.",
+    applyLink: "https://licindia.in/"
+  },
+  {
+    id: 2,
+    title: "LIC Jeevan Labh",
+    premium: "₹6,540",
+    interest: "12.60%",
+    image: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?q=80&w=1400&auto=format&fit=crop",
+    desc: "Limited premium paying plan with guaranteed additions and bonuses.",
+    applyLink: "https://licindia.in/"
+  },
+  {
+    id: 3,
+    title: "LIC New Endowment",
+    premium: "₹4,999",
+    interest: "11.90%",
+    image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=1400&auto=format&fit=crop",
+    desc: "Safe endowment plan for savings + protection for family.",
+    applyLink: "https://licindia.in/"
+  },
+  {
+    id: 4,
+    title: "LIC Money Back",
+    premium: "₹3,699",
+    interest: "11.40%",
+    image: "https://images.unsplash.com/photo-1556742400-b5c8a9a7f6f0?q=80&w=1400&auto=format&fit=crop",
+    desc: "Periodic survival benefits + maturity value with insurance cover.",
+    applyLink: "https://licindia.in/"
+  },
+  {
+    id: 5,
+    title: "Health Insurance Plus",
+    premium: "₹1,299",
+    interest: "10.20%",
+    image: "https://images.unsplash.com/photo-1580281657527-47f249e8f6b8?q=80&w=1400&auto=format&fit=crop",
+    desc: "Medical coverage plan with hospitalization support.",
+    applyLink: "https://www.policybazaar.com/health-insurance/"
+  },
+  {
+    id: 6,
+    title: "Term Life Secure",
+    premium: "₹899",
+    interest: "9.50%",
+    image: "https://images.unsplash.com/photo-1580519542036-c47de6196ba5?q=80&w=1400&auto=format&fit=crop",
+    desc: "High life cover with low premium for maximum protection.",
+    applyLink: "https://www.policybazaar.com/life-insurance/term-insurance/"
+  },
+  {
+    id: 7,
+    title: "Child Future Plan",
+    premium: "₹2,499",
+    interest: "10.90%",
+    image: "https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?q=80&w=1400&auto=format&fit=crop",
+    desc: "Child education + future protection with long-term returns.",
+    applyLink: "https://licindia.in/"
+  },
+  {
+    id: 8,
+    title: "Pension Guarantee Plan",
+    premium: "₹5,200",
+    interest: "12.10%",
+    image: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=1400&auto=format&fit=crop",
+    desc: "Retirement pension plan with guaranteed annuity options.",
+    applyLink: "https://licindia.in/"
+  }
+];
+
+/* ===== Toast System ===== */
+const toast = document.getElementById("toast");
+const toastText = document.getElementById("toastText");
+let toastTimer = null;
+
+function showToast(msg, type="info"){
+  toastText.innerText = msg;
+
+  const icon = toast.querySelector("i");
+  if(type === "error"){
+    icon.className = "fa-solid fa-triangle-exclamation";
+    toast.style.background = "#b91c1c";
+  }else if(type === "success"){
+    icon.className = "fa-solid fa-circle-check";
+    toast.style.background = "#0f766e";
+  }else{
+    icon.className = "fa-solid fa-circle-info";
+    toast.style.background = "#0A1A3C";
+  }
+
+  toast.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>toast.classList.remove("show"), 2200);
+}
+
+/* ===== Get Selected Plan ===== */
+const selectedId = Number(localStorage.getItem("selected_insurance_id"));
+const plan = INSURANCE_LIST.find(p => p.id === selectedId);
+
+if(!plan){
+  window.location.href = "insurance.html";
+}
+
+/* ===== Fill Data ===== */
+document.getElementById("planTitle").innerText = plan.title;
+document.getElementById("monthlyPremium").innerText = plan.premium;
+document.getElementById("interestRate").innerText = plan.interest;
+document.getElementById("descText").innerText = plan.desc;
+document.getElementById("heroImg").src = plan.image;
+
+/* ===== Calculator Elements ===== */
+const amountRange = document.getElementById("amountRange");
+const amtShow = document.getElementById("amtShow");
+const mode = document.getElementById("mode");
+const years = document.getElementById("years");
+const rate = document.getElementById("rate");
+
+const calcBtn = document.getElementById("calcBtn");
+const shareBtn = document.getElementById("shareBtn");
+const applyBtn = document.getElementById("applyBtn");
+
+const resultBox = document.getElementById("resultBox");
+const maturityValue = document.getElementById("maturityValue");
+const resultNote = document.getElementById("resultNote");
+
+/* ===== Canvas ===== */
+const canvas = document.getElementById("pieChart");
+const ctx = canvas.getContext("2d");
+
+let lastResult = null;
+let isCalculated = false;
+
+rate.value = parseFloat(plan.interest);
+
+/* ===== Helpers ===== */
+function formatINR(num){
+  return "₹" + Math.round(num).toLocaleString("en-IN");
+}
+
+function updateAmount(){
+  amtShow.innerText = formatINR(amountRange.value);
+}
+updateAmount();
+
+amountRange.addEventListener("input", updateAmount);
+
+/* ===== Pie Draw ===== */
+function drawPie(principal, profit){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  const total = principal + profit;
+  if(total <= 0){
+    ctx.font = "900 14px system-ui";
+    ctx.fillStyle = "#0A1A3C";
+    ctx.textAlign = "center";
+    ctx.fillText("No Data", canvas.width/2, canvas.height/2);
+    return;
+  }
+
+  const cx = canvas.width/2;
+  const cy = canvas.height/2;
+  const radius = 95;
+
+  const pAngle = (principal/total) * Math.PI * 2;
+  const prAngle = (profit/total) * Math.PI * 2;
+
+  // Principal
+  ctx.beginPath();
+  ctx.moveTo(cx, cy);
+  ctx.arc(cx, cy, radius, 0, pAngle);
+  ctx.closePath();
+  ctx.fillStyle = "#2563eb";
+  ctx.fill();
+
+  // Profit
+  ctx.beginPath();
+  ctx.moveTo(cx, cy);
+  ctx.arc(cx, cy, radius, pAngle, pAngle + prAngle);
+  ctx.closePath();
+  ctx.fillStyle = "#7c3aed";
+  ctx.fill();
+
+  // Hole
+  ctx.beginPath();
+  ctx.arc(cx, cy, 55, 0, Math.PI*2);
+  ctx.fillStyle = "#ffffff";
+  ctx.fill();
+
+  // Text
+  ctx.fillStyle = "#0A1A3C";
+  ctx.font = "900 13px system-ui";
+  ctx.textAlign = "center";
+  ctx.fillText("Total", cx, cy - 6);
+  ctx.font = "1000 14px system-ui";
+  ctx.fillText(formatINR(total), cx, cy + 16);
+}
+
+/* ===== Calculate ===== */
+function calculate(){
+  const amt = Number(amountRange.value);
+  const y = Number(years.value);
+  const r = Number(rate.value);
+
+  if(!amt || amt < 1000){
+    showToast("Please select premium amount!", "error");
+    return;
+  }
+
+  const paymentsPerYear = mode.value === "monthly" ? 12 : 4;
+  const totalPayments = y * paymentsPerYear;
+
+  const principal = amt * totalPayments;
+
+  // Simple estimate model
+  const yearlyRate = r / 100;
+  const avgInvested = principal * 0.55;
+  const profit = avgInvested * yearlyRate * y;
+
+  const maturity = principal + profit;
+
+  lastResult = {
+    planTitle: plan.title,
+    mode: mode.value,
+    years: y,
+    premium: amt,
+    interest: r,
+    principal,
+    profit,
+    maturity
+  };
+
+  isCalculated = true;
+
+  // Show result box
+  resultBox.classList.add("show");
+
+  maturityValue.innerText = formatINR(maturity);
+
+  resultNote.innerHTML = `
+    You pay <b>${formatINR(amt)}</b> (${mode.value}) for <b>${y} years</b><br>
+    Interest rate: <b>${r.toFixed(2)}% p.a.</b><br><br>
+    Principal: <b>${formatINR(principal)}</b><br>
+    Estimated Profit: <b>${formatINR(profit)}</b>
+  `;
+
+  drawPie(principal, profit);
+
+  showToast("Calculated successfully!", "success");
+}
+
+calcBtn.addEventListener("click", calculate);
+
+/* ===== Share ===== */
+async function shareDetails(){
+  if(!isCalculated || !lastResult){
+    showToast("Please calculate first!", "error");
+    return;
+  }
+
+  const text =
+`BimaCare - Insurance Estimate
+
+Plan: ${lastResult.planTitle}
+Mode: ${lastResult.mode}
+Duration: ${lastResult.years} years
+Premium: ${formatINR(lastResult.premium)}
+Interest: ${lastResult.interest.toFixed(2)}% p.a.
+
+Principal: ${formatINR(lastResult.principal)}
+Estimated Profit: ${formatINR(lastResult.profit)}
+Total Maturity: ${formatINR(lastResult.maturity)}
+
+Apply Link: ${plan.applyLink}`;
+
+  try{
+    if(navigator.share){
+      await navigator.share({
+        title: "Insurance Estimate",
+        text: text
+      });
+      showToast("Shared successfully!", "success");
+    }else{
+      await navigator.clipboard.writeText(text);
+      showToast("Share not supported! Copied to clipboard.", "info");
+    }
+  }catch(err){
+    showToast("Share cancelled or blocked!", "error");
+  }
+}
+
+shareBtn.addEventListener("click", shareDetails);
+
+/* ===== Apply Button ===== */
+applyBtn.addEventListener("click", ()=>{
+  try{
+    window.open(plan.applyLink, "_blank");
+  }catch(e){
+    showToast("Unable to open apply link!", "error");
+  }
+});
+
+/* Default Pie */
+drawPie(0,0);
+</script>
+</body>
+</html>

@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>30-Day Pro Streak</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="main.css">
+    <style>
+        :root {
+            --primary: #1d4ed8;
+            --secondary: #7c3aed;
+            --success: #22c55e;
+            --bg: #f8fafc;
+            --text-dark: #1e293b;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            
+            background: var(--bg);
+            color: var(--text-dark);
+            
+            
+            justify-content: center;
+        }body {
+    margin: 0;
+    padding: 0;
+}
+    /* ===== Header ===== */
+    .topHeader {
+    width: 100%;
+    box-sizing: border-box;
+    background: #0A1A3C;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 18px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+  .topHeader h2{font-size:18px;font-weight:1000;}
+  .topHeader a{
+    color:#fff;text-decoration:none;
+    width:42px;height:42px;border-radius:16px;
+    display:flex;align-items:center;justify-content:center;
+    background:rgba(255,255,255,0.12);
+    border:1px solid rgba(255,255,255,0.14);
+  }
+
+        .container {
+            width: 94%;
+            max-width: 450px;
+            margin: 20px 3%;
+        }
+
+        /* HEADER SECTION */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            background: #fff;
+            padding: 15px 20px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .streak-badge {
+            background: var(--success);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* MAIN ACTION CARD */
+        .main-card {
+            background: #fff;
+            border-radius: 30px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+        }
+
+        .gift-icon-container {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #ff7a18, #ff0066);
+            margin: 0 auto 20px;
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: #fff;
+            box-shadow: 0 10px 30px rgba(255, 0, 102, 0.3);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .timer {
+            color: var(--primary);
+            font-weight: 700;
+            margin: 10px 0;
+            font-size: 1.1rem;
+        }
+
+        .btn-collect {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 18px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            font-weight: 800;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-collect:disabled {
+            background: #e2e8f0;
+            color: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        /* 30 DAY GRID */
+        .grid-title {
+            font-weight: 800;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .streak-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+        }
+
+        .day-box {
+            background: #fff;
+            aspect-ratio: 1/1;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            color: #94a3b8;
+            border: 2px solid transparent;
+            transition: 0.3s;
+        }
+
+        .day-box.completed {
+            background: #dcfce7;
+            color: var(--success);
+            border-color: var(--success);
+            font-size: 28px;
+        }
+
+        .day-box.current {
+            border-color: var(--primary);
+            color: var(--primary);
+            box-shadow: 0 0 10px rgba(29, 78, 216, 0.2);
+        }
+
+        /* DAY 30 SPECIAL */
+        .day-30 {
+            grid-column: span 2;
+            padding: 12px 0px;
+            font-size: 16px;
+            aspect-ratio: auto;
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            color: #d97706;
+            flex-direction: row;
+            gap: 10px;
+        }
+
+        /* MODAL */
+        #modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-content {
+            background: #fff;
+            padding: 40px;
+            border-radius: 30px;
+            text-align: center;
+            max-width: 300px;
+        }.claimGuide {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 25px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+    margin-top: 25px;
+}
+
+.guideHeader {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.guideIcon {
+    width: 55px;
+    height: 55px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #ff7a18, #ff0066);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 22px;
+    box-shadow: 0 10px 30px rgba(255, 0, 102, 0.35);
+}
+
+.guideHeader h3 {
+    margin: 0;
+    font-weight: 900;
+    font-size: 18px;
+}
+
+.guideHeader p {
+    margin: 3px 0 0;
+    font-size: 12px;
+    color: #64748b;
+}
+
+.steps {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.step {
+    display: flex;
+    gap: 15px;
+    align-items: flex-start;
+}
+
+.stepNumber {
+    min-width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1d4ed8, #7c3aed);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 14px;
+}
+
+.step h4 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.step p {
+    margin: 3px 0 0;
+    font-size: 12px;
+    color: #64748b;
+}/* POPUP OVERLAY */
+.popupOverlay{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(15,23,42,0.75);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:999;
+  backdrop-filter:blur(4px);
+}
+
+/* POPUP BOX */
+.popupBox{
+  background:#ffffff;
+  width:90%;
+  max-width:320px;
+  padding:35px 25px;
+  border-radius:28px;
+  text-align:center;
+  box-shadow:0 30px 60px rgba(0,0,0,0.15);
+  animation:popupFade 0.4s ease;
+}
+
+@keyframes popupFade{
+  from{transform:scale(0.8);opacity:0;}
+  to{transform:scale(1);opacity:1;}
+}
+
+/* ICON */
+.popupIcon{
+  width:80px;
+  height:80px;
+  margin:auto;
+  border-radius:25px;
+  background:linear-gradient(135deg,#ef4444,#f97316);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:35px;
+  color:#fff;
+  box-shadow:0 15px 40px rgba(239,68,68,0.35);
+  margin-bottom:20px;
+}
+
+.popupBox h2{
+  margin:0;
+  font-weight:900;
+  font-size:20px;
+}
+
+.popupBox p{
+  margin:12px 0 20px;
+  font-size:14px;
+  color:#64748b;
+}
+
+/* BUTTON */
+.popupBtn{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:18px;
+  font-weight:800;
+  cursor:pointer;
+  background:linear-gradient(135deg,#1d4ed8,#7c3aed);
+  color:#fff;
+  font-size:14px;
+  transition:0.3s;
+}
+
+.popupBtn:hover{
+  opacity:0.9;
+}.overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.7);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:999;
+}
+
+.popupBox{
+  background:#fff;
+  width:90%;
+  max-width:350px;
+  padding:30px 25px;
+  border-radius:25px;
+  text-align:center;
+  box-shadow:0 30px 60px rgba(0,0,0,0.2);
+  animation:fadeIn .3s ease;
+}
+
+.popupBox.big{
+  max-width:380px;
+}
+
+@keyframes fadeIn{
+  from{opacity:0; transform:scale(.8);}
+  to{opacity:1; transform:scale(1);}
+}
+
+.popupIcon{
+  width:80px;
+  height:80px;
+  margin:auto;
+  border-radius:25px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:35px;
+  color:#fff;
+  margin-bottom:20px;
+}
+
+.success{
+  background:linear-gradient(135deg,#16a34a,#22c55e);
+}
+
+.primaryBtn{
+  width:100%;
+  padding:14px;
+  margin-top:10px;
+  border:none;
+  border-radius:18px;
+  font-weight:800;
+  background:linear-gradient(135deg,#1d4ed8,#7c3aed);
+  color:#fff;
+  cursor:pointer;
+}
+
+.secondaryBtn{
+  width:100%;
+  padding:12px;
+  margin-top:8px;
+  border:none;
+  border-radius:18px;
+  background:#e2e8f0;
+  font-weight:700;
+  cursor:pointer;
+}
+
+input{
+  width:100%;
+  padding:12px;
+  margin:8px 0;
+  border-radius:12px;
+  border:1px solid #cbd5e1;
+}
+
+.giveawayHistory {
+    margin-top: 30px;
+    padding: 22px;
+    background: #ffffff;
+    border-radius: 18px;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.06);
+}
+
+.giveawayHistory h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #6c63ff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.giveawayHistory h3::before {
+    content: "🎁";
+}
+
+.historyItem p {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    margin-bottom: 12px;
+    color: #444;
+    background: #f8f9ff;
+    padding: 10px 12px;
+    border-radius: 10px;
+}
+
+.historyItem i {
+    color: #6c63ff;
+    font-size: 14px;
+    min-width: 18px;
+}
+
+.historyItem span {
+    font-weight: 600;
+    color: #222;
+}/* ===== POPUP OVERLAY ===== */
+/* ===== Overlay (Hidden by default) ===== */
+.overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.4);
+  display:none; /* Important */
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+  padding:20px;
+}
+
+/* ===== Popup Card ===== */
+.popup-box{
+  width:100%;
+  max-width:380px;
+  background:#ffffff;
+  border-radius:18px;
+  padding:28px 22px;
+  box-shadow:0 20px 50px rgba(0,0,0,0.12);
+  animation:fadeIn .3s ease;
+}
+
+/* ===== Header ===== */
+.popup-header{
+  text-align:center;
+  margin-bottom:20px;
+}
+
+.popup-header i{
+  font-size:32px;
+  color:#6c63ff;
+  margin-bottom:8px;
+}
+
+.popup-header h3{
+  font-size:18px;
+  font-weight:600;
+  color:#222;
+}
+
+.popup-header p{
+  font-size:13px;
+  color:#777;
+  margin-top:4px;
+}
+
+/* ===== Form Layout ===== */
+.formGrid{
+  display:flex;
+  flex-direction:column;
+  gap:15px;
+}
+
+/* ===== Input Group ===== */
+.input-group{
+  position:relative;
+}
+
+.input-group i{
+  position:absolute;
+  left:12px;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:14px;
+  color:#999;
+}
+
+.input-group input{
+  width:100%;
+  height:46px;
+  padding-left:38px;
+  border-radius:10px;
+  border:1px solid #e4e4e4;
+  background:#f9fafc;
+  font-size:14px;
+  outline:none;
+  transition:.3s;
+}
+
+.input-group input:focus{
+  border-color:#6c63ff;
+  background:#fff;
+  box-shadow:0 0 0 3px rgba(108,99,255,0.08);
+}
+
+/* ===== Button ===== */
+.primaryBtn{
+  height:48px;
+  border:none;
+  border-radius:12px;
+  font-size:14px;
+  font-weight:600;
+  cursor:pointer;
+  background:linear-gradient(90deg,#6c63ff,#9c4dff);
+  color:#fff;
+  transition:.3s;
+}
+
+.primaryBtn:hover{
+  opacity:.9;
+}
+
+.primaryBtn:active{
+  transform:scale(.97);
+}
+
+/* ===== Animation ===== */
+@keyframes fadeIn{
+  from{
+    opacity:0;
+    transform:translateY(15px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}/* Fix popup width overflow */
+.popup-box{
+    width:100%;
+    max-width:380px;
+    padding:25px 20px;
+    box-sizing:border-box;
+    overflow:hidden; /* Important */
+}
+
+/* Fix input overflow problem */
+.input-group{
+    width:100%;
+}
+
+.input-group input{
+    width:100%;
+    box-sizing:border-box;  /* Important Fix */
+    padding:12px 15px 12px 40px;
+}
+
+/* Fix form spacing */
+.formGrid{
+    width:100%;
+}
+
+/* Overlay padding fix for mobile */
+.overlay{
+    padding:15px;
+}.miniPopup{
+  position:fixed;
+  top:20px;
+  left:50%;
+  transform:translateX(-50%);
+  display:none;
+  z-index:10000;
+}
+
+.miniPopupBox{
+  background:#fff;
+  padding:14px 18px;
+  border-radius:12px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.12);
+  display:flex;
+  align-items:center;
+  gap:10px;
+  animation:fadeDown .3s ease;
+}
+
+.miniPopupBox i{
+  color:#ff4d4f;
+  font-size:16px;
+}
+
+.miniPopupBox p{
+  font-size:14px;
+  color:#333;
+  font-weight:500;
+}
+
+@keyframes fadeDown{
+  from{
+    opacity:0;
+    transform:translate(-50%,-10px);
+  }
+  to{
+    opacity:1;
+    transform:translate(-50%,0);
+  }
+}body.dark .header, body.dark .main-card, body.dark .claimGuide, body.dark .giveawayHistory, body.dark .historyItem p, body.dark .historyBox{
+  background: black;
+color: #fff;
+} body.dark .btn-collect, body.dark .day-box{
+  background: #0A1A3C;
+color: #fff;
+}body.dark .day-30{
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+color: #d97706;
+}body.dark .historyItem span{
+  color: gray;
+}
+    </style>
+</head>
+<body>
+ <header class="topHeader">
+    <a href="https://aniket-developer-001.github.io/BimaCare/home.html"><i class="fa-solid fa-arrow-left"></i></a>
+    <h2>Daily Streak</h2>
+    <a href="https://aniket-developer-001.github.io/BimaCare//streak.html"><i class="fa-solid fa-fire"></i></a>
+  </header>
+<div class="container">
+    <div class="header">
+        <div>
+            <h2 style="margin:0; font-size:18px;">Daily Streak</h2>
+            <span style="font-size:12px; color:#64748b;">Don't miss a day!</span>
+        </div>
+        <div class="streak-badge" id="streakDisplay">
+            <i class="fa-solid fa-fire"></i> <span id="streakCount">0</span> Days
+        </div>
+    </div>
+
+    <div class="main-card">
+        <div class="gift-icon-container">
+            <i class="fa-solid fa-box-open" id="mainIcon"></i>
+        </div>
+        <h3 id="statusTitle">Ready to Collect?</h3>
+        <div class="timer" id="timer">Loading...</div>
+        <button class="btn-collect" id="collectBtn">Collect Today's Reward</button>
+    </div>
+
+    <div class="grid-title">
+        <span>30-Day Journey</span>
+        
+    </div>
+    <div class="streak-grid" id="streakGrid">
+        </div>
+</div>
+
+<div id="modal">
+    <div class="modal-content">
+        <i class="fa-solid fa-circle-check" style="font-size: 50px; color: var(--success); margin-bottom: 15px;"></i>
+        <h2>Awesome!</h2>
+        <p>Day <span id="modalDay"></span> reward added to your account.</p>
+        <button class="btn-collect" onclick="closeModal()">Great!</button>
+    </div>
+</div>
+<!-- HOW TO CLAIM GIFT SECTION -->
+<div class="claimGuide">
+
+  <div class="guideHeader">
+    <div class="guideIcon">
+      <i class="fa-solid fa-gift"></i>
+    </div>
+    <div>
+      <h3>How To Claim Your Gift</h3>
+      <p>Follow these simple steps to receive your reward</p>
+    </div>
+  </div>
+
+  <div class="steps">
+
+    <div class="step">
+      <div class="stepNumber">1</div>
+      <div>
+        <h4>Complete 30-Day Streak</h4>
+        <p>Collect your reward daily without missing any day.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="stepNumber">2</div>
+      <div>
+        <h4>Fill Giveaway Form</h4>
+        <p>Provide your correct name, email and phone number.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="stepNumber">3</div>
+      <div>
+        <h4>Submit & Wait</h4>
+        <p>Verification process may take 24-48 hours.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="stepNumber">4</div>
+      <div>
+        <h4>Receive Your Gift</h4>
+        <p>Approved users will receive gift confirmation via email or SMS.</p>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+<!-- 🎉 30 DAYS COMPLETED POPUP -->
+<div id="completePopup" class="overlay">
+  <div class="popupBox big">
+    <div class="popupIcon success">
+      <i class="fa-solid fa-trophy"></i>
+    </div>
+    <h2>Congratulations 🎉</h2>
+    <p>You have successfully completed 30 Days Streak!</p>
+    <button class="primaryBtn" onclick="openGiveawayForm()">Fill Giveaway Form</button>
+  </div>
+</div>
+<!-- GIVEAWAY FORM POPUP -->
+<div id="giveawayPopup" class="overlay">
+
+  <div class="popup-box">
+
+    <div class="popup-header">
+      <i class="fa-solid fa-gift"></i>
+      <h3>Claim Your Giveaway Reward</h3>
+      <p>Please provide correct details below</p>
+    </div>
+
+    <form id="giveawayForm"
+          class="formGrid"
+          action="https://api.web3forms.com/submit"
+          method="POST">
+
+      <input type="hidden" name="access_key"
+             value="96018cbc-b973-4274-9edc-dd2120e8f623">
+
+      <div class="input-group">
+        <i class="fa-solid fa-user"></i>
+        <input type="text" name="name" id="gName"
+               placeholder="Full Name" required>
+      </div>
+
+      <div class="input-group">
+        <i class="fa-solid fa-envelope"></i>
+        <input type="email" name="email" id="gEmail"
+               placeholder="Email Address" required>
+      </div>
+
+      <div class="input-group">
+        <i class="fa-solid fa-phone"></i>
+        <input type="tel" name="phone" id="gPhone"
+               placeholder="Phone Number" required>
+      </div>
+
+      <button type="submit" class="primaryBtn">
+    <i class="fa-solid fa-paper-plane"></i>
+    Submit Giveaway Form
+</button>
+
+    </form>
+
+  </div>
+</div>
+<!-- ✅ SUCCESS POPUP -->
+<div id="successPopup" class="overlay">
+  <div class="popupBox">
+    <div class="popupIcon success">
+      <i class="fa-solid fa-circle-check"></i>
+    </div>
+    <h3>Form Submitted Successfully!</h3>
+    <p>We will contact you soon.</p>
+    <button class="primaryBtn" onclick="closeSuccess()">OK</button>
+  </div>
+</div>
+
+<!-- 📦 LAST GIVEAWAY HISTORY -->
+<div class="giveawayHistory">
+  <h3>Last Giveaway Submission</h3>
+  <div id="historyBox">No submission yet.</div>
+</div>
+<!-- Validation Popup -->
+<div id="validationPopup" class="miniPopup">
+  <div class="miniPopupBox">
+    <i class="fa-solid fa-circle-exclamation"></i>
+    <p id="validationMessage"></p>
+  </div>
+</div>
+<!-- MISSED STREAK POPUP -->
+<div id="missedPopup" class="popupOverlay">
+  <div class="popupBox">
+
+    <div class="popupIcon">
+      <i class="fa-solid fa-heart-crack"></i>
+    </div>
+
+    <h2>Oops! Streak Missed</h2>
+    <p>
+      You missed your daily reward.<br>
+      Your streak has been reset to Day 1.
+    </p>
+
+    <button class="popupBtn" onclick="closeMissedPopup()">
+      Start Again
+    </button>
+
+  </div>
+</div>
+<script>
+/* ===========================
+   SIMPLE DARK MODE LOADER
+   =========================== */
+
+const THEME_KEY = "dark_mode"; // localStorage key
+
+function loadThemeFromStorage() {
+  const mode = localStorage.getItem(THEME_KEY);
+  
+  if (mode === "yes") {
+    document.body.classList.add("dark");
+  } else {
+    document.body.classList.remove("dark");
+  }
+}
+
+/* Run when page loads */
+document.addEventListener("DOMContentLoaded", loadThemeFromStorage);
+    const STORAGE_KEY = "user_streak_data";
+
+let state = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {
+    currentStreak: 0,
+    lastCollected: 0,
+    completed: false
+};
+
+const collectBtn = document.getElementById('collectBtn');
+const timerEl = document.getElementById('timer');
+const gridEl = document.getElementById('streakGrid');
+const streakCountEl = document.getElementById('streakCount');
+
+/* =========================
+   INIT
+========================= */
+function init() {
+    checkResetLogic();
+    renderGrid();
+    updateUI();
+    startTimer();
+    loadHistory();
+}
+
+/* =========================
+   MISSED POPUP
+========================= */
+function showMissedPopup() {
+    document.getElementById("missedPopup").style.display = "flex";
+}
+
+function closeMissedPopup() {
+    document.getElementById("missedPopup").style.display = "none";
+}
+
+/* =========================
+   RESET LOGIC
+========================= */
+function checkResetLogic() {
+    
+    if (state.lastCollected === 0) return;
+    
+    const now = Date.now();
+    const diff = now - state.lastCollected;
+    
+    const hour48 = 48 * 60 * 60 * 1000;
+    const hour24 = 24 * 60 * 60 * 1000;
+    
+    // ❌ Missed 48h → Reset
+    if (diff > hour48) {
+        state.currentStreak = 0;
+        state.lastCollected = 0;
+        save();
+        renderGrid();
+        updateUI();
+        showMissedPopup();
+        return;
+    }
+    
+    // After full 30 cycle completed
+    if (state.completed && diff >= hour24) {
+        state.completed = false;
+        save();
+    }
+}
+
+/* =========================
+   RENDER GRID
+========================= */
+function renderGrid() {
+    
+    gridEl.innerHTML = '';
+    
+    for (let i = 1; i <= 30; i++) {
+        
+        const box = document.createElement('div');
+        box.className = 'day-box';
+        
+        if (i === 30) {
+            box.classList.add('day-30');
+            box.innerHTML = `<i class="fa-solid fa-gift"></i> Day 30`;
+        } else {
+            box.innerHTML = `<span>Day</span><span>${i}</span>`;
+        }
+        
+        if (state.currentStreak !== 0 && i <= state.currentStreak) {
+            box.classList.add('completed');
+            box.innerHTML = `<i class="fa-solid fa-check"></i>`;
+        }
+        else if (i === state.currentStreak + 1) {
+            box.classList.add('current');
+        }
+        
+        gridEl.appendChild(box);
+    }
+}
+
+/* =========================
+   UPDATE UI
+========================= */
+function updateUI() {
+    
+    streakCountEl.innerText = state.currentStreak;
+    
+    const now = Date.now();
+    const diff = now - state.lastCollected;
+    const waitTime = 24 * 60 * 60 * 1000;
+    
+    if (state.lastCollected !== 0 && diff < waitTime) {
+        collectBtn.disabled = true;
+        document.getElementById('statusTitle').innerText = "Come back tomorrow!";
+    } else {
+        collectBtn.disabled = false;
+        document.getElementById('statusTitle').innerText = "Ready to Collect!";
+        timerEl.innerText = "Available Now!";
+    }
+}
+
+/* =========================
+   TIMER
+========================= */
+function startTimer() {
+    
+    setInterval(() => {
+        
+        if (state.lastCollected === 0) return;
+        
+        const now = Date.now();
+        const remaining = (24 * 60 * 60 * 1000) - (now - state.lastCollected);
+        
+        if (remaining > 0) {
+            
+            const h = Math.floor(remaining / 3600000);
+            const m = Math.floor((remaining % 3600000) / 60000);
+            const s = Math.floor((remaining % 60000) / 1000);
+            
+            timerEl.innerText = `Next reward: ${h}h ${m}m ${s}s`;
+            
+        } else {
+            updateUI();
+        }
+        
+    }, 1000);
+}
+
+/* =========================
+   COLLECT BUTTON
+========================= */
+collectBtn.addEventListener('click', () => {
+    
+    const now = Date.now();
+    const diff = now - state.lastCollected;
+    const hour24 = 24 * 60 * 60 * 1000;
+    
+    if (state.lastCollected !== 0 && diff < hour24) return;
+    
+    state.currentStreak++;
+    state.lastCollected = now;
+    
+    // 🎉 If 30th Day Completed
+    if (state.currentStreak === 30) {
+        
+        state.completed = true;
+        
+        save();
+        
+        showCompletePopup(); // Show congratulations popup
+        
+        // Restart streak after popup
+        state.currentStreak = 0;
+        state.lastCollected = 0;
+        
+        save();
+        renderGrid();
+        updateUI();
+        
+        return;
+    }
+    
+    save();
+    renderGrid();
+    updateUI();
+});
+
+/* =========================
+   SAVE
+========================= */
+function save() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+/* =========================
+   COMPLETE POPUP
+========================= */
+function showCompletePopup() {
+    document.getElementById("completePopup").style.display = "flex";
+}
+
+function closeCompletePopup() {
+    document.getElementById("completePopup").style.display = "none";
+}
+
+/* =========================
+   GIVEAWAY FORM
+========================= */
+function openGiveawayForm() {
+    closeCompletePopup();
+    document.getElementById("giveawayPopup").style.display = "flex";
+}
+
+function closeGiveawayForm() {
+    document.getElementById("giveawayPopup").style.display = "none";
+}
+
+/* =========================
+   SUCCESS
+========================= */
+function closeSuccess() {
+    document.getElementById("successPopup").style.display = "none";
+}
+
+/* =========================
+   FORM SUBMIT
+========================= */
+const giveawayForm = document.getElementById("giveawayForm");
+
+giveawayForm.addEventListener("submit", async function(e) {
+    
+    e.preventDefault(); // stop reload
+    
+    const name = document.getElementById("gName").value.trim();
+    const email = document.getElementById("gEmail").value.trim();
+    const phone = document.getElementById("gPhone").value.trim();
+    function showValidation(message) {
+    const popup = document.getElementById("validationPopup");
+    const msg = document.getElementById("validationMessage");
+    
+    msg.innerText = message;
+    popup.style.display = "block";
+    
+    setTimeout(() => {
+        popup.style.display = "none";
+    }, 3000);
+}
+    // 🔎 VALIDATION
+    if (name.length < 3) {
+    showValidation("Please enter valid name");
+    return;
+}
+
+if (!/^\S+@\S+\.\S+$/.test(email)) {
+    showValidation("Please enter valid email");
+    return;
+}
+
+if (!/^[0-9]{10,15}$/.test(phone)) {
+    showValidation("Please enter valid phone number");
+    return;
+}
+    
+    // Disable button while sending
+    const btn = giveawayForm.querySelector("button");
+    btn.disabled = true;
+    btn.innerText = "Submitting...";
+    
+    // Send to Web3Forms API
+    const formData = new FormData(giveawayForm);
+    
+    try {
+        const response = await fetch(giveawayForm.action, {
+            method: "POST",
+            body: formData
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            
+            // Save to localStorage
+            localStorage.setItem("last_giveaway", JSON.stringify({
+                name,
+                email,
+                phone,
+                date: new Date().toLocaleString()
+            }));
+            
+            // Close form popup
+            document.getElementById("giveawayPopup").style.display = "none";
+            
+            // Show success popup
+            document.getElementById("successPopup").style.display = "flex";
+            
+            giveawayForm.reset();
+            loadHistory();
+            
+        } else {
+            alert("Submission failed. Try again.");
+        }
+        
+    } catch (error) {
+        alert("Network error. Try again.");
+    }
+    
+    btn.disabled = false;
+    btn.innerText = "Submit Giveaway Form";
+    
+});
+/* =========================
+   HISTORY
+========================= */
+function loadHistory() {
+    
+    const data = JSON.parse(localStorage.getItem("last_giveaway"));
+    const box = document.getElementById("historyBox");
+    
+    if (!data) {
+        box.innerHTML = "No submission yet.";
+        return;
+    }
+    
+    box.innerHTML = `
+  <div class="historyItem">
+    <p><i class="fa-solid fa-user"></i> 
+       <span>Name:</span> ${data.name}</p>
+
+    <p><i class="fa-solid fa-envelope"></i> 
+       <span>Email:</span> ${data.email}</p>
+
+    <p><i class="fa-solid fa-phone"></i> 
+       <span>Phone:</span> ${data.phone}</p>
+
+    <p><i class="fa-solid fa-calendar-check"></i> 
+       <span>Submitted:</span> ${data.date}</p>
+  </div>
+`;
+}
+
+init();
+</script>
+</body>
+</html>

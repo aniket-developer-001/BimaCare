@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Insurance Calculator - BimaCare</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+<!-- ✅ jsPDF (PDF Download) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<link rel="stylesheet" href="main.css">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;}
+  body{background:#f5f7ff;color:#0A1A3C;padding-bottom:24px;}
+
+  /* ===== Header ===== */
+  .topHeader{
+    width:100%;
+    background:#0A1A3C;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:14px 16px;
+    position:sticky;
+    top:0;
+    z-index:100;
+    border-bottom:1px solid rgba(255,255,255,0.12);
+  }
+  .topHeader h2{font-size:17px;font-weight:1000;}
+  .topHeader a{
+    color:#fff;text-decoration:none;
+    width:42px;height:42px;border-radius:16px;
+    display:flex;align-items:center;justify-content:center;
+    background:rgba(255,255,255,0.12);
+    border:1px solid rgba(255,255,255,0.14);
+  }
+
+  /* ===== Layout ===== */
+  .wrap{width:100%;max-width:980px;margin:auto;padding:14px;}
+  .card{
+    background:#fff;
+    border-radius:22px;
+    padding:16px;
+    border:1px solid rgba(0,0,0,0.06);
+    box-shadow:0 16px 45px rgba(0,0,0,0.06);
+    margin-bottom:14px;
+  }
+
+  .titleRow{
+    display:flex;align-items:flex-start;justify-content:space-between;gap:12px;
+    margin-bottom:12px;
+  }
+  .titleRow h3{font-size:15px;font-weight:1000;}
+  .sub{font-size:12px;font-weight:850;color:#64748b;margin-top:2px;}
+
+  /* ===== Inputs ===== */
+  .grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:12px;
+  }
+  @media(min-width:820px){
+    .grid{grid-template-columns:1.2fr 1fr;}
+  }
+
+  .inputBox label{
+    display:block;
+    font-size:12px;
+    font-weight:950;
+    color:#334155;
+    margin-bottom:7px;
+  }
+
+  .inputWrap{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:12px 12px;
+    border-radius:16px;
+    border:1px solid rgba(0,0,0,0.10);
+    background:#fbfbff;
+    transition:0.2s;
+  }
+  .inputWrap:focus-within{
+    border-color:#2563eb;
+    box-shadow:0 0 0 4px rgba(37,99,235,0.14);
+    background:#fff;
+  }
+  .inputWrap i{color:#2563eb;font-size:16px;}
+  input, select{
+    width:100%;
+    border:none;
+    outline:none;
+    background:transparent;
+    font-size:14px;
+    font-weight:900;
+    color:#111;
+  }
+
+  /* ===== Range ===== */
+  .rangeWrap{margin-top:8px;}
+  input[type="range"]{
+    -webkit-appearance:none;
+    width:100%;
+    height:8px;
+    border-radius:99px;
+    background:linear-gradient(90deg,#2563eb,#7c3aed);
+    outline:none;
+    cursor:pointer;
+    box-shadow:0 10px 20px rgba(37,99,235,0.12);
+  }
+  input[type="range"]::-webkit-slider-thumb{
+    -webkit-appearance:none;
+    width:22px;height:22px;border-radius:50%;
+    background:#fff;border:3px solid #2563eb;
+    box-shadow:0 12px 25px rgba(0,0,0,0.18);
+    transition:0.2s;
+  }
+  input[type="range"]::-webkit-slider-thumb:active{transform:scale(1.15);}
+  input[type="range"]::-moz-range-thumb{
+    width:22px;height:22px;border-radius:50%;
+    background:#fff;border:3px solid #2563eb;
+    box-shadow:0 12px 25px rgba(0,0,0,0.18);
+  }
+  input[type="range"]::-moz-range-track{
+    height:8px;border-radius:99px;
+    background:linear-gradient(90deg,#2563eb,#7c3aed);
+  }
+
+  /* ===== Chips ===== */
+  .chipRow{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+  .chip{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:7px 10px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:1000;
+    color:#0A1A3C;
+    background:#eef2ff;
+    border:1px solid rgba(37,99,235,0.18);
+  }
+
+  /* ===== Buttons ===== */
+  .btnRow{display:flex;gap:10px;margin-top:14px;}
+  .btn{
+    flex:1;
+    border:none;
+    outline:none;
+    cursor:pointer;
+    padding:13px 14px;
+    border-radius:16px;
+    font-size:14px;
+    font-weight:1000;
+    transition:0.2s;
+  }
+  .btnPrimary{
+    background:linear-gradient(135deg,#2563eb,#7c3aed);
+    color:#fff;
+  }
+  .btnSoft{
+    background:#f1f5f9;
+    color:#0A1A3C;
+    border:1px solid rgba(10,26,60,0.10);
+  }
+  .btn:active{transform:scale(0.985);}
+
+  /* ===== Result ===== */
+  .resultBox{display:none; margin-top: 15px;}
+  .resultTop{
+    display:flex;align-items:center;justify-content:space-between;gap:14px;
+    flex-wrap:wrap;
+  }
+  .big{
+    font-size:22px;
+    font-weight:1100;
+    letter-spacing:-0.3px;
+  }
+  .muted{font-size:12px;font-weight:900;color:#64748b;margin-top:2px;}
+
+  .miniGrid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin-top:14px;
+  }
+  @media(min-width:820px){
+    .miniGrid{grid-template-columns:1fr 1fr 1fr 1fr;}
+  }
+
+  .mini{
+    background:#fbfbff;
+    border:1px solid rgba(0,0,0,0.06);
+    border-radius:18px;
+    padding:12px;
+  }
+  .mini p{font-size:12px;font-weight:950;color:#64748b;}
+  .mini h4{margin-top:6px;font-size:14px;font-weight:1100;}
+
+  .pieWrap{
+    display:flex;
+    justify-content:center;
+    margin-top:12px;
+  }
+  canvas{max-width:100%;}
+
+  .shareRow{
+    display:flex;
+    gap:10px;
+    margin-top:12px;
+  }body.dark .inputBox{
+  background: #0A1A3C;
+}body.dark .inputBox .inputWrap, body.dark .inputBox .inputWrap #mode{
+  background: black;
+}body.dark .inputBox .inputWrap input, body.dark .inputBox .inputWrap #mode{
+  border-color: black;
+}body.dark #shareBtn, body.dark #closeBtn{
+  background: black;
+  color: #fff;
+}
+</style>
+</head>
+
+<body>
+
+<header class="topHeader">
+  <a href="https://aniket-developer-001.github.io/BimaCare/home.html"><i class="fa-solid fa-arrow-left"></i></a>
+  <h2>Insurance Calculator</h2>
+  <a href="#" id="resetBtn" title="Reset"><i class="fa-solid fa-rotate-right"></i></a>
+</header>
+
+<main class="wrap">
+
+  <!-- INPUT CARD -->
+  <section class="card">
+    <div class="titleRow">
+      <div>
+        <h3>Calculate your Premium & Returns</h3>
+        <div class="sub">Quick estimate for premium, total pay & interest.</div>
+      </div>
+    </div>
+
+    <div class="grid">
+
+      <!-- LEFT -->
+      <div>
+
+        <div class="inputBox">
+          <label>Payment Mode</label>
+          <div class="inputWrap">
+            <i class="fa-solid fa-calendar-check"></i>
+            <select id="mode">
+              <option value="monthly">Monthly</option>
+              <option value="quarterly">Quarterly</option>
+              <option value="yearly">Yearly</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="inputBox" style="margin-top:12px;">
+          <label>Premium Amount (₹)</label>
+          <div class="inputWrap">
+            <i class="fa-solid fa-indian-rupee-sign"></i>
+            <input id="amount" type="text" value="10000" inputmode="numeric">
+          </div>
+
+          <div class="rangeWrap">
+            <input id="amountRange" type="range" min="500" max="500000" step="1" value="10000">
+          </div>
+        </div>
+
+        <div class="inputBox" style="margin-top:12px;">
+          <label>Interest Rate (p.a.)</label>
+          <div class="inputWrap">
+            <i class="fa-solid fa-percent"></i>
+            <input id="rate" type="number" value="13.82" step="0.01">
+          </div>
+
+          <div class="rangeWrap">
+            <input id="rateRange" type="range" min="1" max="30" step="0.1" value="13.82">
+          </div>
+        </div>
+
+        <div class="inputBox" style="margin-top:12px;">
+          <label>Policy Duration (Years)</label>
+          <div class="inputWrap">
+            <i class="fa-solid fa-hourglass-half"></i>
+            <input id="years" type="text" value="10" inputmode="numeric">
+          </div>
+
+          <div class="rangeWrap">
+            <input id="yearsRange" type="range" min="1" max="40" step="1" value="10">
+          </div>
+        </div>
+
+        <div class="chipRow">
+          <div class="chip"><i class="fa-solid fa-wallet"></i> <span id="amountChip">₹10,000</span></div>
+          <div class="chip"><i class="fa-solid fa-chart-line"></i> <span id="rateChip">13.8%</span></div>
+          <div class="chip"><i class="fa-solid fa-clock"></i> <span id="yearsChip">10 Years</span></div>
+        </div>
+
+        <div class="btnRow">
+          <button class="btn btnPrimary" id="calcBtn">
+            Calculate <i class="fa-solid fa-arrow-right"></i>
+          </button>
+          <button class="btn btnSoft" id="closeBtn" style="display:none;">
+            Close Result
+          </button>
+        </div>
+
+      </div>
+
+      <!-- RIGHT (RESULT) -->
+      <div class="resultBox" id="resultBox">
+
+        <div class="resultTop">
+          <div>
+            <div class="muted">Estimated Total Payment</div>
+            <div class="big" id="totalPayText">₹0</div>
+          </div>
+
+          <div>
+            <div class="muted">Maturity Value (Approx)</div>
+            <div class="big" id="maturityText">₹0</div>
+          </div>
+        </div>
+
+        <div class="miniGrid">
+          <div class="mini">
+            <p>Premium / Period</p>
+            <h4 id="premiumText">₹0</h4>
+          </div>
+          <div class="mini">
+            <p>Total Periods</p>
+            <h4 id="periodText">0</h4>
+          </div>
+          <div class="mini">
+            <p>Total Premium</p>
+            <h4 id="principalText">₹0</h4>
+          </div>
+          <div class="mini">
+            <p>Total Interest</p>
+            <h4 id="interestText">₹0</h4>
+          </div>
+        </div>
+
+        <div class="pieWrap">
+          <canvas id="pie" width="220" height="220"></canvas>
+        </div>
+
+        <div class="shareRow">
+          <button id="shareBtn" class="btn btnSoft">
+            <i class="fa-solid fa-share-nodes"></i> Share
+          </button>
+
+          <button id="pdfBtn" class="btn btnPrimary">
+            <i class="fa-solid fa-file-pdf"></i> Download PDF
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<script>
+/* ===========================
+   SIMPLE DARK MODE LOADER
+   =========================== */
+
+const THEME_KEY = "dark_mode"; // localStorage key
+
+function loadThemeFromStorage() {
+  const mode = localStorage.getItem(THEME_KEY);
+  
+  if (mode === "yes") {
+    document.body.classList.add("dark");
+  } else {
+    document.body.classList.remove("dark");
+  }
+}
+
+/* Run when page loads */
+document.addEventListener("DOMContentLoaded", loadThemeFromStorage);
+/* =========================
+   INSURANCE CALCULATOR SYSTEM
+========================= */
+
+const amount = document.getElementById("amount");
+const rate = document.getElementById("rate");
+const years = document.getElementById("years");
+const mode = document.getElementById("mode");
+
+const amountRange = document.getElementById("amountRange");
+const rateRange = document.getElementById("rateRange");
+const yearsRange = document.getElementById("yearsRange");
+
+const amountChip = document.getElementById("amountChip");
+const rateChip = document.getElementById("rateChip");
+const yearsChip = document.getElementById("yearsChip");
+
+const resultBox = document.getElementById("resultBox");
+const calcBtn = document.getElementById("calcBtn");
+const closeBtn = document.getElementById("closeBtn");
+const resetBtn = document.getElementById("resetBtn");
+
+const totalPayText = document.getElementById("totalPayText");
+const maturityText = document.getElementById("maturityText");
+const premiumText = document.getElementById("premiumText");
+const periodText = document.getElementById("periodText");
+const principalText = document.getElementById("principalText");
+const interestText = document.getElementById("interestText");
+
+const shareBtn = document.getElementById("shareBtn");
+const pdfBtn = document.getElementById("pdfBtn");
+
+/* ===== Pie ===== */
+const pie = document.getElementById("pie");
+const ctx = pie.getContext("2d");
+
+function fmtINR(n){
+  return "₹" + Math.round(n).toLocaleString("en-IN");
+}
+function clamp(num, min, max){
+  return Math.min(Math.max(num, min), max);
+}
+
+/* ===== Insurance logic (Compound) =====
+   premium per period -> invested for years -> maturity
+*/
+function calcInsurance(premiumPerPeriod, annualRate, yearsVal, modeVal){
+  const r = (annualRate / 100);
+
+  // periods per year
+  let perYear = 12;
+  if(modeVal === "quarterly") perYear = 4;
+  if(modeVal === "yearly") perYear = 1;
+
+  const n = yearsVal * perYear;
+
+  // rate per period
+  const rp = r / perYear;
+
+  // Future Value of Annuity formula
+  // FV = P * [((1+rp)^n - 1) / rp]
+  let maturity = 0;
+
+  if(rp === 0){
+    maturity = premiumPerPeriod * n;
+  }else{
+    maturity = premiumPerPeriod * ((Math.pow(1+rp, n) - 1) / rp);
+  }
+
+  const totalPay = premiumPerPeriod * n;
+  const interest = maturity - totalPay;
+
+  return { maturity, totalPay, interest, n, perYear };
+}
+
+/* ===== Pie Chart ===== */
+function drawPie(principal, interest){
+  const total = principal + interest;
+  const w = pie.width = 220;
+  const h = pie.height = 220;
+
+  ctx.clearRect(0,0,w,h);
+
+  const cx = w/2, cy = h/2;
+  const radius = 85;
+
+  const pAngle = (principal/total) * Math.PI * 2;
+
+  // principal
+  ctx.beginPath();
+  ctx.moveTo(cx, cy);
+  ctx.arc(cx, cy, radius, 0, pAngle);
+  ctx.closePath();
+  ctx.fillStyle = "#2563eb";
+  ctx.fill();
+
+  // interest
+  ctx.beginPath();
+  ctx.moveTo(cx, cy);
+  ctx.arc(cx, cy, radius, pAngle, Math.PI*2);
+  ctx.closePath();
+  ctx.fillStyle = "#7c3aed";
+  ctx.fill();
+
+  // hole
+  ctx.beginPath();
+  ctx.arc(cx, cy, 55, 0, Math.PI*2);
+  ctx.fillStyle = "#fff";
+  ctx.fill();
+
+  // center text
+  ctx.fillStyle = "#0A1A3C";
+  ctx.font = "900 13px system-ui";
+  ctx.textAlign = "center";
+  ctx.fillText("Maturity", cx, cy - 4);
+
+  ctx.font = "1000 14px system-ui";
+  ctx.fillText(fmtINR(total), cx, cy + 16);
+}
+
+/* ===== Sync chips ===== */
+function syncChips(){
+  amountChip.innerText = fmtINR(amountRange.value);
+  rateChip.innerText = parseFloat(rateRange.value).toFixed(2) + "%";
+  yearsChip.innerText = yearsRange.value + " Years";
+}
+function syncInputsFromRanges(){
+  amount.value = amountRange.value;
+  rate.value = rateRange.value;
+  years.value = yearsRange.value;
+  syncChips();
+}
+function syncRangesFromInputs(){
+  let a = parseInt(amount.value || "0");
+  let r = parseFloat(rate.value || "0");
+  let y = parseInt(years.value || "0");
+
+  a = clamp(a, 500, 500000);
+  r = clamp(r, 0, 30);
+  y = clamp(y, 1, 40);
+
+  amountRange.value = a;
+  rateRange.value = r;
+  yearsRange.value = y;
+
+  syncChips();
+}
+
+/* ===== Show result ===== */
+function showResult(){
+  resultBox.style.display = "block";
+  closeBtn.style.display = "block";
+}
+function hideResult(){
+  resultBox.style.display = "none";
+  closeBtn.style.display = "none";
+}
+
+/* ===== Update calculation ===== */
+function update(){
+  syncRangesFromInputs();
+
+  const P = parseFloat(amountRange.value);
+  const R = parseFloat(rateRange.value);
+  const Y = parseInt(yearsRange.value);
+  const M = mode.value;
+
+  const res = calcInsurance(P, R, Y, M);
+
+  totalPayText.innerText = fmtINR(res.totalPay);
+  maturityText.innerText = fmtINR(res.maturity);
+
+  premiumText.innerText = fmtINR(P);
+  periodText.innerText = res.n + " Payments";
+  principalText.innerText = fmtINR(res.totalPay);
+  interestText.innerText = fmtINR(res.interest);
+
+  drawPie(res.totalPay, res.interest);
+}
+
+/* ===== Events ===== */
+amountRange.addEventListener("input", ()=>{ syncInputsFromRanges(); });
+rateRange.addEventListener("input", ()=>{ syncInputsFromRanges(); });
+yearsRange.addEventListener("input", ()=>{ syncInputsFromRanges(); });
+
+amount.addEventListener("input", ()=>{
+  amount.value = amount.value.replace(/[^0-9]/g,"").slice(0,7);
+});
+years.addEventListener("input", ()=>{
+  years.value = years.value.replace(/[^0-9]/g,"").slice(0,2);
+});
+
+/* Only calculate on button click */
+calcBtn.addEventListener("click", ()=>{
+  update();
+  showResult();
+});
+
+closeBtn.addEventListener("click", hideResult);
+
+resetBtn.addEventListener("click", (e)=>{
+  e.preventDefault();
+  amount.value = "10000";
+  rate.value = "13.82";
+  years.value = "10";
+  mode.value = "monthly";
+  syncRangesFromInputs();
+  hideResult();
+});
+
+/* ===== Share + PDF ===== */
+function getReportText(){
+  const modeText = mode.value.toUpperCase();
+  return `BimaCare - Insurance Report
+
+Payment Mode: ${modeText}
+Premium/Period: ${premiumText.innerText}
+Interest Rate: ${rateChip.innerText}
+Duration: ${yearsChip.innerText}
+
+-----------------------------
+Total Premium Paid: ${principalText.innerText}
+Estimated Interest: ${interestText.innerText}
+Estimated Maturity: ${maturityText.innerText}
+
+Generated: ${new Date().toLocaleString()}
+`;
+}
+
+shareBtn.addEventListener("click", async ()=>{
+  if(resultBox.style.display === "none"){
+    alert("Please calculate first!");
+    return;
+  }
+
+  const shareText = getReportText();
+
+  try{
+    if(navigator.share){
+      await navigator.share({
+        title: "BimaCare Insurance Report",
+        text: shareText
+      });
+    }else{
+      navigator.clipboard.writeText(shareText);
+      
+    }
+  }catch(e){
+    navigator.clipboard.writeText(shareText);
+    alert("Share failed. Text copied ✅");
+  }
+});
+
+pdfBtn.addEventListener("click", async () => {
+  
+  if (resultBox.style.display === "none") {
+    alert("Please calculate first!");
+    return;
+  }
+  
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF("p", "mm", "a4");
+  
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(16);
+  doc.text("BimaCare - Insurance Report", 14, 18);
+  
+  // ===== Pie Image =====
+  try {
+    const pieImg = pie.toDataURL("image/png", 1.0);
+    doc.addImage(pieImg, "PNG", 135, 24, 60, 60);
+    doc.setFontSize(10);
+    doc.text("Premium vs Interest", 142, 88);
+  } catch (err) {
+    console.log("Pie error:", err);
+  }
+  
+  // ===== Report Text =====
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(11);
+  
+  const lines = doc.splitTextToSize(getReportText(), 120);
+  doc.text(lines, 14, 32);
+  
+  // ===== Footer =====
+  doc.setFontSize(9);
+  doc.text("Generated by BimaCare", 14, 290);
+  
+  const fileName = "BimaBondhu_Insurance_Report.pdf";
+  const pdfBlob = doc.output("blob");
+  
+  try {
+    
+    // If Web Share API supported
+    if (navigator.share && navigator.canShare) {
+      
+      const file = new File([pdfBlob], fileName, {
+        type: "application/pdf"
+      });
+      
+      if (navigator.canShare({ files: [file] })) {
+        
+        await navigator.share({
+          title: "Insurance Report",
+          text: "Here is my Insurance Report from BimaCare",
+          files: [file]
+        });
+        
+      } else {
+        doc.save(fileName);
+      }
+      
+    } else {
+      doc.save(fileName);
+    }
+    
+  } catch (err) {
+    console.log("Share cancelled or failed:", err);
+    doc.save(fileName); // fallback
+  }
+  
+});
+
+/* Init */
+syncRangesFromInputs();
+hideResult();
+</script>
+</body>
+</html>

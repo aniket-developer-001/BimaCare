@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Account - BimaCare</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box; font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;}
+  body{background:#f5f7ff;color:#0A1A3C;padding-bottom:90px;}
+
+  /* ===== Header ===== */
+  .topHeader{
+    width:100%;
+    background:#0A1A3C;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:14px 16px;
+    position:sticky;
+    top:0;
+    z-index:100;
+    border-bottom:1px solid rgba(255,255,255,0.12);
+  }
+  .topHeader h2{font-size:18px;font-weight:1000;}
+  .topHeader a{
+    color:#fff;text-decoration:none;
+    width:42px;height:42px;border-radius:16px;
+    display:flex;align-items:center;justify-content:center;
+    background:rgba(255,255,255,0.12);
+    border:1px solid rgba(255,255,255,0.14);
+  }
+
+  /* ===== Main ===== */
+  .wrap{width:100%;max-width:920px;margin:auto;padding:14px;}
+
+  .card{
+    background:#fff;
+    border-radius:22px;
+    padding:16px;
+    border:1px solid rgba(0,0,0,0.06);
+    box-shadow:0 16px 45px rgba(0,0,0,0.06);
+    margin-bottom:14px;
+  }
+
+  /* ===== Profile ===== */
+  .profile{
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
+
+  #avatar{
+    padding: 20px 20px;
+    font-size: 40px;
+    border-radius:22px;
+    object-fit:cover;
+    border:2px solid rgba(37,99,235,0.22);
+    box-shadow:0 12px 30px rgba(0,0,0,0.08);
+    background: #f0f0f0;
+    color: gray;
+  }
+
+  .info{flex:1;min-width:0;}
+
+  .name{
+    font-size:18px;
+    font-weight:1000;
+    margin-bottom:6px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+
+  .mobile{
+    font-size:13px;
+    font-weight:950;
+    color:#475569;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom: 4px;
+  }
+  .mobile i{color:#2563eb;}
+
+  /* ===== Section Title ===== */
+  .secTitle{
+    font-size:13px;
+    font-weight:1000;
+    color:#334155;
+    margin:4px 2px 10px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .secTitle span{
+    font-size:12px;
+    font-weight:900;
+    color:#64748b;
+  }
+
+  /* ===== Menu List ===== */
+  .menu{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+
+  .menuItem{
+    width:100%;
+    background:#fff;
+    border-radius:18px;
+    padding:14px 14px;
+    border:1px solid rgba(0,0,0,0.06);
+    display:flex;
+    align-items:center;
+    gap:12px;
+    cursor:pointer;
+    transition:0.2s;
+    user-select:none;
+  }a{
+    color: inherit;
+    text-decoration: none;
+  }
+  .menuItem:active{transform:scale(0.99);}
+
+  .mIcon{
+    width:44px;height:44px;
+    border-radius:16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#eef2ff;
+    border:1px solid rgba(37,99,235,0.12);
+    flex-shrink:0;
+  }
+  .mIcon i{font-size:18px;color:#2563eb;}
+
+  .mText{flex:1;min-width:0;}
+  .mText h4{
+    font-size:14px;
+    font-weight:1000;
+    color:#0A1A3C;
+    margin-bottom:3px;
+  }
+  .mText p{
+    font-size:12px;
+    font-weight:900;
+    color:#64748b;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+
+  .mRight{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:#94a3b8;
+    font-size:16px;
+    font-weight:1000;
+  }
+
+  /* ===== Toggle ===== */
+  .toggle{
+    width:48px;height:28px;
+    border-radius:999px;
+    background:#e2e8f0;
+    position:relative;
+    border:1px solid rgba(0,0,0,0.10);
+    transition:0.2s;
+  }
+  .toggle::after{
+    content:"";
+    width:22px;height:22px;
+    border-radius:50%;
+    background:#fff;
+    position:absolute;
+    top:50%;
+    left:3px;
+    transform:translateY(-50%);
+    box-shadow:0 8px 18px rgba(0,0,0,0.12);
+    transition:0.2s;
+  }
+  .toggle.active{
+    background:linear-gradient(135deg,#2563eb,#7c3aed);
+    border-color:transparent;
+  }
+  .toggle.active::after{left:23px;}
+
+  /* ===== Logout special ===== */
+  .danger .mIcon{background:#fff1f2;border-color:rgba(244,63,94,0.15);}
+  .danger .mIcon i{color:#f43f5e;}
+  .danger h4{color:#b91c1c;}
+
+  /* ===== Bottom Nav ===== */
+  .bottomNav{
+    width:100%;
+    position:fixed;
+    bottom:0;
+    left:0;
+    background:#fff;
+    border-top:1px solid rgba(0,0,0,0.08);
+    display:flex;
+    justify-content:space-around;
+    padding:10px 8px;
+    z-index:999;
+  }
+  .navItem{
+    text-decoration:none;
+    color:#555;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:4px;
+    font-size:12px;
+    font-weight:900;
+    padding:8px 10px;
+    border-radius:16px;
+    transition:0.2s;
+  }
+  .navItem i{font-size:18px;}
+  .navItem.active{color:#2563eb;background:#eef2ff;}
+
+  /* ===== Dark Mode ===== */
+  body.dark, body.dark .cibilBottomText{
+    background:#0b1220;
+    color:#e2e8f0;
+  }body.dark .cibilTitle, body.dark .cibilScore{
+    color: white;
+  }
+  body.dark .card,
+  body.dark .menuItem, body.dark .cibilLevelCard{
+    background:#0f1a33;
+    border-color:rgba(255,255,255,0.08);
+    box-shadow:none;
+  }body.dark nav{
+    background:#0A1A3C;
+color:#fff;
+  }
+  body.dark .secTitle{color:#cbd5e1;}
+  body.dark .secTitle span{color:#94a3b8;}
+  body.dark .mText h4{color:#e2e8f0;}
+  body.dark .mText p{color:#94a3b8;}
+  body.dark .mRight{color:#94a3b8;}
+  body.dark .mIcon{background:rgba(37,99,235,0.12);border-color:rgba(37,99,235,0.18);}
+  body.dark .name{color:#e2e8f0;}
+  body.dark .mobile{color:#94a3b8;}
+  
+  #cibilIco i {
+  background: linear-gradient(135deg, #a3e635, #f97316, #ef4444);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}#us{
+  color: gray;
+}.cibilLevelCard{
+  width:100%;
+  background:#fff;
+  border-radius:22px;
+  padding:14px;
+  border:1px solid rgba(0,0,0,0.06);
+  box-shadow:0 16px 40px rgba(0,0,0,0.06);
+}
+
+.cibilTop{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.cibilIcon{
+  width:46px;
+  height:46px;
+  border-radius:18px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(37,99,235,0.10);
+  border:1px solid rgba(37,99,235,0.18);
+  flex-shrink:0;
+}
+
+.cibilIcon i{
+  font-size:18px;
+  color:#2563eb;
+}
+
+.cibilInfo{
+  flex:1;
+  line-height:1.1;
+}
+
+.cibilTitle{
+  font-size:13px;
+  font-weight:1000;
+  color:#0A1A3C;
+}
+
+.cibilSub{
+  margin-top:4px;
+  font-size:12px;
+  font-weight:900;
+  color:#64748b;
+}
+
+.cibilScore{
+  font-size:18px;
+  font-weight:1100;
+  color:#0A1A3C;
+  min-width:54px;
+  text-align:right;
+}
+
+.cibilBarWrap{
+  margin-top:14px;
+}
+
+.cibilBarTrack{
+  width:100%;
+  height:12px;
+  border-radius:999px;
+  background:linear-gradient(90deg,#ef4444,#f59e0b,#facc15,#22c55e);
+  position:relative;
+  overflow:hidden;
+  border:1px solid rgba(0,0,0,0.08);
+}
+
+.cibilBarFill{
+  height:100%;
+  width:0%;
+  border-radius:999px;
+  background:rgba(255,255,255,0.22);
+  position:absolute;
+  left:0;top:0;
+  transition:0.4s ease;
+}
+
+.cibilDot{
+  width:18px;
+  height:18px;
+  border-radius:50%;
+  background:#fff;
+  border:3px solid rgba(15,23,42,0.8);
+  position:absolute;
+  top:50%;
+  transform:translate(-50%,-50%);
+  left:0%;
+  transition:0.4s ease;
+  box-shadow:0 10px 25px rgba(0,0,0,0.18);
+}
+
+.cibilLabels{
+  margin-top:8px;
+  display:flex;
+  justify-content:space-between;
+  font-size:11px;
+  font-weight:950;
+  color:#64748b;
+}
+
+.cibilBottomText{
+  margin-top:10px;
+  font-size:12.5px;
+  font-weight:1000;
+  color:#0A1A3C;
+  text-align:center;
+  padding:10px 12px;
+  border-radius:16px;
+  background:#f8fafc;
+  border:1px dashed rgba(0,0,0,0.10);
+}/* ===== Toast Popup ===== */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 92px;
+  transform: translateX(-50%) translateY(20px);
+  background: #0A1A3C;
+  color: #fff;
+  padding: 12px 14px;
+  border-radius: 18px;
+  font-size: 13px;
+  font-weight: 950;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.25s ease;
+  z-index: 99999;
+  max-width: 92%;
+  text-align: center;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0px);
+}/* ===== Logout Modal ===== */
+.modalBg {
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 6, 23, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 999999;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.2s ease;
+}
+
+.modalBg.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modalBox {
+  width: 100%;
+  max-width: 360px;
+  background: #fff;
+  border-radius: 22px;
+  padding: 18px;
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  transform: scale(0.96);
+  transition: 0.2s ease;
+}
+
+.modalBg.show .modalBox {
+  transform: scale(1);
+}
+
+.modalBox h3 {
+  font-size: 16px;
+  font-weight: 1000;
+  color: #0A1A3C;
+}
+
+.modalBox p {
+  margin-top: 8px;
+  font-size: 13px;
+  font-weight: 900;
+  color: #64748b;
+  line-height: 1.4;
+}
+
+.modalBtns {
+  margin-top: 14px;
+  display: flex;
+  gap: 10px;
+}
+
+.modalBtns button {
+  flex: 1;
+  border: none;
+  border-radius: 16px;
+  padding: 12px 12px;
+  font-size: 13px;
+  font-weight: 1000;
+  cursor: pointer;
+}
+
+.btnCancel {
+  background: #f1f5f9;
+  color: #0A1A3C;
+}
+
+.btnLogout {
+  background: linear-gradient(135deg, #ef4444, #f97316);
+  color: #fff;
+}/* ===== Floating AI Magic Right Button ===== */
+
+.dailyMotivationCard{
+  margin-bottom: 10px;
+  border-radius:24px;
+  padding:12px 16px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+
+  background:linear-gradient(135deg,#0b3cff,#7c3aed,#06b6d4);
+  border:1px solid rgba(255,255,255,0.22);
+  color:#fff;
+  position:relative;
+  overflow:hidden;
+}
+
+/* Light glow effect */
+.dailyMotivationCard::after{
+  content:"";
+  position:absolute;
+  inset:-80px;
+  background:radial-gradient(circle at 15% 20%, rgba(255,255,255,0.20), transparent 60%);
+  transform:rotate(18deg);
+}
+
+.aiIconWrap{
+  width:64px;
+  height:64px;
+  border-radius:22px;
+  position:relative;
+  flex-shrink:0;
+  z-index:2;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(255,255,255,0.14);
+  border:1px solid rgba(255,255,255,0.20);
+  box-shadow:0 14px 30px rgba(0,0,0,0.16);
+}
+
+.aiIcon{
+  font-size:26px;
+  color:#ffffff;
+}
+
+.msgIcon{
+  position:absolute;
+  right:-8px;
+  bottom:-8px;
+  width:30px;
+  height:30px;
+  border-radius:14px;
+  background:linear-gradient(135deg,#ffffff,#e0f2fe);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid rgba(0,0,0,0.08);
+  box-shadow:0 12px 25px rgba(0,0,0,0.18);
+}
+
+.msgIcon i{
+  font-size:13px;
+  color:#2563eb;
+}
+
+.motivationText{
+  flex:1;
+  z-index:2;
+}
+
+.motivationText h3{
+  font-size:12px;
+  font-weight:1200;
+  margin-bottom:7px;
+  letter-spacing:.2px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.motivationText h3 i{
+  font-size:13px;
+  color:#ffffff;
+  opacity:.95;
+}
+
+.motivationText p{
+  font-size:13px;
+  font-weight:1000;
+  line-height:1.55;
+  opacity:.95;
+}
+
+.miniTag{
+  margin-top:10px;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:5px 12px;
+  border-radius:999px;
+  background:rgba(255,255,255,0.14);
+  border:1px solid rgba(255,255,255,0.18);
+  font-size:10px;
+  font-weight:1100;
+  opacity:.95;
+}
+</style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="topHeader">
+    <a href="https://aniket-developer-001.github.io/BimaCare/home.html"><i class="fa-solid fa-arrow-left"></i></a>
+    <h2>My Account</h2>
+    <a href="#" id="logoutTop" title="Logout"><i class="fa fa-trash"></i></a>
+  </header>
+
+  <main class="wrap">
+<div class="dailyMotivationCard" id="dailyMotivationCard">
+  
+  <div class="aiIconWrap">
+    <div class="aiIcon">
+      <i class="fa-solid fa-robot"></i>
+    </div>
+    
+    <div class="msgIcon">
+      <i class="fa-solid fa-message"></i>
+    </div>
+  </div>
+  
+  <div class="motivationText">
+    <h3>
+      <i class="fa-solid fa-wand-magic-sparkles"></i>
+      AI Daily Message
+    </h3>
+    
+    <p id="motivationLine">Loading today’s motivation...</p>
+    
+    <div class="miniTag">
+      <i class="fa-solid fa-calendar-day"></i>
+      New message updates every day at 12:00 AM
+    </div>
+  </div>
+</div>
+    <!-- PROFILE CARD -->
+    <section class="card">
+      <div class="profile">
+<i class="fa-solid fa-user" id="avatar"></i>
+
+        <div class="info">
+          <div class="name" id="showName">Your Name</div>
+          <div class="mobile">
+            <i class="fa-solid fa-phone"></i>
+            <span id="showMobile">+91 0000000000</span>
+          </div>
+          <div class="mobile">
+  <i class="fa-solid fa-user" id="us"></i>
+  <span><span id="yer">00</span> <span>yr</span></span>
+</div>
+ <div class="mobile" id="cibilIco">
+   <i class="fa-solid fa-gauge-high"></i>
+   <span id="cibil">000</span>
+ </div>
+        </div>
+ <a href="https://aniket-developer-001.github.io/BimaCare//streak.html"><div class="mIcon" style="width: 64px;"><i class="fa-solid fa-fire" style=""></i><span class="mobile1" style="margin-left: 7px;" id="str">0</span></div></a>
+        
+      </div>
+      <div class="cibilBarWrap">
+  <div class="cibilBarTrack">
+    <div class="cibilBarFill" id="cibilFill"></div>
+    <div class="cibilDot" id="cibilDot"></div>
+  </div>
+  <div class="cibilLabels">
+  <span>Poor</span>
+  <span>Average</span>
+  <span>Good</span>
+  <span>Excellent</span>
+</div>
+<div class="cibilBottomText" id="cibilStatusText">Checking...</div>
+    </section>
+
+  
+
+    
+  </div>
+</div>
+    <!-- SETTINGS -->
+    <div class="secTitle">
+      <div>Settings</div>
+      <span>Account & Security</span>
+    </div>
+
+    <section class="menu">
+
+      <!-- Dark Mode -->
+      <div class="menuItem" id="darkModeBtn">
+        <div class="mIcon"><i class="fa-solid fa-moon"></i></div>
+        <div class="mText">
+          <h4>Dark Mode</h4>
+          <p>Change app theme</p>
+        </div>
+        <div class="mRight">
+          <div class="toggle" id="darkToggle"></div>
+        </div>
+      </div>
+<a href="https://aniket-developer-001.github.io/BimaCare/faq.html"><div class="" id="supportBtn">
+        <div class="mIcon"><i class="fa-solid fa-circle-question"></i></div>
+        <div class="mText">
+          <h4>FAQ</h4>
+          <p>Frequency Asked Questions</p>
+        </div>
+        <div class="mRight"><i class="fa-solid fa-chevron-right"></i></div>
+      </div></a>
+      <!-- Customer Support -->
+      <a href="https://aniket-developer-001.github.io/BimaCare//support.html"><div class="menuItem" id="supportBtn">
+        <div class="mIcon"><i class="fa-solid fa-headset"></i></div>
+        <div class="mText">
+          <h4>Customer Support</h4>
+          <p>Chat or call for help</p>
+        </div>
+        <div class="mRight"><i class="fa-solid fa-chevron-right"></i></div>
+      </div></a>
+
+      <!-- Complaint -->
+      <a href="https://aniket-developer-001.github.io/BimaCare//complaint.html"><div class="menuItem" id="complaintBtn">
+        <div class="mIcon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+        <div class="mText">
+          <h4>Complaint</h4>
+          <p>Report an issue or request</p>
+        </div>
+        <div class="mRight"><i class="fa-solid fa-chevron-right"></i></div>
+      </div></a>
+
+      <!-- Privacy Policy -->
+      <a href="https://aniket-developer-001.github.io/BimaCare//privacy.html"><div class="menuItem" id="privacyBtn">
+        <div class="mIcon"><i class="fa-solid fa-shield-halved"></i></div>
+        <div class="mText">
+          <h4>Privacy Policy</h4>
+          <p>Your data is protected</p>
+        </div>
+        <div class="mRight"><i class="fa-solid fa-chevron-right"></i></div>
+      </div></a>
+
+      <!-- Rate App -->
+      <div class="menuItem" id="rateBtn">
+        <div class="mIcon"><i class="fa-solid fa-star"></i></div>
+        <div class="mText">
+          <h4>Rate Our App</h4>
+          <p>Give 5★ support</p>
+        </div>
+        <div class="mRight"><i class="fa-solid fa-chevron-right"></i></div>
+      </div>
+
+      <!-- Share App -->
+      <div class="menuItem" id="shareBtn">
+        <div class="mIcon"><i class="fa-solid fa-share-nodes"></i></div>
+        <div class="mText">
+          <h4>Share App</h4>
+          <p>Invite your friends</p>
+        </div>
+        <div class="mRight"><i class="fa-solid fa-chevron-right"></i></div>
+      </div>
+
+      <!-- Logout -->
+      <div class="menuItem danger" id="logoutBtn">
+        <div class="mIcon"><i class="fa fa-trash"></i></div>
+        <div class="mText">
+          <h4>Delete Account</h4>
+          <p>Permanently Deleted Account</p>
+        </div>
+        <div class="mRight"><i class="fa-solid fa-chevron-right"></i></div>
+      </div>
+
+    </section>
+<!-- POPUP TOAST -->
+<div class="toast" id="toast"></div>
+<!-- LOGOUT MODAL -->
+<div class="modalBg" id="logoutModal">
+  <div class="modalBox">
+    <h3>Delete?</h3>
+    <p>Are you sure you want to Delete Permanently this account?</p>
+
+    <div class="modalBtns">
+      <button class="btnCancel" id="logoutCancel">Cancel</button>
+      <button class="btnLogout" id="logoutConfirm">Delete Anyway</button>
+    </div>
+  </div>
+</div>
+  </main>
+  <!-- NAV -->
+  <nav class="bottomNav">
+    <a class="navItem" href="https://aniket-developer-001.github.io/BimaCare/home.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
+    <a class="navItem" href="https://aniket-developer-001.github.io/BimaCare/insurance.html"><i class="fa-solid fa-shield"></i><span>Insurance</span></a>
+    <a class="navItem" href="https://aniket-developer-001.github.io/BimaCare/update.html"><i class="fa-solid fa-bullhorn"></i><span>Updates</span></a>
+    <a class="navItem" href="https://aniket-developer-001.github.io/BimaCare/reminder.html"><i class="fa-solid fa-clock"></i><span>Reminder</span></a>
+    <a class="navItem active" href="https://aniket-developer-001.github.io/BimaCare/account.html"><i class="fa-solid fa-user"></i><span>Account</span></a>
+  </nav>
+
+<script>
+/* =========================
+    ACCOUNT (VIEW ONLY)
+========================= */
+const STORAGE_KEY = "user_streak_data";
+let state = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {
+    currentStreak: 0,
+    lastCollected: 0,
+    completed: false
+};
+document.getElementById("str").innerHTML = state.currentStreak;
+let ticketCount = localStorage.getItem("user_age") || "00";
+let cibilScore = localStorage.getItem("user_cibil") || "000";
+
+document.getElementById("yer").innerText = ticketCount;
+document.getElementById("cibil").innerText = cibilScore;
+
+const LS_USER = "bima_user_profile";
+const LS_DARK = "bima_dark_mode";
+
+const showName = document.getElementById("showName");
+const showMobile = document.getElementById("showMobile");
+
+const darkModeBtn = document.getElementById("darkModeBtn");
+const darkToggle = document.getElementById("darkToggle");
+
+const rateBtn = document.getElementById("rateBtn");
+const shareBtn = document.getElementById("shareBtn");
+
+const logoutBtn = document.getElementById("logoutBtn");
+const logoutTop = document.getElementById("logoutTop");
+
+/* ===== Toast Popup ===== */
+const toast = document.getElementById("toast");
+let toastTimer = null;
+
+function showToast(msg){
+  clearTimeout(toastTimer);
+  toast.innerText = msg;
+  toast.classList.add("show");
+
+  toastTimer = setTimeout(()=>{
+    toast.classList.remove("show");
+  }, 2200);
+}
+
+function getUser(){
+  return JSON.parse(localStorage.getItem(LS_USER) || "{}");
+}
+
+function loadUser(){
+  const user = getUser();
+
+  const n = user.name || localStorage.getItem("user_name") || "Your Name";
+  const m = user.mobile || localStorage.getItem("user_phone") || "0000000000";
+
+  showName.innerText = n;
+  showMobile.innerText = (m.startsWith("+91") ? m : "+91 " + m);
+}
+
+/* ===== Dark Mode ===== */
+function applyDarkMode(isDark){
+  if(isDark){
+    document.body.classList.add("dark");
+    localStorage.setItem("dark_mode", "yes");
+    darkToggle.classList.add("active");
+  }else{
+    document.body.classList.remove("dark");
+    localStorage.setItem("dark_mode", "no");
+    darkToggle.classList.remove("active");
+  }
+  localStorage.setItem(LS_DARK, isDark ? "1" : "0");
+}
+
+const savedDark = localStorage.getItem(LS_DARK) === "1";
+applyDarkMode(savedDark);
+
+darkModeBtn.addEventListener("click", ()=>{
+  const isDark = document.body.classList.contains("dark");
+  applyDarkMode(!isDark);
+  showToast(!isDark ? "Dark Mode Enabled 🌙" : "Light Mode Enabled ☀️");
+});
+
+/* ===== Rate App ===== */
+rateBtn.addEventListener("click", ()=>{
+  showToast("Thanks for supporting ⭐");
+});
+
+/* ===== Share App (No alert) ===== */
+shareBtn.addEventListener("click", async ()=>{
+  const msg =
+    "BimaCare - Insurance Tools & Calculator\n\nDownload Now!";
+
+  if(navigator.share){
+    try{
+      await navigator.share({
+        title:"BimaCare",
+        text: msg
+      });
+      showToast("Shared Successfully ✅");
+    }catch(e){
+      showToast("Share cancelled");
+    }
+  }else{
+    try{
+      await navigator.clipboard.writeText(msg);
+      showToast("Share text copied ✅");
+    }catch(e){
+      showToast("Copy failed ❌");
+    }
+  }
+});
+
+/* ===== Logout (No alert, No confirm) ===== */
+/* ===== Logout Modal System ===== */
+const logoutModal = document.getElementById("logoutModal");
+const logoutCancel = document.getElementById("logoutCancel");
+const logoutConfirm = document.getElementById("logoutConfirm");
+
+function openLogoutModal() {
+  logoutModal.classList.add("show");
+}
+
+function closeLogoutModal() {
+  logoutModal.classList.remove("show");
+}
+
+/* Open Modal */
+logoutBtn.addEventListener("click", openLogoutModal);
+logoutTop.addEventListener("click", (e) => {
+  e.preventDefault();
+  openLogoutModal();
+});
+
+/* Cancel */
+logoutCancel.addEventListener("click", closeLogoutModal);
+
+/* Click outside close */
+logoutModal.addEventListener("click", (e) => {
+  if (e.target === logoutModal) closeLogoutModal();
+});
+
+/* Confirm Logout */
+logoutConfirm.addEventListener("click", () => {
+  localStorage.removeItem(LS_USER);
+  localStorage.removeItem("user_name");
+  localStorage.removeItem("user_phone");
+  
+  closeLogoutModal();
+  showToast("Logged out ✅");
+  
+  setTimeout(() => {
+    window.location.href = "register.html";
+  }, 900);
+});
+
+/* ===== CIBIL LEVEL SYSTEM ===== */
+function getCibilScore(){
+  let score = parseInt(localStorage.getItem("user_cibil") || "0");
+  if(isNaN(score)) score = 0;
+  return score;
+}
+
+function clamp(n,min,max){
+  return Math.min(Math.max(n,min),max);
+}
+
+function getCibilStatus(score){
+  if(score < 300) return "No score found";
+  if(score < 580) return "Poor Credit Score";
+  if(score < 670) return "Average Credit Score";
+  if(score < 740) return "Good Credit Score";
+  return "Excellent Credit Score";
+}
+
+function updateCibilBar(){
+  const score = getCibilScore();
+
+  
+  const statusText = document.getElementById("cibilStatusText");
+  const dot = document.getElementById("cibilDot");
+  const fill = document.getElementById("cibilFill");
+
+  // Valid range 300 - 900
+  const validScore = clamp(score, 300, 900);
+  const percent = ((validScore - 300) / (900 - 300)) * 100;
+
+  
+  dot.style.left = percent + "%";
+  fill.style.width = percent + "%";
+
+  statusText.innerText = "CIBIL Score : " + `${score}`;
+}
+
+/* Run */
+loadUser();
+updateCibilBar();
+const motivations = [
+  "Success usually comes to those who are too busy to be looking for it.",
+  "Don’t watch the clock; do what it does. Keep going. — Sam Levenson",
+  "Opportunities don't happen. You create them. — Chris Grosser",
+  "Dream big and dare to fail. — Norman Vaughan",
+  "The future depends on what you do today. — Mahatma Gandhi",
+  "Push yourself, because no one else is going to do it for you.",
+  "Great things never come from comfort zones.",
+  "Success is not final, failure is not fatal: it is the courage to continue that counts.",
+  "Do what you can with all you have, wherever you are. — Theodore Roosevelt",
+  "Your limitation—it’s only your imagination.",
+  "The harder you work for something, the greater you’ll feel when you achieve it.",
+  "Dream it. Wish it. Do it.",
+  "Don’t stop when you’re tired. Stop when you’re done.",
+  "Wake up with determination. Go to bed with satisfaction.",
+  "Little things make big days.",
+  "It’s going to be hard, but hard does not mean impossible.",
+  "Don’t wait for opportunity. Create it.",
+  "Sometimes later becomes never. Do it now.",
+  "The key to success is to focus on goals, not obstacles.",
+  "Believe you can and you're halfway there. — Theodore Roosevelt",
+  "Act as if what you do makes a difference. It does. — William James",
+  "Quality is not an act, it is a habit. — Aristotle",
+  "The secret of getting ahead is getting started.",
+  "Everything you’ve ever wanted is on the other side of fear",
+  "Discipline is choosing between what you want now and what you want most",
+  "Work hard in silence, let success make the noise.",
+  "Success doesn’t just find you. You have to go out and get it.",
+  "The best way to get started is to quit talking and begin doing.",
+  "Your only limit is your mind.",
+  "Consistency is what transforms average into excellence."
+];
+
+function getDayIndex() {
+  const baseDate = new Date(2025, 0, 1);
+  const today = new Date();
+  const diffDays = Math.floor((today - baseDate) / (1000 * 60 * 60 * 24));
+  return diffDays % motivations.length;
+}
+
+function setDailyMotivation() {
+  const i = getDayIndex();
+  const el = document.getElementById("motivationLine");
+  if (el) el.textContent = motivations[i];
+}
+
+function scheduleNextMidnightUpdate() {
+  const now = new Date();
+  const next = new Date(now);
+  next.setHours(24, 0, 0, 0);
+  
+  const ms = next - now;
+  
+  setTimeout(() => {
+    setDailyMotivation();
+    scheduleNextMidnightUpdate();
+  }, ms);
+}
+
+setDailyMotivation();
+scheduleNextMidnightUpdate();
+</script>
+
+</body>
+</html>

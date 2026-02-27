@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BimaCare</title>
+<!-- Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu|Lora" />
+<style type="text/css" media="all">
+    :root{
+    --bg:#f4f7ff;
+    --card:#ffffff;
+    --text:#0A1A3C;
+    --muted:#6b7280;
+
+    /* Combo 1: Royal Blue Prestige */
+    --primary:#0A1A3C;
+    --accent:#6AA2FF;
+
+    --border: rgba(0,0,0,0.08);
+    
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;}
+
+  body{
+    background:var(--bg);
+    color:var(--text);
+    padding-bottom: 92px;
+  }
+
+  /* ===== HEADER ===== */
+  .topHeader{
+    width:100%;
+    position:sticky;
+    top:0;
+    z-index:999;
+    background: linear-gradient(135deg, var(--primary), #0f2a66);
+    padding: 12px 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .headRow{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+  }
+
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+
+  .logo{
+    width:42px;
+    height:42px;
+    border-radius:16px;
+    background: rgba(255,255,255,0.12);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow: 0 16px 35px rgba(0,0,0,0.22);
+    border: 1px solid rgba(255,255,255,0.12);
+  }
+
+  .logo img{width: 100%; border-radius: 16.5px}
+
+  .brandText h1{
+    font-size:18px;
+    font-weight:950;
+    color:#fff;
+    letter-spacing:0.2px;
+    line-height:1.05;
+  }
+  .brandText p{
+    font-size:12px;
+    font-weight:800;
+    color: rgba(255,255,255,0.72);
+    margin-top:2px;
+  }
+
+  .headBtn{
+    width:42px;height:42px;
+    border-radius:16px;
+    border:1px solid rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.10);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+  }
+  .headBtn i{color:#fff;font-size:16px;}
+
+  /* ===== MAIN ===== */
+  .main{
+    padding: 14px;
+    max-width: 980px;
+    margin: 0 auto;
+  }
+
+  .sectionTitle{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin: 12px 2px 10px;
+  }
+
+  .sectionTitle h2{
+    font-size:16px;
+    font-weight:950;
+  }.hiUser{
+  font-size:14px;
+  font-weight:bold;
+  color:#192CFF;
+  margin-right: 15px;
+}
+
+  
+
+  /* ===== QUICK TOOLS ===== */
+  .quickBox{
+    background: var(--card);
+    border-radius: 22px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    overflow:hidden;
+  }
+
+  .quickTop{
+    padding: 14px 14px 10px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+  }
+
+  .quickTop .left{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+
+  .quickIcon{
+    width:42px;height:42px;
+    border-radius:16px;
+    background: rgba(106,162,255,0.15);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border: 1px solid rgba(106,162,255,0.18);
+  }
+  .quickIcon i{color:var(--accent);font-size:20px;}
+
+  .quickTop h3{
+    font-size:16px;
+    font-weight:950;
+  }
+
+  .dropBtn{
+    width:42px;height:42px;
+    border-radius:16px;
+    border:1px solid var(--border);
+    background:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    transition:0.2s;
+  }
+  .dropBtn i{color:var(--primary);transition:0.25s;}
+  .dropBtn.rotate i{transform: rotate(180deg);}
+
+  .toolGrid{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    padding: 5px 12px 12px 12px;
+    /* dropdown animation */
+    max-height: 1000px;
+    transition: 0.35s ease;
+    overflow:hidden;
+    border-top: 1px solid #f0f0f0;
+  }
+
+
+  .toolGrid.hide{
+    max-height: 0px;
+    padding-bottom: 0;
+    opacity: 0;
+  }
+
+  .toolCard{
+    background: #FDFEFF;
+    border-radius: 10px;
+    padding: 5px 0px;
+    align-items:center;
+    gap:12px;
+    cursor:pointer;
+    transition:0.2s;
+  }
+  .toolCard:active{transform: scale(0.99);}
+
+  .toolCard .ic{
+    padding: 12px 0px;
+    display:flex;
+    text-align: center;
+    align-items:center;
+    justify-content:center;
+  }
+  .toolCard .ic i{color:var(--primary);font-size:18px;}
+
+  .toolCard h4{
+    font-size:12px;
+    font-weight:950;
+    line-height:1.1;
+    text-align: center;
+  }
+  
+
+  /* ===== POPULAR INSURANCE ===== */
+  .swipeRow{
+    display:flex;
+    gap: 14px;
+    overflow-x:auto;
+    padding: 2px 2px 12px;
+    scroll-snap-type: x mandatory;
+  }
+  .swipeRow::-webkit-scrollbar{height:0;}
+
+  .insCard{
+    min-width: 270px;
+    max-width: 270px;
+    scroll-snap-align: start;
+background: #FDFEFF;
+    
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    overflow:hidden;
+    box-shadow: var(--shadow);
+  }
+
+  .insTopImg{
+    height: 130px;
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    
+  }
+
+  .insTopImg img{
+    width: 100%;
+    height: 130px;
+    border-start-end-radius: 22.5px;
+    border-start-start-radius: 22.5px;
+    opacity: 0.85;
+  }
+
+  .insBody{
+    padding: 14px;
+  }
+
+  .insTitle{
+    font-size: 14px;
+    font-weight: 950;
+    margin-bottom: 10px;
+  }
+
+  .priceRow{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom: 10px;
+  }
+
+  .premium{
+    font-size: 16px;
+    font-weight: 1000;
+    color: var(--primary);
+    line-height:1.1;
+  }
+  .premium small{
+    display:block;
+    font-size: 12px;
+    font-weight: 900;
+    color: var(--muted);
+    margin-top:2px;
+  }
+
+  .viewBtn{
+    border:none;
+    cursor:pointer;
+    background: linear-gradient(135deg, var(--accent), #3b82f6);
+    color:#fff;
+    padding: 10px 12px;
+    border-radius: 16px;
+    font-size: 12px;
+    font-weight: 950;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    box-shadow: 0 16px 35px rgba(106,162,255,0.30);
+  }
+  .viewBtn:active{transform: scale(0.985);}
+
+  .interest{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    padding-top: 10px;
+    border-top: 1px dashed rgba(0,0,0,0.10);
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 900;
+  }
+
+  .interest b{
+    color: #16a34a;
+    font-weight: 1000;
+  }
+
+  /* ===== BOTTOM NAV ===== */
+  .bottomNav{
+    position:fixed;
+    left:0;right:0;bottom:0;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(12px);
+    border-top: 1px solid rgba(0,0,0,0.08);
+    padding: 10px 10px 12px;
+    z-index: 9999;
+  }
+
+  
+
+    .bottomNav{
+    width:100%;
+    position:fixed;
+    bottom:0;
+    left:0;
+    background:#fff;
+    border-top:1px solid rgba(0,0,0,0.08);
+    display:flex;
+    justify-content:space-around;
+    padding:10px 8px;
+    z-index:999;
+  }
+
+  .navItem{
+    text-decoration:none;
+    color:#555;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:4px;
+    font-size:12px;
+    font-weight:900;
+    padding:8px 10px;
+    border-radius:16px;
+    transition:0.2s;
+  }
+
+  .navItem i{font-size:18px;}
+  .navItem.active{color:#2563eb;background:#eef2ff;}
+
+  /* ===== RESPONSIVE ===== */
+  @media(min-width: 700px){
+    .toolGrid{grid-template-columns: repeat(4, 1fr);}
+    .insCard{min-width: 310px; max-width: 310px;}
+    .sectionTitle h2{font-size:18px;}
+  }
+
+  @media(min-width: 980px){
+    .main{padding: 18px;}
+  }/* ✅ Welcome Box */
+.welcomeBox{
+  width:100%;
+  background:#fff;
+  border-radius:18px;
+  padding:16px 14px;
+  border:1px solid rgba(0,0,0,0.06);
+  box-shadow:0 14px 35px rgba(0,0,0,0.06);
+  margin:14px 0;
+}
+
+.welcomeTop{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+}
+
+#welcomeText{
+  font-size:18px;
+  font-weight:900;
+  color:#0A1A3C;
+}
+
+.brand{
+  font-size:12px;
+  font-weight:800;
+  color:#6b7280;
+  white-space:nowrap;
+}
+
+.brand b{color:#2563eb;}
+
+.dateLine{
+  margin-top:8px;
+  font-size:13px;
+  font-weight:800;
+  color:#374151;
+}
+
+.notifyStatus{
+  margin-top:12px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:12px 12px;
+  border-radius:14px;
+  font-size:13px;
+  font-weight:900;
+  background:#f6f8ff;
+  border:1px solid rgba(37,99,235,0.12);
+  color:#0A1A3C;
+}
+
+.notifyStatus i{
+  font-size:18px;
+  color:#2563eb;
+}/* ===== Extra Bottom Sections ===== */
+.miniText{
+  font-size:12px;
+  font-weight:900;
+  color:#6b7280;
+}
+
+.serviceGrid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:12px;
+  margin-top:10px;
+}
+
+.serviceCard{
+  background:#fff;
+  border:1px solid rgba(0,0,0,0.06);
+  box-shadow:0 14px 35px rgba(0,0,0,0.05);
+  border-radius:18px;
+  padding:14px;
+  text-decoration:none;
+  color:#111;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  transition:0.25s;
+}
+
+.serviceCard i{
+  font-size:20px;
+  width:44px;
+  height:44px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:14px;
+  background:#eef4ff;
+  color:#2b4dff;
+}
+
+.serviceCard h3{
+  font-size:14px;
+  font-weight:950;
+}
+
+.serviceCard p{
+  font-size:12px;
+  font-weight:800;
+  color:#6b7280;
+  margin-top:2px;
+}
+
+.serviceCard .arrow{
+  margin-left:auto;
+  background:transparent;
+  width:auto;
+  height:auto;
+  color:#9ca3af;
+}
+
+.serviceCard:active{
+  transform:scale(0.985);
+}
+
+/* Tips */
+.tipCard{
+  margin-top:12px;
+  background:#fff;
+  border-radius:18px;
+  padding:14px;
+  border:1px solid rgba(0,0,0,0.06);
+  box-shadow:0 14px 35px rgba(0,0,0,0.05);
+  display:flex;
+  gap:12px;
+}
+
+.tipIcon{
+  width:44px;
+  height:44px;
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#eafaf4;
+  color:#00a36c;
+  font-size:18px;
+  flex-shrink:0;
+}
+
+.tipText h3{
+  font-size:14px;
+  font-weight:950;
+  margin-bottom:3px;
+}
+
+.tipText p{
+  font-size:12px;
+  font-weight:800;
+  color:#6b7280;
+  line-height:1.4;
+}
+
+/* Support Banner */
+.supportBanner{
+  margin-top:12px;
+  background:linear-gradient(135deg,#0A1A3C,#6AA2FF);
+  border-radius:22px;
+  padding:18px;
+  color:#fff;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  box-shadow:0 18px 40px rgba(10,26,60,0.25);
+}
+
+.supportBanner h2{
+  font-size:16px;
+  font-weight:1000;
+  margin-bottom:6px;
+}
+
+.supportBanner p{
+  font-size:12px;
+  font-weight:800;
+  opacity:0.9;
+  margin-bottom:12px;
+  line-height:1.4;
+}
+
+.supportBtn{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  background:#fff;
+  color:#0A1A3C;
+  font-weight:950;
+  font-size:13px;
+  padding:10px 14px;
+  border-radius:16px;
+  text-decoration:none;
+}
+
+.supportArt{
+  width:58px;
+  height:58px;
+  border-radius:18px;
+  background:rgba(255,255,255,0.12);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:26px;
+}
+
+/* Desktop */
+@media(min-width:768px){
+  .serviceGrid{
+    grid-template-columns:1fr 1fr;
+  }
+}/* ✅ Fix extra gap between Top Selling & Services */
+.section {
+  margin: 12px 2px 10px;
+}
+
+/* যদি তোমার Top Selling listWrap এর নিচে extra margin থাকে */
+.listWrap {
+  margin-bottom: 6px !important;
+}
+
+/* sectionTitle এর নিচে gap কম */
+.section {
+  padding: 14px;
+max-width: 980px;
+margin: 0 auto;
+}
+.miniRow{
+  width:100%;
+  display:flex;
+  gap:12px;
+  margin-top: 12px;
+}
+
+.miniBox{
+  flex:1;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:12px 14px;
+  border-radius:18px;   /* Paytm style */
+  background:#ffffff;
+  border:1px solid rgba(0,0,0,0.06);
+  box-shadow:0 10px 18px rgba(0,0,0,0.04);
+}
+
+/* ✅ ICON PERFECT CENTER */
+.miniIco{
+  width:36px;
+  height:36px;
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+  position:relative;
+}
+
+/* ✅ Icon size small */
+.miniIco i{
+  font-size:18px;
+  line-height:1;
+  display:block;
+}
+
+/* Ticket */
+.ticketIco{
+  background: rgba(37, 99, 235, 0.10);
+  color:#2563eb;
+}
+
+/* ✅ CIBIL ICON lime → red gradient (icon only) */
+.cibilIco{
+  background: rgba(0,0,0,0.03);
+}
+
+.cibilIco i{
+  background: linear-gradient(135deg, #a3e635, #f97316, #ef4444);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* text */
+.miniTxt{
+  font-size:13px;
+  font-weight:900;
+  color:#111827;
+  line-height:1.1;
+}
+
+/* ✅ Right value + 10px margin */
+.miniVal{
+  margin-left:auto;
+  margin-right:10px; /* 🔥 requested */
+  font-size:15px;
+  font-weight:1000;
+  color:#111827;
+}
+
+/* responsive */
+@media(max-width:420px){
+  .miniBox{
+    padding:10px 12px;
+    gap:8px;
+  }
+  .miniIco{
+    width:34px;
+    height:34px;
+  }
+  .miniIco i{
+    font-size:15px;
+  }
+  .miniTxt{
+    font-size:12px;
+  }
+  .miniVal{
+    font-size:14px;
+    margin-right:8px;
+  }
+}
+/* ===== Recommend For You ===== */
+.recoWrap{
+  padding: 16px 4px;
+  margin:0;
+}
+
+.recoTop{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:12px;
+}
+
+.recoTop h3{
+  font-size:15px;
+  font-weight:1000;
+  color:#0A1A3C;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.recoTop h3 i{
+  color:#2563eb;
+}
+
+.recoSeeAll{
+  font-size:12px;
+  font-weight:950;
+  text-decoration:none;
+  color:#2563eb;
+}
+
+.recoRow{
+  display:flex;
+  gap:12px;
+  overflow-x:auto;
+  padding-bottom:4px;
+  scrollbar-width:none;
+}
+
+.recoRow::-webkit-scrollbar{
+  display:none;
+}
+
+.recoCard{
+  min-width:280px;
+  background:#fff;
+  border-radius:18px;
+  padding: 14px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  border:1px solid rgba(0,0,0,0.06);
+  
+  cursor:pointer;
+  transition:0.2s;
+}
+
+.recoCard:active{
+  transform:scale(0.985);
+}
+
+.recoIcon{
+  width:44px;
+  height:44px;
+  border-radius:16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+  color:#fff;
+  flex-shrink:0;
+}
+
+.recoIcon.blue{background:linear-gradient(135deg,#2563eb,#1d4ed8);}
+.recoIcon.green{background:linear-gradient(135deg,#22c55e,#16a34a);}
+.recoIcon.purple{background:linear-gradient(135deg,#7c3aed,#5b21b6);}
+.recoIcon.orange{background:linear-gradient(135deg,#f97316,#ea580c);}
+
+.recoText{
+  flex:1;
+  min-width:0;
+}
+
+.recoText h4{
+  font-size:14px;
+  font-weight:1000;
+  color:#0A1A3C;
+  margin:0;
+}
+
+.recoText p{
+  font-size:12px;
+  font-weight:850;
+  color:#64748b;
+  margin:3px 0 0 0;
+}
+
+.recoCard .arrow{
+  color:#94a3b8;
+  font-size:14px;
+}  .toolCard{
+  text-decoration:none;
+  color:inherit;  /* যদি আগে div এ ছিল */
+}a{
+  color: inherit;
+  text-decoration: none;
+}/* ===== Floating AI Magic Button ===== */
+.aiMagicFloat {
+  position: fixed;
+  right: 16px;
+  bottom: 85px;
+  z-index: 999;
+  width: 48px;
+  height: 48px;
+  /* ✅ More smooth corner */
+  border-radius: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: #fff;
+  font-size: 18px;
+  
+  /* ✅ More suitable premium background */
+  background: linear-gradient(135deg, #0ea5e9, #8b5cf6, #f43f5e);
+  
+  /* ✅ Better shadow */
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.22);
+  
+  transition: .2s ease;
+}
+
+.aiMagicFloat:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.06);
+}
+
+.aiMagicFloat:active {
+  transform: scale(.92);
+}
+</style>
+<link rel="stylesheet" href="main.css">
+<style>
+
+</style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="topHeader">
+    <div class="headRow">
+      <div class="brand">
+        <div class="logo">
+          <img src="https://aniket-developer-001.github.io/BimaCare/logo.png" alt="" />
+        </div>
+        <div class="brandText">
+          <h1>BimaCare</h1>
+          <p>Insurance Tools & Calculator</p>
+        </div>
+      </div>
+
+    <a href="https://aniket-developer-001.github.io/BimaCare//notifications.html"> <button class="headBtn" title="Notifications">
+        <i class="fa-regular fa-bell"></i>
+      </button></a>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- QUICK TOOL -->
+    <div class="sectionTitle">
+  <h2>Quick Tools</h2>
+  <span class="hiUser" id="hiUser">Hey, ...</span>
+</div>
+
+    <section class="quickBox">
+      <div class="quickTop">
+        <div class="left">
+          <div class="quickIcon"><i class="fa-solid fa-bolt"></i></div>
+          <div>
+            <h3>Quick Tool Menu</h3>
+            
+          </div>
+        </div>
+
+        <button class="dropBtn" id="dropBtn">
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
+      </div>
+
+   <div class="toolGrid" id="toolGrid">
+
+  <a href="https://aniket-developer-001.github.io/BimaCare//insurance.html" class="toolCard">
+    <div class="ic"><i class="fa-solid fa-shield"></i></div>
+    <div><h4>All Insurance</h4></div>
+  </a>
+
+  <a href="https://aniket-developer-001.github.io/BimaCare/compare.html" class="toolCard">
+    <div class="ic"><i class="fa-solid fa-code-compare"></i></div>
+    <div><h4>Insurance Compare</h4></div>
+  </a>
+
+  <a href="https://aniket-developer-001.github.io/BimaCare/emi.html" class="toolCard">
+    <div class="ic"><i class="fa-solid fa-calculator"></i></div>
+    <div><h4>EMI Calculator</h4></div>
+  </a>
+
+  <a href="https://aniket-developer-001.github.io/BimaCare/insurance-calculator.html" class="toolCard">
+    <div class="ic"><i class="fa-solid fa-percent"></i></div>
+    <div><h4>Insurance Calculator</h4></div>
+  </a>
+
+
+ <a href="https://aniket-developer-001.github.io/BimaCare//cibil.html" class="toolCard">
+    <div class="ic"><i class="fa-solid fa-gauge-high"></i></div>
+    <div><h4>Cibil Score</h4></div>
+  </a>
+
+  <a href="https://aniket-developer-001.github.io/BimaCare/ai.html" class="toolCard">
+    <div class="ic"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+    <div><h4>AI Suggest</h4></div>
+  </a>
+
+  <a href="https://aniket-developer-001.github.io/BimaCare//providers.html" class="toolCard">
+    <div class="ic"><i class="fa-solid fa-building-columns"></i></div>
+    <div><h4>Insurance Providers</h4></div>
+  </a>
+
+  <a href="https://aniket-developer-001.github.io/BimaCare//lic.html" class="toolCard">
+    <div class="ic"><i class="fa-solid fa-list-check"></i></div>
+    <div><h4>LIC All Plans</h4></div>
+  </a>
+</div>
+    </section>
+<!-- Mini Tickets + CIBIL Row -->
+<div class="miniRow">
+  
+  <!-- Tickets -->
+ <a href="https://aniket-developer-001.github.io/BimaCare//streak.html"> <div class="miniBox">
+    <div class="miniIco ticketIco">
+      <i class="fa-solid fa-fire"></i> 
+    </div>
+    <div class="miniTxt">Streak (day)</div>
+    <div class="miniVal" id="ticketCount">8</div>
+  </div></a>
+  
+  <!-- CIBIL -->
+<div class="miniBox">
+    <div class="miniIco cibilIco">
+      <i class="fa-solid fa-gauge-high"></i>
+    </div>
+    <div class="miniTxt">CIBIL</div>
+    <div class="miniVal" id="cibilScore">782</div>
+  </div>
+  
+</div>
+<!-- ===== Recommend For You ===== -->
+<section class="recoWrap">
+  <div class="recoTop">
+    <h3><i class="fa-solid fa-star"></i> Recommend For You</h3>
+    <a href="#" class="recoSeeAll">See all</a>
+  </div>
+
+  <div class="recoRow">
+
+    <a href="https://aniket-developer-001.github.io/BimaCare//insurance.html"><div class="recoCard">
+      <div class="recoIcon blue">
+        <i class="fa-solid fa-file-shield"></i>
+      </div>
+      <div class="recoText">
+        <h4>Policy Check</h4>
+        <p>Verify policy details instantly</p>
+      </div>
+      <i class="fa-solid fa-angle-right arrow"></i>
+    </div></a>
+
+    <a href="https://aniket-developer-001.github.io/BimaCare//reminder.html"><div class="recoCard">
+      <div class="recoIcon green">
+        <i class="fa-solid fa-bell"></i>
+      </div>
+      <div class="recoText">
+        <h4>Set Reminder</h4>
+        <p>Never miss premium due date</p>
+      </div>
+      <i class="fa-solid fa-angle-right arrow"></i>
+    </div></a>
+
+    <a href="https://aniket-developer-001.github.io/BimaCare//support.html"><div class="recoCard">
+      <div class="recoIcon purple">
+        <i class="fa-solid fa-headset"></i>
+      </div>
+      <div class="recoText">
+        <h4>Customer Support</h4>
+        <p>Get help with one tap</p>
+      </div>
+      <i class="fa-solid fa-angle-right arrow"></i>
+    </div></a>
+
+    <a href="https://aniket-developer-001.github.io/BimaCare//complaint.html"><div class="recoCard">
+      <div class="recoIcon orange">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+      </div>
+      <div class="recoText">
+        <h4>Complaint</h4>
+        <p>Raise complaint easily</p>
+      </div>
+      <i class="fa-solid fa-angle-right arrow"></i>
+    </div></a>
+
+  </div>
+</section>
+
+
+    <!-- POPULAR INSURANCE -->
+    <div class="sectionTitle">
+      <h2><i class="fa-solid fa-arrow-trend-up"></i> Popular Insurance</h2>
+      
+    </div>
+
+    <section class="swipeRow">
+
+      <div class="insCard" onclick="openInsurance(1)">
+        <div class="insTopImg">
+          <img src="https://aniket-developer-001.github.io/BimaCare//India-Briefing-Filing-Income-Tax-Returns-in-India.jpg" alt="" />
+        </div>
+        <div class="insBody">
+          <div class="insTitle">Health Shield Plan</div>
+
+          <div class="priceRow">
+            <div class="premium">₹8,233 <small>Monthly Premium</small></div>
+            <button class="viewBtn">
+              View <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+
+          <div class="interest">
+            <span>Interest</span>
+            <span><b>13.82%</b> per annual</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="insCard" onclick="openInsurance(2)">
+        <div class="insTopImg">
+          <img src="https://aniket-developer-001.github.io/BimaCare//insurance19.jpg" alt="" />
+        </div>
+        <div class="insBody">
+          <div class="insTitle">Car Secure Insurance</div>
+
+          <div class="priceRow">
+            <div class="premium">₹2,199 <small>Monthly Premium</small></div>
+            <button class="viewBtn">
+              View <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+
+          <div class="interest">
+            <span>Interest</span>
+            <span><b>11.30%</b> per annual</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="insCard" onclick="openInsurance(3)">
+        <div class="insTopImg">
+        <img src="https://aniket-developer-001.github.io/BimaCare//LIFE-INSURANCE-2.png" alt="" />
+        </div>
+        <div class="insBody">
+          <div class="insTitle">Bike Protection Plan</div>
+
+          <div class="priceRow">
+            <div class="premium">₹899 <small>Monthly Premium</small></div>
+            <button class="viewBtn">
+              View <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+
+          <div class="interest">
+            <span>Interest</span>
+            <span><b>10.42%</b> per annual</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="insCard" onclick="openInsurance(4)">
+        <div class="insTopImg">
+          <img src="https://aniket-developer-001.github.io/BimaCare//married-couple-investing-savings-into-new-home-people-taking-credit-bank-money-buying-house-flat-vector-illustration-mortgage-ownership-property-concept-banner-landing-web-page_74855-25182.jpg" alt="" />
+        </div>
+        <div class="insBody">
+          <div class="insTitle">Home Secure Plan</div>
+
+          <div class="priceRow">
+            <div class="premium">₹3,500 <small>Monthly Premium</small></div>
+            <button class="viewBtn">
+              View <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+
+          <div class="interest">
+            <span>Interest</span>
+            <span><b>12.18%</b> per annual</span>
+          </div>
+        </div>
+      </div>
+
+    </section>
+ <!-- POPULAR INSURANCE -->
+ <div class="sectionTitle" style="margin-top:18px;">
+   <h2><i class="fa fa-line-chart"></i> Top Selling Insurance</h2>
+   
+ </div>
+ 
+ <section class="swipeRow">
+   
+   <div class="insCard" onclick="openInsurance(5)">
+     <div class="insTopImg">
+       <img src="https://aniket-developer-001.github.io/BimaCare//Olyv__Blogs-7.png" alt="" />
+     </div>
+     <div class="insBody">
+       <div class="insTitle">Health Shield Plan</div>
+       
+       <div class="priceRow">
+         <div class="premium">₹8,233 <small>Monthly Premium</small></div>
+         <button class="viewBtn">
+           View <i class="fa-solid fa-arrow-right"></i>
+         </button>
+       </div>
+       
+       <div class="interest">
+         <span>Interest</span>
+         <span><b>13.82%</b> per annual</span>
+       </div>
+     </div>
+   </div>
+   
+   <div class="insCard" onclick="openInsurance(6)">
+     <div class="insTopImg">
+       <img src="https://aniket-developer-001.github.io/BimaCare//motor-insurance-online-policy.png" alt="" />
+     </div>
+     <div class="insBody">
+       <div class="insTitle">Car Secure Insurance</div>
+       
+       <div class="priceRow">
+         <div class="premium">₹2,199 <small>Monthly Premium</small></div>
+         <button class="viewBtn">
+           View <i class="fa-solid fa-arrow-right"></i>
+         </button>
+       </div>
+       
+       <div class="interest">
+         <span>Interest</span>
+         <span><b>11.30%</b> per annual</span>
+       </div>
+     </div>
+   </div>
+   
+   <div class="insCard" onclick="openInsurance(7)">
+     <div class="insTopImg">
+       <img src="https://aniket-developer-001.github.io/BimaCare//LIFE-INSURANCE-2.png" alt="" />
+     </div>
+     <div class="insBody">
+       <div class="insTitle">Bike Protection Plan</div>
+       
+       <div class="priceRow">
+         <div class="premium">₹899 <small>Monthly Premium</small></div>
+         <button class="viewBtn">
+           View <i class="fa-solid fa-arrow-right"></i>
+         </button>
+       </div>
+       
+       <div class="interest">
+         <span>Interest</span>
+         <span><b>10.42%</b> per annual</span>
+       </div>
+     </div>
+   </div>
+   
+   <div class="insCard" onclick="openInsurance(8)">
+     <div class="insTopImg">
+       <img src="https://aniket-developer-001.github.io/BimaCare//married-couple-investing-savings-into-new-home-people-taking-credit-bank-money-buying-house-flat-vector-illustration-mortgage-ownership-property-concept-banner-landing-web-page_74855-25182.jpg" alt="" />
+     </div>
+     <div class="insBody">
+       <div class="insTitle">Home Secure Plan</div>
+       
+       <div class="priceRow">
+         <div class="premium">₹3,500 <small>Monthly Premium</small></div>
+         <button class="viewBtn">
+           View <i class="fa-solid fa-arrow-right"></i>
+         </button>
+       </div>
+       
+       <div class="interest">
+         <span>Interest</span>
+         <span><b>12.18%</b> per annual</span>
+       </div>
+     </div>
+   </div>
+   
+ </section>
+ 
+ </main>
+  </main>
+
+<!-- ===== Extra Section : Mini Tips ===== -->
+<section class="section">
+  <div class="sectionTitle">
+    <h2>Today’s Tips</h2>
+    <span class="miniText">Smart insurance advice</span>
+  </div>
+
+  <div class="tipCard">
+    <div class="tipIcon">
+      <i class="fa-solid fa-lightbulb"></i>
+    </div>
+    <div class="tipText">
+      <h3>Pay yearly premium to save more</h3>
+      <p>
+        Monthly premium looks small, but yearly payment reduces total premium and gives extra benefits.
+      </p>
+    </div>
+  </div>
+
+  <div class="tipCard">
+    <div class="tipIcon">
+      <i class="fa-solid fa-circle-check"></i>
+    </div>
+    <div class="tipText">
+      <h3>Always verify nominee details</h3>
+      <p>
+        Correct nominee details help claim settlement faster without any legal issues.
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===== Extra Section : Support Banner ===== -->
+<section class="section">
+  <div class="supportBanner">
+    <div>
+      <h2>Need help with policy?</h2>
+      <p>Get guidance, renewal support & claim process info.</p>
+      <a class="supportBtn" href="https://aniket-developer-001.github.io/BimaCare//support.html">
+        Get Support <i class="fa-solid fa-arrow-right"></i>
+      </a>
+    </div>
+
+    <div class="supportArt">
+      <i class="fa-solid fa-headset"></i>
+    </div>
+  </div>
+</section>
+
+<!-- Floating AI Magic Button -->
+<!-- Floating AI Magic Button (Right Side) -->
+<a href="https://aniket-developer-001.github.io/BimaCare/ai.html" class="aiMagicFloat" title="AI Magic Tool">
+  <i class="fa-solid fa-wand-magic-sparkles"></i>
+</a>
+  <!-- BOTTOM NAV -->
+  <nav class="bottomNav">
+    <a class="navItem active" href="https://aniket-developer-001.github.io/BimaCare/home.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
+    <a class="navItem" href="https://aniket-developer-001.github.io/BimaCare/insurance.html"><i class="fa-solid fa-shield"></i><span>Insurance</span></a>
+    <a class="navItem" href="https://aniket-developer-001.github.io/BimaCare/update.html"><i class="fa-solid fa-bullhorn"></i><span>Updates</span></a>
+    <a class="navItem" href="https://aniket-developer-001.github.io/BimaCare/reminder.html"><i class="fa-solid fa-clock"></i><span>Reminder</span></a>
+    <a class="navItem" href="https://aniket-developer-001.github.io/BimaCare/account.html"><i class="fa-solid fa-user"></i><span>Account</span></a>
+  </nav>
+
+
+<script>
+/* ===========================
+   SIMPLE DARK MODE LOADER
+   =========================== */
+
+const THEME_KEY = "dark_mode"; // localStorage key
+
+function loadThemeFromStorage() {
+  const mode = localStorage.getItem(THEME_KEY);
+  
+  if (mode === "yes") {
+    document.body.classList.add("dark");
+  } else {
+    document.body.classList.remove("dark");
+  }
+}
+
+/* Run when page loads */
+document.addEventListener("DOMContentLoaded", loadThemeFromStorage);
+  // Dropdown Quick Tools
+  const dropBtn = document.getElementById("dropBtn");
+  const toolGrid = document.getElementById("toolGrid");
+
+  dropBtn.addEventListener("click", ()=>{
+    toolGrid.classList.toggle("hide");
+    dropBtn.classList.toggle("rotate");
+  });
+  let n = localStorage.getItem("user_name");; // change name here
+document.getElementById("hiUser").innerText = "Hey, " + n;
+
+function openInsurance(id){
+  localStorage.setItem("selected_insurance_id", id);
+  window.location.href = "https://aniket-developer-001.github.io/BimaCare/view.html";
+}
+const tips = [
+  {
+    title: "Pay yearly premium to save more",
+    desc: "Yearly payment reduces total premium and gives extra benefits."
+  },
+  {
+    title: "Always verify nominee details",
+    desc: "Correct nominee details help claim settlement faster."
+  },
+  {
+    title: "Keep policy PDF saved",
+    desc: "Policy PDF helps during claim and renewal anytime."
+  }
+];
+
+const randomTip = tips[Math.floor(Math.random() * tips.length)];
+document.querySelectorAll(".tipCard")[0].querySelector("h3").innerText = randomTip.title;
+document.querySelectorAll(".tipCard")[0].querySelector("p").innerText = randomTip.desc;
+let ticketCount = (JSON.parse(localStorage.getItem("user_streak_data")) || {}).currentStreak || 0;
+let cibilScore = localStorage.getItem("user_cibil");
+document.getElementById("ticketCount").innerText = ticketCount + " › ";
+document.getElementById("cibilScore").innerText = cibilScore + " › ";
+
+
+</script>
+</body>
+</html>

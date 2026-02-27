@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>EMI Calculator - BimaCare</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link rel="stylesheet" href="main.css">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;}
+  body{background:#f5f7ff;color:#0A1A3C;}
+
+  /* ===== Header ===== */
+  .topHeader{
+    width:100%;
+    background:#0A1A3C;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:14px 16px;
+    position:sticky;
+    top:0;
+    z-index:100;
+    border-bottom:1px solid rgba(255,255,255,0.12);
+  }
+  .topHeader h2{font-size:17px;font-weight:1000;}
+  .topHeader a{
+    color:#fff;text-decoration:none;
+    width:42px;height:42px;border-radius:16px;
+    display:flex;align-items:center;justify-content:center;
+    background:rgba(255,255,255,0.12);
+    border:1px solid rgba(255,255,255,0.14);
+  }
+
+  /* ===== Layout ===== */
+  .wrap{width:100%;max-width:980px;margin:auto;padding:14px;}
+  .card{
+    background:#fff;
+    border-radius:22px;
+    padding:16px;
+    border:1px solid rgba(0,0,0,0.06);
+    box-shadow:0 16px 45px rgba(0,0,0,0.06);
+    margin-bottom:14px;
+  }
+
+  .title{
+    font-size:16px;
+    font-weight:1000;
+    margin-bottom:6px;
+  }
+  .sub{
+    font-size:13px;
+    font-weight:800;
+    color:#64748b;
+    line-height:1.4;
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:14px;
+    margin-top:14px;
+  }
+  @media(min-width:900px){
+    .grid{grid-template-columns:1.05fr 0.95fr;align-items:start;}
+  }
+
+  /* ===== Inputs ===== */
+  .inputBox label{
+    display:block;
+    font-size:12px;
+    font-weight:950;
+    color:#334155;
+    margin-bottom:7px;
+  }
+  .inputWrap{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:12px 12px;
+    border-radius:16px;
+    border:1px solid rgba(0,0,0,0.10);
+    background:#fbfbff;
+    transition:0.2s;
+  }
+  .inputWrap:focus-within{
+    border-color:#2563eb;
+    box-shadow:0 0 0 4px rgba(37,99,235,0.14);
+    background:#fff;
+  }
+  .inputWrap i{color:#2563eb;font-size:16px;}
+  input{
+    width:100%;
+    border:none;
+    outline:none;
+    background:transparent;
+    font-size:14px;
+    font-weight:900;
+    color:#111;
+  }
+
+  .rangeRow{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-top:10px;
+  }
+  input[type="range"]{
+    width:100%;
+    accent-color:#2563eb;
+  }
+  .chip{
+    min-width:92px;
+    text-align:center;
+    padding:8px 10px;
+    border-radius:14px;
+    font-size:12px;
+    font-weight:1000;
+    color:#0A1A3C;
+    background:#eef2ff;
+    border:1px solid rgba(37,99,235,0.12);
+  }
+
+  /* ===== Result ===== */
+  .resultTop{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:12px;
+  }
+  .big{
+    font-size:22px;
+    font-weight:1100;
+    letter-spacing:0.2px;
+  }
+  .small{
+    font-size:12.5px;
+    font-weight:900;
+    color:#64748b;
+  }
+
+  .stats{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin-top:12px;
+  }
+  .stat{
+    padding:12px;
+    border-radius:18px;
+    border:1px solid rgba(0,0,0,0.06);
+    background:#fbfbff;
+  }
+  .stat .k{
+    font-size:12px;
+    font-weight:950;
+    color:#64748b;
+    margin-bottom:6px;
+  }
+  .stat .v{
+    font-size:15px;
+    font-weight:1100;
+    color:#0A1A3C;
+  }
+
+  /* ===== Button ===== */
+  .btn{
+    width:100%;
+    border:none;
+    outline:none;
+    cursor:pointer;
+    padding:14px;
+    border-radius:18px;
+    font-size:14px;
+    font-weight:1000;
+    transition:0.2s;
+    margin-top:14px;
+  }
+  .btnPrimary{
+    background:linear-gradient(135deg,#2563eb,#7c3aed);
+    color:#fff;
+    box-shadow:0 16px 35px rgba(37,99,235,0.22);
+  }
+  .btnPrimary:active{transform:scale(0.985);}
+
+  /* ===== Chart ===== */
+  .chartWrap{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:8px 0 0;
+  }
+  canvas{width:220px !important;height:220px !important;}
+  @media(max-width:420px){
+    canvas{width:200px !important;height:200px !important;}
+  }
+
+  /* ===== Note ===== */
+  .note{
+    margin-top:12px;
+    font-size:12.5px;
+    font-weight:850;
+    color:#475569;
+    line-height:1.45;
+    background:#f8fafc;
+    border:1px solid rgba(0,0,0,0.06);
+    padding:12px;
+    border-radius:18px;
+  }/* ===== Bottom Action Bar ===== */
+.bottomBar{
+  position:fixed;
+  left:0; right:0; bottom:0;
+  background:#ffffff;
+  border-top:1px solid rgba(0,0,0,0.08);
+  padding:12px 14px;
+  z-index:999;
+}
+
+.bottomBar .row{
+  width:100%;
+  max-width:980px;
+  margin:auto;
+  display:flex;
+  gap:12px;
+}
+
+.actionBtn{
+  flex:1;
+  border:none;
+  outline:none;
+  cursor:pointer;
+  padding:14px 14px;
+  border-radius:18px;
+  font-size:14px;
+  font-weight:1000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  transition:0.2s;
+}
+
+.actionBtn:active{transform:scale(0.985);}
+
+.shareBtn{
+  background:#0A1A3C;
+  color:#fff;
+}
+
+.pdfBtn{
+  background:linear-gradient(135deg,#2563eb,#7c3aed);
+  color:#fff;
+  box-shadow:0 16px 35px rgba(37,99,235,0.22);
+}
+
+/* body bottom space so bar doesn't cover content */
+body{ padding-bottom:90px; }
+/* ===== Professional Range Slider ===== */
+.rangeWrap {
+  margin-top: 8px;
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 8px;
+  border-radius: 99px;
+  background: linear-gradient(90deg, #2563eb, #7c3aed);
+  outline: none;
+  cursor: pointer;
+  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.12);
+}
+
+/* Thumb */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3px solid #2563eb;
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.18);
+  transition: 0.2s;
+}
+
+input[type="range"]::-webkit-slider-thumb:active {
+  transform: scale(1.15);
+}
+
+/* Firefox */
+input[type="range"]::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3px solid #2563eb;
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.18);
+}
+
+/* Range bar background in Firefox */
+input[type="range"]::-moz-range-track {
+  height: 8px;
+  border-radius: 99px;
+  background: linear-gradient(90deg, #2563eb, #7c3aed);
+}.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 1000;
+  color: #0A1A3C;
+  background: #eef2ff;
+  border: 1px solid rgba(37, 99, 235, 0.18);
+}.bottomBar{display:none;}
+body.dark .inputBox{
+  background: #0A1A3C;
+}body.dark .inputBox .inputWrap{
+  background: black;
+}body.dark .inputBox .inputWrap input{
+  border-color: black;
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header class="topHeader">
+  <a href="https://aniket-developer-001.github.io/BimaCare/home.html"><i class="fa-solid fa-arrow-left"></i></a>
+  <h2>EMI Calculator</h2>
+  <a href="https://aniket-developer-001.github.io/BimaCare/home.html" title="Home"><i class="fa-solid fa-house"></i></a>
+</header>
+
+<main class="wrap">
+
+
+
+  <section class="grid">
+
+    <!-- LEFT: INPUTS -->
+    <section class="card">
+
+      <div class="inputBox">
+        <label>Loan Amount (₹)</label>
+        <div class="inputWrap">
+          <i class="fa-solid fa-indian-rupee-sign"></i>
+          <input id="amount" type="tel" value="500000" placeholder="Enter amount">
+        </div>
+        <div class="rangeRow">
+          <input id="amountRange" type="range" min="10000" max="5000000" step="10000" value="500000">
+          <div class="chip" id="amountChip">₹5,00,000</div>
+        </div>
+      </div>
+
+      <div class="inputBox" style="margin-top:12px;">
+        <label>Interest Rate (p.a.)</label>
+        <div class="inputWrap">
+          <i class="fa-solid fa-percent"></i>
+          <input id="rate" type="number" value="11.5" step="0.01" placeholder="Eg: 11.5">
+        </div>
+        <div class="rangeRow">
+          <input id="rateRange" type="range" min="1" max="30" step="0.1" value="11.5">
+          <div class="chip" id="rateChip">11.5%</div>
+        </div>
+      </div>
+
+      <div class="inputBox" style="margin-top:12px;">
+        <label>Tenure (Years)</label>
+        <div class="inputWrap">
+          <i class="fa-solid fa-calendar-days"></i>
+          <input id="years" type="tel" value="5" placeholder="Enter years">
+        </div>
+        <div class="rangeRow">
+          <input id="yearsRange" type="range" min="1" max="30" step="1" value="5">
+          <div class="chip" id="yearsChip">5 Years</div>
+        </div>
+      </div>
+
+      <button class="btn btnPrimary" id="calcBtn">
+        Calculate EMI <i class="fa-solid fa-arrow-right"></i>
+      </button>
+
+      <div class="note">
+        <b>Tip:</b> EMI is calculated using standard reducing balance formula.
+        Your final EMI may vary slightly depending on bank charges.
+      </div>
+
+    </section>
+
+    <!-- RIGHT: RESULT -->
+    <section class="card" id="resultBox">
+      <div class="resultTop">
+        <div>
+          <div class="small">Monthly EMI</div>
+          <div class="big" id="emiText">₹0</div>
+        </div>
+        <div style="text-align:right;">
+          <div class="small">Total Payment</div>
+          <div class="big" style="font-size:18px;" id="totalPayText">₹0</div>
+        </div>
+      </div>
+
+      <div class="chartWrap">
+        <canvas id="pie"></canvas>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="k">Principal Amount</div>
+          <div class="v" id="principalText">₹0</div>
+        </div>
+        <div class="stat">
+          <div class="k">Total Interest</div>
+          <div class="v" id="interestText">₹0</div>
+        </div>
+        <div class="stat">
+          <div class="k">Tenure</div>
+          <div class="v" id="tenureText">0 Months</div>
+        </div>
+        <div class="stat">
+          <div class="k">Rate</div>
+          <div class="v" id="rateText">0%</div>
+        </div>
+      </div>
+
+    </section>
+<!-- Bottom Share + PDF -->
+<div class="bottomBar">
+  <div class="row">
+    <button class="actionBtn shareBtn" id="shareBtn">
+      <i class="fa-solid fa-share-nodes"></i> Share
+    </button>
+    
+    <button class="actionBtn pdfBtn" id="pdfBtn">
+      <i class="fa-solid fa-file-pdf"></i> Download PDF
+    </button>
+  </div>
+</div>
+  </section>
+
+</main>
+
+<script>
+/* ===========================
+   SIMPLE DARK MODE LOADER
+   =========================== */
+
+const THEME_KEY = "dark_mode"; // localStorage key
+
+function loadThemeFromStorage() {
+  const mode = localStorage.getItem(THEME_KEY);
+  
+  if (mode === "yes") {
+    document.body.classList.add("dark");
+  } else {
+    document.body.classList.remove("dark");
+  }
+}
+
+/* Run when page loads */
+document.addEventListener("DOMContentLoaded", loadThemeFromStorage);
+/* =========================
+      EMI CALCULATOR SYSTEM
+      + Share + PDF (FIXED)
+========================= */
+
+const amount = document.getElementById("amount");
+const rate = document.getElementById("rate");
+const years = document.getElementById("years");
+
+const amountRange = document.getElementById("amountRange");
+const rateRange = document.getElementById("rateRange");
+const yearsRange = document.getElementById("yearsRange");
+
+const amountChip = document.getElementById("amountChip");
+const rateChip = document.getElementById("rateChip");
+const yearsChip = document.getElementById("yearsChip");
+
+const emiText = document.getElementById("emiText");
+const totalPayText = document.getElementById("totalPayText");
+const principalText = document.getElementById("principalText");
+const interestText = document.getElementById("interestText");
+const tenureText = document.getElementById("tenureText");
+const rateText = document.getElementById("rateText");
+
+const calcBtn = document.getElementById("calcBtn");
+
+/* ===== Result Box ===== */
+const resultBox = document.getElementById("resultBox"); 
+// ⬆️ তোমার HTML এ result container এর id "resultBox" রাখো
+
+/* ===== Share + PDF Buttons ===== */
+const shareBtn = document.getElementById("shareBtn");
+const pdfBtn = document.getElementById("pdfBtn");
+
+/* ===== Pie ===== */
+const pie = document.getElementById("pie");
+const ctx = pie.getContext("2d");
+
+/* =========================
+   HELPERS
+========================= */
+
+function fmtINR(n) {
+  return "₹" + Math.round(n).toLocaleString("en-IN");
+}
+
+function clamp(num, min, max) {
+  return Math.min(Math.max(num, min), max);
+}
+
+function calcEMI(P, annualRate, yearsVal) {
+  const n = yearsVal * 12;
+  const r = (annualRate / 12) / 100;
+
+  if (n <= 0) return { emi: 0, n: 0, total: 0, interest: 0 };
+
+  if (r === 0) {
+    const emi = P / n;
+    return { emi, n, total: emi * n, interest: (emi * n) - P };
+  }
+
+  const emi = P * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
+  const total = emi * n;
+  const interest = total - P;
+
+  return { emi, n, total, interest };
+}
+
+/* =========================
+   SYNC UI
+========================= */
+
+function syncChips() {
+  amountChip.innerText = fmtINR(amountRange.value);
+  rateChip.innerText = parseFloat(rateRange.value).toFixed(1) + "%";
+  yearsChip.innerText = yearsRange.value + " Years";
+}
+
+function syncInputsFromRanges() {
+  amount.value = amountRange.value;
+  rate.value = rateRange.value;
+  years.value = yearsRange.value;
+  syncChips();
+}
+
+function syncRangesFromInputs() {
+  let a = parseInt(amount.value || "0");
+  let r = parseFloat(rate.value || "0");
+  let y = parseInt(years.value || "0");
+
+  a = clamp(a, 10000, 5000000);
+  r = clamp(r, 1, 30);
+  y = clamp(y, 1, 30);
+
+  amountRange.value = a;
+  rateRange.value = r;
+  yearsRange.value = y;
+
+  syncChips();
+}
+
+/* =========================
+   PIE CHART (CANVAS)
+========================= */
+
+function drawPie(principal, interest) {
+  const total = principal + interest;
+  const w = pie.width = 220;
+  const h = pie.height = 220;
+
+  ctx.clearRect(0, 0, w, h);
+
+  const cx = w / 2, cy = h / 2;
+  const radius = 85;
+
+  const pAngle = total === 0 ? 0 : (principal / total) * Math.PI * 2;
+  const iAngle = total === 0 ? 0 : (interest / total) * Math.PI * 2;
+
+  // Principal slice
+  ctx.beginPath();
+  ctx.moveTo(cx, cy);
+  ctx.arc(cx, cy, radius, 0, pAngle);
+  ctx.closePath();
+  ctx.fillStyle = "#2563eb";
+  ctx.fill();
+
+  // Interest slice
+  ctx.beginPath();
+  ctx.moveTo(cx, cy);
+  ctx.arc(cx, cy, radius, pAngle, pAngle + iAngle);
+  ctx.closePath();
+  ctx.fillStyle = "#7c3aed";
+  ctx.fill();
+
+  // Hole
+  ctx.beginPath();
+  ctx.arc(cx, cy, 55, 0, Math.PI * 2);
+  ctx.fillStyle = "#fff";
+  ctx.fill();
+
+  // Center text
+  ctx.fillStyle = "#0A1A3C";
+  ctx.font = "900 13px system-ui";
+  ctx.textAlign = "center";
+  ctx.fillText("Total", cx, cy - 4);
+
+  ctx.font = "1000 14px system-ui";
+  ctx.fillText(fmtINR(total), cx, cy + 16);
+}
+
+/* =========================
+   CALCULATE + SHOW RESULT
+========================= */
+let isCalculated = false;
+function calculateAndShow() {
+  syncRangesFromInputs();
+
+  const P = parseFloat(amountRange.value);
+  const R = parseFloat(rateRange.value);
+  const Y = parseInt(yearsRange.value);
+
+  // Validation
+  
+
+  const res = calcEMI(P, R, Y);
+
+  emiText.innerText = fmtINR(res.emi);
+  totalPayText.innerText = fmtINR(res.total);
+  principalText.innerText = fmtINR(P);
+  interestText.innerText = fmtINR(res.interest);
+  tenureText.innerText = res.n + " Months";
+  rateText.innerText = R.toFixed(2) + "%";
+
+  drawPie(P, res.interest);
+
+  // Show result
+  resultBox.style.display = "block";
+  resultBox.scrollIntoView({ behavior: "smooth", block: "start" });
+  document.querySelector(".bottomBar").style.display = "block";
+  isCalculated = true;
+}
+
+/* =========================
+   SHARE + PDF TEXT
+========================= */
+
+function getEMIDataText() {
+  return (
+`BimaCare - EMI Report
+
+Loan Amount: ${amountChip.innerText}
+Interest Rate: ${rateChip.innerText}
+Tenure: ${yearsChip.innerText}
+
+--------------------------------
+Monthly EMI: ${emiText.innerText}
+Total Payment: ${totalPayText.innerText}
+Principal: ${principalText.innerText}
+Total Interest: ${interestText.innerText}
+Tenure (Months): ${tenureText.innerText}
+Rate (p.a.): ${rateText.innerText}
+
+Generated: ${new Date().toLocaleString()}
+`
+  );
+}
+
+/* =========================
+   SHARE (FIXED)
+========================= */
+
+shareBtn.addEventListener("click", async () => {
+  if (!isCalculated) {
+  alert("Please calculate first!");
+  return;
+}
+
+  const shareText = getEMIDataText();
+
+  try {
+    if (navigator.share) {
+      await navigator.share({
+        title: "BimaCare EMI Report",
+        text: shareText
+      });
+    } else {
+      await navigator.clipboard.writeText(shareText);
+      
+    }
+  } catch (err) {
+    try {
+      await navigator.clipboard.writeText(shareText);
+      alert("Share failed. Text copied ✅");
+    } catch (e) {
+      alert("Share failed!");
+    }
+  }
+});
+
+/* =========================
+   PDF DOWNLOAD (FIXED)
+========================= */
+
+pdfBtn.addEventListener("click", async () => {
+  
+  if (resultBox.style.display === "none") {
+    alert("Please calculate first!");
+    return;
+  }
+  
+  if (!window.jspdf) {
+    alert("PDF system not loaded! Add jsPDF CDN in <head>.");
+    return;
+  }
+  
+  const dataText = getEMIDataText();
+  
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF("p", "mm", "a4");
+  
+  // ===== Title =====
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(16);
+  doc.text("BimaCare - EMI Report", 14, 18);
+  
+  // ===== Add Pie Chart Image =====
+  try {
+    const pieImg = pie.toDataURL("image/png", 1.0);
+    
+    doc.addImage(pieImg, "PNG", 135, 24, 60, 60);
+    
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "bold");
+    doc.text("Principal vs Interest", 137, 88);
+    
+  } catch (e) {
+    console.log("Pie image error:", e);
+  }
+  
+  // ===== Text =====
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(11);
+  
+  const lines = doc.splitTextToSize(dataText, 120);
+  doc.text(lines, 14, 30);
+  
+  // ===== Footer =====
+  doc.setFontSize(9);
+  doc.text("Generated by BimaCare App", 14, 290);
+  
+  const fileName = "BimaBondhu_EMI_Report.pdf";
+  const pdfBlob = doc.output("blob");
+  
+  try {
+    
+    if (navigator.share && navigator.canShare) {
+      
+      const file = new File([pdfBlob], fileName, {
+        type: "application/pdf"
+      });
+      
+      if (navigator.canShare({ files: [file] })) {
+        
+        await navigator.share({
+          title: "EMI Report",
+          text: "Here is my EMI Report from BimaCare App",
+          files: [file]
+        });
+        
+      } else {
+        doc.save(fileName);
+      }
+      
+    } else {
+      doc.save(fileName);
+    }
+    
+  } catch (err) {
+    console.log("Share cancelled or failed:", err);
+    doc.save(fileName); // fallback download
+  }
+  
+});
+
+/* =========================
+   EVENTS
+========================= */
+
+// Ranges update only chips + inputs (NO auto result)
+amountRange.addEventListener("input", () => { syncInputsFromRanges(); });
+rateRange.addEventListener("input", () => { syncInputsFromRanges(); });
+yearsRange.addEventListener("input", () => { syncInputsFromRanges(); });
+
+// Inputs update ranges + chips (NO auto result)
+amount.addEventListener("input", () => {
+  amount.value = amount.value.replace(/[^0-9]/g, "").slice(0, 8);
+  syncRangesFromInputs();
+});
+rate.addEventListener("input", () => {
+  rate.value = rate.value.replace(/[^0-9.]/g, "").slice(0, 5);
+  syncRangesFromInputs();
+});
+years.addEventListener("input", () => {
+  years.value = years.value.replace(/[^0-9]/g, "").slice(0, 2);
+  syncRangesFromInputs();
+});
+
+// Calculate only on button click
+calcBtn.addEventListener("click", calculateAndShow);
+
+/* =========================
+   INITIAL LOAD
+========================= */
+
+syncInputsFromRanges();
+syncRangesFromInputs();
+syncChips();
+
+// Hide result by default
+resultBox.style.display = "none";
+</script>
+</body>
+</html>

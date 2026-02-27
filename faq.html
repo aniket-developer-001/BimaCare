@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FAQ - BimaCare</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link rel="stylesheet" href="main.css">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;}
+  body{background:#f5f7ff;color:#0A1A3C;padding-bottom:24px;}
+  a{color:inherit;text-decoration:none;}
+
+  /* ===== Header ===== */
+  .topHeader{
+    width:100%;
+    background:#0A1A3C;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:14px 16px;
+    position:sticky;
+    top:0;
+    z-index:100;
+    border-bottom:1px solid rgba(255,255,255,0.12);
+  }
+  .topHeader h2{
+    font-size:17px;
+    font-weight:1000;
+    letter-spacing:0.2px;
+  }
+  .topHeader .iconBtn{
+    width:42px;height:42px;
+    border-radius:16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(255,255,255,0.12);
+    border:1px solid rgba(255,255,255,0.14);
+  }
+
+  /* ===== Layout ===== */
+  .wrap{
+    width:100%;
+    max-width:980px;
+    margin:auto;
+    padding:14px;
+  }
+
+  .card{
+    background:#fff;
+    border-radius:22px;
+    padding:16px;
+    border:1px solid rgba(0,0,0,0.06);
+    box-shadow:0 16px 45px rgba(0,0,0,0.06);
+    margin-bottom:14px;
+  }
+
+  .title{
+    font-size:16px;
+    font-weight:1000;
+    margin-bottom:6px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .title i{color:#2563eb;}
+
+  .sub{
+    font-size:13px;
+    font-weight:850;
+    color:#64748b;
+    line-height:1.45;
+  }
+
+  /* ===== FAQ ===== */
+  .faqList{
+    margin-top:14px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+
+  .faqItem{
+    border-radius:20px;
+    border:1px solid rgba(15,23,42,0.10);
+    background:linear-gradient(180deg,#ffffff,#fbfbff);
+    overflow:hidden;
+    transition:0.2s ease;
+  }
+
+  .faqBtn{
+    width:100%;
+    border:none;
+    background:transparent;
+    cursor:pointer;
+    padding:14px 14px;
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:12px;
+    text-align:left;
+  }
+
+  .qLeft{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+    flex:1;
+  }
+
+  .qIcon{
+    width:42px;height:42px;
+    border-radius:16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(37,99,235,0.10);
+    border:1px solid rgba(37,99,235,0.16);
+    flex-shrink:0;
+  }
+  .qIcon i{color:#2563eb;font-size:15px;}
+
+  .qText{
+    font-size:14px;
+    font-weight:1000;
+    color:#0A1A3C;
+    line-height:1.3;
+    margin-top:2px;
+  }
+
+  .chev{
+    width:40px;height:40px;
+    border-radius:16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#f1f5ff;
+    border:1px solid rgba(37,99,235,0.16);
+    color:#2563eb;
+    transition:0.25s ease;
+    flex-shrink:0;
+  }
+
+  .answer{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height 0.35s ease;
+    padding:0 16px;
+  }
+
+  .answer p{
+    font-size:13px;
+    font-weight:900;
+    color:#334155;
+    line-height:1.7;
+    padding-bottom:14px;
+  }
+
+  .faqItem.active{
+    border-color:rgba(37,99,235,0.25);
+    box-shadow:0 14px 40px rgba(37,99,235,0.10);
+  }
+
+  .faqItem.active .chev{
+    transform:rotate(180deg);
+    background:rgba(37,99,235,0.10);
+  }
+
+  .helpBox{
+    margin-top:14px;
+    border-radius:22px;
+    padding:14px;
+    border:1px solid rgba(37,99,235,0.14);
+    background:linear-gradient(180deg,#f8fbff,#ffffff);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+
+  .helpLeft{
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+
+  .helpIcon{
+    width:44px;height:44px;
+    border-radius:18px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(37,99,235,0.12);
+    border:1px solid rgba(37,99,235,0.18);
+  }
+  .helpIcon i{color:#2563eb;font-size:16px;}
+
+  .helpText h4{
+    font-size:14px;
+    font-weight:1000;
+  }
+  .helpText p{
+    font-size:12px;
+    font-weight:900;
+    color:#64748b;
+    margin-top:2px;
+  }
+
+  .helpBtn{
+    padding:12px 14px;
+    border-radius:18px;
+    border:none;
+    cursor:pointer;
+    background:#2563eb;
+    color:#fff;
+    font-weight:1000;
+    font-size:13px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    box-shadow:0 14px 35px rgba(37,99,235,0.25);
+    transition:0.2s ease;
+  }
+  .helpBtn:hover{transform:translateY(-1px);}
+
+</style>
+</head>
+
+<body>
+
+<header class="topHeader">
+  <div class="iconBtn"><a href="https://aniket-developer-001.github.io/BimaCare/home.html"><i class="fa-solid fa-arrow-left"></i></a></div>
+  <h2>FAQ</h2>
+  <div class="iconBtn"><i class="fa-solid fa-circle-question"></i></div>
+</header>
+
+<main class="wrap">
+
+  <section class="card">
+    <div class="title"><i class="fa-solid fa-shield-heart"></i> Frequently Asked Questions</div>
+    <div class="sub">
+      Here are the most common questions about BimaCare.  
+      Tap any question to view the answer.
+    </div>
+
+    <div class="faqList" id="faqList">
+
+      <!-- 1 -->
+      <div class="faqItem">
+        <button class="faqBtn">
+          <div class="qLeft">
+            <div class="qIcon"><i class="fa-solid fa-shield"></i></div>
+            <div class="qText">What is BimaCare?</div>
+          </div>
+          <div class="chev"><i class="fa-solid fa-chevron-down"></i></div>
+        </button>
+        <div class="answer">
+          <p>
+            BimaCare is an insurance support website where you can explore insurance plans,
+            compare policies, calculate EMI/premium, set reminders, and manage your insurance needs easily.
+          </p>
+        </div>
+      </div>
+
+      <!-- 2 -->
+      <div class="faqItem">
+        <button class="faqBtn">
+          <div class="qLeft">
+            <div class="qIcon"><i class="fa-solid fa-scale-balanced"></i></div>
+            <div class="qText">How does Insurance Compare work?</div>
+          </div>
+          <div class="chev"><i class="fa-solid fa-chevron-down"></i></div>
+        </button>
+        <div class="answer">
+          <p>
+            Insurance Compare lets you select multiple plans and view them side-by-side.
+            You can compare premium, policy term, maturity value, benefits, and other key details.
+          </p>
+        </div>
+      </div>
+
+      <!-- 3 -->
+      <div class="faqItem">
+        <button class="faqBtn">
+          <div class="qLeft">
+            <div class="qIcon"><i class="fa-solid fa-calculator"></i></div>
+            <div class="qText">Is EMI Calculator 100% accurate?</div>
+          </div>
+          <div class="chev"><i class="fa-solid fa-chevron-down"></i></div>
+        </button>
+        <div class="answer">
+          <p>
+            Yes, our EMI calculator uses the standard banking EMI formula.
+            Results are accurate for most loans. Small differences may occur depending on bank rounding rules.
+          </p>
+        </div>
+      </div>
+
+      <!-- 4 -->
+      <div class="faqItem">
+        <button class="faqBtn">
+          <div class="qLeft">
+            <div class="qIcon"><i class="fa-solid fa-bell"></i></div>
+            <div class="qText">How does Premium Reminder work?</div>
+          </div>
+          <div class="chev"><i class="fa-solid fa-chevron-down"></i></div>
+        </button>
+        <div class="answer">
+          <p>
+            Premium reminders are saved on your device using LocalStorage.
+            You can add policy name, premium amount, due date and update it anytime.
+          </p>
+        </div>
+      </div>
+
+      <!-- 5 -->
+      <div class="faqItem">
+        <button class="faqBtn">
+          <div class="qLeft">
+            <div class="qIcon"><i class="fa-solid fa-user-lock"></i></div>
+            <div class="qText">Is my data safe in this website?</div>
+          </div>
+          <div class="chev"><i class="fa-solid fa-chevron-down"></i></div>
+        </button>
+        <div class="answer">
+          <p>
+            Most of your data is stored only on your device (LocalStorage).
+            We do not store your personal data on any server unless you submit a support request using the form.
+          </p>
+        </div>
+      </div>
+
+      <!-- 6 -->
+      <div class="faqItem">
+        <button class="faqBtn">
+          <div class="qLeft">
+            <div class="qIcon"><i class="fa-solid fa-file-pdf"></i></div>
+            <div class="qText">Can I download results as PDF?</div>
+          </div>
+          <div class="chev"><i class="fa-solid fa-chevron-down"></i></div>
+        </button>
+        <div class="answer">
+          <p>
+            Yes. In EMI Calculator and Insurance Calculator pages,
+            after you calculate, you can download the full result report as PDF.
+          </p>
+        </div>
+      </div>
+
+      <!-- 7 -->
+      <div class="faqItem">
+        <button class="faqBtn">
+          <div class="qLeft">
+            <div class="qIcon"><i class="fa-solid fa-share-nodes"></i></div>
+            <div class="qText">How can I share calculator results?</div>
+          </div>
+          <div class="chev"><i class="fa-solid fa-chevron-down"></i></div>
+        </button>
+        <div class="answer">
+          <p>
+            After calculation, click the Share button.
+            It will share the result text using your phone’s Share feature (Web Share API).
+          </p>
+        </div>
+      </div>
+
+      <!-- 8 -->
+      <div class="faqItem">
+        <button class="faqBtn">
+          <div class="qLeft">
+            <div class="qIcon"><i class="fa-solid fa-circle-exclamation"></i></div>
+            <div class="qText">What should I do if I face an issue or bug?</div>
+          </div>
+          <div class="chev"><i class="fa-solid fa-chevron-down"></i></div>
+        </button>
+        <div class="answer">
+          <p>
+            Go to Customer Support page and submit your issue.
+            A ticket ID will be generated automatically and you can track it in your history.
+          </p>
+        </div>
+      </div>
+
+      <!-- 9 -->
+      <div class="faqItem">
+        <button class="faqBtn">
+          <div class="qLeft">
+            <div class="qIcon"><i class="fa-solid fa-id-card"></i></div>
+            <div class="qText">Why do you ask for my phone number?</div>
+          </div>
+          <div class="chev"><i class="fa-solid fa-chevron-down"></i></div>
+        </button>
+        <div class="answer">
+          <p>
+            Phone number helps identify the user in support requests and complaints.
+            It is required only for validation and for better support tracking.
+          </p>
+        </div>
+      </div>
+
+      <!-- 10 -->
+      <div class="faqItem">
+        <button class="faqBtn">
+          <div class="qLeft">
+            <div class="qIcon"><i class="fa-solid fa-circle-check"></i></div>
+            <div class="qText">How can I contact support quickly?</div>
+          </div>
+          <div class="chev"><i class="fa-solid fa-chevron-down"></i></div>
+        </button>
+        <div class="answer">
+          <p>
+            You can submit a request from the Customer Support page.
+            Your request will be saved locally and also sent through the Web3Forms API instantly.
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Help box -->
+    <div class="helpBox">
+      <div class="helpLeft">
+        <div class="helpIcon"><i class="fa-solid fa-headset"></i></div>
+        <div class="helpText">
+          <h4>Still need help?</h4>
+          <p>Submit your issue and get a ticket ID instantly.</p>
+        </div>
+      </div>
+
+      <button class="helpBtn" onclick="location.href='https://aniket-developer-001.github.io/BimaCare/support.html'">
+        <i class="fa-solid fa-paper-plane"></i> Contact Support
+      </button>
+    </div>
+
+  </section>
+
+</main>
+
+<script>
+/* ===========================
+   SIMPLE DARK MODE LOADER
+   =========================== */
+
+const THEME_KEY = "dark_mode"; // localStorage key
+
+function loadThemeFromStorage() {
+  const mode = localStorage.getItem(THEME_KEY);
+  
+  if (mode === "yes") {
+    document.body.classList.add("dark");
+  } else {
+    document.body.classList.remove("dark");
+  }
+}
+
+/* Run when page loads */
+document.addEventListener("DOMContentLoaded", loadThemeFromStorage);
+  const faqItems = document.querySelectorAll(".faqItem");
+
+  faqItems.forEach(item=>{
+    const btn = item.querySelector(".faqBtn");
+    const ans = item.querySelector(".answer");
+
+    btn.addEventListener("click", ()=>{
+      // close others
+      faqItems.forEach(x=>{
+        if(x !== item){
+          x.classList.remove("active");
+          x.querySelector(".answer").style.maxHeight = null;
+        }
+      });
+
+      // toggle current
+      item.classList.toggle("active");
+
+      if(item.classList.contains("active")){
+        ans.style.maxHeight = ans.scrollHeight + "px";
+      }else{
+        ans.style.maxHeight = null;
+      }
+    });
+  });
+</script>
+</body>
+</html>

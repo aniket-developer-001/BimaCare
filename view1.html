@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Update View - BimaCare</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="main.css">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;}
+  body{
+    background:#f5f7ff;
+    padding-bottom:90px;
+    color:#0A1A3C;
+  }
+
+  /* ===== Top Hero Image ===== */
+  .hero{
+    width:100%;
+    height:260px;
+    position:relative;
+    overflow:hidden;
+    background:#0A1A3C;
+  }
+  .hero img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+    filter:saturate(1.1);
+  }
+  .hero::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(to bottom, rgba(10,26,60,0.15), rgba(10,26,60,0.85));
+  }
+
+  /* ===== Top Controls ===== */
+  .topControls{
+    position:absolute;
+    top:14px;
+    left:14px;
+    right:14px;
+    z-index:10;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+  }
+
+  .iconBtn{
+    width:44px;height:44px;
+    border-radius:16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-decoration:none;
+    color:#fff;
+    background:rgba(255,255,255,0.15);
+    border:1px solid rgba(255,255,255,0.22);
+    backdrop-filter: blur(12px);
+    cursor:pointer;
+    transition:0.2s;
+  }
+  .iconBtn:active{transform:scale(0.97);}
+
+  /* ===== Main Card ===== */
+  .wrap{
+    width:100%;
+    max-width:860px;
+    margin:auto;
+    padding:14px;
+    margin-top:-60px;
+    position:relative;
+    z-index:20;
+  }
+
+  .card{
+    background:#fff;
+    border-radius:26px;
+    padding:16px;
+    border:1px solid rgba(0,0,0,0.06);
+    box-shadow:0 18px 60px rgba(0,0,0,0.08);
+  }
+
+  .title{
+    font-size:19px;
+    font-weight:1000;
+    line-height:1.25;
+    margin-bottom:12px;
+  }
+
+  .metaRow{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-bottom:14px;
+  }
+
+  .publisher{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:13px;
+    font-weight:950;
+    color:#0A1A3C;
+  }
+  .publisher .badge{
+    width:36px;height:36px;
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#eef2ff;
+    color:#2563eb;
+    border:1px solid rgba(37,99,235,0.12);
+  }
+
+  .dateTime{
+    font-size:12px;
+    font-weight:950;
+    color:#475569;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+
+  /* ===== Description ===== */
+  .desc{
+    font-size:14px;
+    font-weight:800;
+    line-height:1.75;
+    color:#334155;
+    margin-bottom:16px;
+    white-space:pre-line;
+  }
+
+  /* ===== Tags ===== */
+  .tags{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-bottom:16px;
+  }
+  .tag{
+    padding:9px 12px;
+    border-radius:999px;
+    font-size:11px;
+    font-weight:950;
+    background:#0A1A3C;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .tag.soft{
+    background:#eef2ff;
+    color:#2563eb;
+    border:1px solid rgba(37,99,235,0.14);
+  }
+
+  /* ===== Extra Section ===== */
+  .miniBox{
+    margin-top:14px;
+    padding:14px;
+    border-radius:22px;
+    background:#f8faff;
+    border:1px solid rgba(0,0,0,0.06);
+  }
+
+  .miniBox h3{
+    font-size:14px;
+    font-weight:1000;
+    margin-bottom:8px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .miniBox p{
+    font-size:13px;
+    font-weight:800;
+    line-height:1.65;
+    color:#334155;
+  }
+
+  /* ===== Bottom Nav ===== */
+  .bottomNav{
+    width:100%;
+    position:fixed;
+    bottom:0;
+    left:0;
+    background:#fff;
+    border-top:1px solid rgba(0,0,0,0.08);
+    display:flex;
+    justify-content:space-around;
+    padding:10px 8px;
+    z-index:999;
+  }
+
+  .navItem{
+    text-decoration:none;
+    color:#555;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:4px;
+    font-size:12px;
+    font-weight:900;
+    padding:8px 10px;
+    border-radius:16px;
+    transition:0.2s;
+  }
+  .navItem i{font-size:18px;}
+  .navItem.active{color:#2563eb;background:#eef2ff;}
+
+  /* ===== Professional Toast Popup ===== */
+  .toast{
+    position:fixed;
+    left:50%;
+    bottom:92px;
+    transform:translateX(-50%);
+    background:#0A1A3C;
+    color:#fff;
+    padding:12px 14px;
+    border-radius:16px;
+    font-size:13px;
+    font-weight:900;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    max-width:92%;
+    width:420px;
+    box-shadow:0 20px 60px rgba(0,0,0,0.25);
+    border:1px solid rgba(255,255,255,0.16);
+    opacity:0;
+    pointer-events:none;
+    transition:0.25s ease;
+    z-index:9999;
+  }
+  .toast.show{
+    opacity:1;
+    transform:translateX(-50%) translateY(-6px);
+  }
+  .toast i{
+    font-size:16px;
+    color:#22c55e;
+  }
+  .toast .msg{
+    flex:1;
+    line-height:1.25;
+  }
+  .toast .closeToast{
+    width:32px;height:32px;
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.14);
+  }
+  .toast .closeToast:active{transform:scale(0.97);}
+
+  /* ===== Responsive ===== */
+  @media (min-width:700px){
+    .hero{height:320px;}
+    .title{font-size:22px;}
+  }body.dark .tag {
+  background: black;
+  color: #fff;
+}body.dark #tipsText, body.dark #summaryText, body.dark #blogPublisher, body.dark .dateTime{
+  color: gray;
+}body.dark #blogDesc{
+  color: #fff;
+}
+</style>
+</head>
+
+<body>
+
+  <!-- HERO -->
+  <div class="hero">
+
+    <div class="topControls">
+      <a class="iconBtn" href="https://aniket-developer-001.github.io/BimaCare/update.html"><i class="fa-solid fa-arrow-left"></i></a>
+
+      <div style="display:flex; gap:10px;">
+        <button class="iconBtn" id="saveBtn"><i class="fa-solid fa-bookmark"></i></button>
+        <button class="iconBtn" id="shareBtn"><i class="fa-solid fa-share-nodes"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="wrap">
+    <div class="card">
+
+      <div class="title" id="blogTitle">Loading...</div>
+
+      <div class="metaRow">
+        <div class="publisher">
+          <div class="badge"><i class="fa-solid fa-user-check"></i></div>
+          <span id="blogPublisher">...</span>
+        </div>
+
+        <div class="dateTime">
+          <i class="fa-solid fa-calendar-days"></i>
+          <span id="blogDateTime">...</span>
+        </div>
+      </div>
+
+      <div class="desc" id="blogDesc"></div>
+
+      <div class="tags" id="blogTags"></div>
+
+      <!-- Extra sections -->
+      <div class="miniBox">
+        <h3><i class="fa-solid fa-circle-info" style="color:#2563eb;"></i> Quick Summary</h3>
+        <p id="summaryText"></p>
+      </div>
+
+      <div class="miniBox">
+        <h3><i class="fa-solid fa-lightbulb" style="color:#2563eb;"></i> Tips for You</h3>
+        <p id="tipsText"></p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Toast Popup -->
+  <div class="toast" id="toast">
+    <i class="fa-solid fa-circle-check" id="toastIcon"></i>
+    <div class="msg" id="toastMsg">Done</div>
+    <div class="closeToast" id="toastClose"><i class="fa-solid fa-xmark"></i></div>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottomNav">
+    <a class="navItem" href="https://aniket-developer-001.github.io/BimaCare/home.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
+    <a class="navItem" href="https://aniket-developer-001.github.io/BimaCare/insurance.html"><i class="fa-solid fa-shield"></i><span>Insurance</span></a>
+    <a class="navItem active" href="https://aniket-developer-001.github.io/BimaCare/update.html"><i class="fa-solid fa-bullhorn"></i><span>Updates</span></a>
+    <a class="navItem" href="https://aniket-developer-001.github.io/BimaCare/reminder.html"><i class="fa-solid fa-clock"></i><span>Reminder</span></a>
+    <a class="navItem" href="https://aniket-developer-001.github.io/BimaCare/account.html"><i class="fa-solid fa-user"></i><span>Account</span></a>
+  </nav>
+
+<script>
+/* ===========================
+   SIMPLE DARK MODE LOADER
+   =========================== */
+
+const THEME_KEY = "dark_mode"; // localStorage key
+
+function loadThemeFromStorage() {
+  const mode = localStorage.getItem(THEME_KEY);
+  
+  if (mode === "yes") {
+    document.body.classList.add("dark");
+  } else {
+    document.body.classList.remove("dark");
+  }
+}
+
+/* Run when page loads */
+document.addEventListener("DOMContentLoaded", loadThemeFromStorage);
+/* ===== Updates Data ===== */
+const UPDATES = [
+  {
+    id: 1,
+    image: "https://images.unsplash.com/photo-1521791055366-0d553872125f?q=80&w=1400&auto=format&fit=crop",
+    publishedBy: "LIC Official",
+    dateTime: "16 Feb 2026 • 10:30 AM",
+    title: "New Premium Discount Offer for 2026",
+    description:
+      "LIC has introduced a new discount offer for selected long-term policies.\n\nUsers can now enjoy special benefits on yearly premium payments.\n\nThis is useful for long-term policy holders who want to save money and get better returns.",
+    tags: ["LIC", "Discount", "2026"],
+    summary: "A new LIC discount is available for selected long-term plans. Paying yearly premium can reduce total cost.",
+    tips: "Check your policy type first. If eligible, pay premium yearly to get maximum benefit."
+  },
+  {
+    id: 2,
+    image: "https://images.unsplash.com/photo-1554224154-26032ffc0d07?q=80&w=1400&auto=format&fit=crop",
+    publishedBy: "BimaCare",
+    dateTime: "16 Feb 2026 • 12:15 PM",
+    title: "Policy Renewal Now Faster in Our App",
+    description:
+      "We improved the renewal system.\n\nNow you can renew policies quickly with better UI, smooth form, and updated calculation logic.\n\nThis update reduces loading time and improves user experience.",
+    tags: ["Update", "Renewal", "Fast"],
+    summary: "Renewal process is now faster and smoother with improved UI + logic.",
+    tips: "Update your saved policy details to avoid errors during renewal."
+  },
+  {
+    id: 3,
+    image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=1400&auto=format&fit=crop",
+    publishedBy: "Insurance News",
+    dateTime: "15 Feb 2026 • 06:45 PM",
+    title: "Health Insurance Demand Increased in India",
+    description:
+      "Due to increasing medical costs, more people are buying health insurance.\n\nExperts suggest choosing cashless plans with wide network hospitals.\n\nA good plan should also cover ICU, surgery and critical illness.",
+    tags: ["Health", "India", "News"],
+    summary: "Health insurance demand is rising due to medical costs. Cashless plans are most recommended.",
+    tips: "Always choose a plan with a wide hospital network and low claim rejection rate."
+  },
+  {
+    id: 4,
+    image: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?q=80&w=1400&auto=format&fit=crop",
+    publishedBy: "LIC Agent",
+    dateTime: "14 Feb 2026 • 09:10 AM",
+    title: "Top 3 Best LIC Plans for Family Protection",
+    description:
+      "If you want long-term family security, these 3 plans are best:\n\n1) Jeevan Anand\n2) Jeevan Labh\n3) New Endowment\n\nCompare and select wisely based on premium and maturity return.",
+    tags: ["Top Plans", "Family", "LIC"],
+    summary: "Top 3 LIC plans suggested for family protection: Anand, Labh, Endowment.",
+    tips: "Compare premium vs maturity return and choose based on your age + income."
+  }
+];
+
+/* ===== Get Selected ID from localStorage ===== */
+let updateId = Number(localStorage.getItem("selected_update_id")) || 1;
+
+/* ===== Find Selected Update ===== */
+let plan = UPDATES.find(u => u.id === updateId) || UPDATES[0];
+
+/* ===== Elements ===== */
+const blogImg = document.getElementById("blogImg");
+const blogTitle = document.getElementById("blogTitle");
+const blogPublisher = document.getElementById("blogPublisher");
+const blogDateTime = document.getElementById("blogDateTime");
+const blogDesc = document.getElementById("blogDesc");
+const blogTags = document.getElementById("blogTags");
+const summaryText = document.getElementById("summaryText");
+const tipsText = document.getElementById("tipsText");
+const saveBtn = document.getElementById("saveBtn");
+const shareBtn = document.getElementById("shareBtn");
+
+/* ===== Toast ===== */
+const toast = document.getElementById("toast");
+const toastMsg = document.getElementById("toastMsg");
+const toastIcon = document.getElementById("toastIcon");
+const toastClose = document.getElementById("toastClose");
+
+let toastTimer = null;
+
+function showToast(message, type="success"){
+  toastMsg.innerText = message;
+
+  if(type === "success"){
+    toast.style.background = "#0A1A3C";
+    toastIcon.className = "fa-solid fa-circle-check";
+    toastIcon.style.color = "#22c55e";
+  }else if(type === "warn"){
+    toast.style.background = "#1e293b";
+    toastIcon.className = "fa-solid fa-circle-exclamation";
+    toastIcon.style.color = "#f59e0b";
+  }else{
+    toast.style.background = "#111827";
+    toastIcon.className = "fa-solid fa-circle-info";
+    toastIcon.style.color = "#60a5fa";
+  }
+
+  toast.classList.add("show");
+
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>{
+    toast.classList.remove("show");
+  }, 2400);
+}
+
+toastClose.addEventListener("click", ()=>{
+  toast.classList.remove("show");
+});
+
+/* ===== Fill UI ===== */
+function renderUpdate(){
+  blogImg.src = plan.image;
+  blogTitle.innerText = plan.title;
+  blogPublisher.innerText = plan.publishedBy;
+  blogDateTime.innerText = plan.dateTime;
+  blogDesc.innerText = plan.description;
+  summaryText.innerText = plan.summary || "No summary available.";
+  tipsText.innerText = plan.tips || "No tips available.";
+
+  blogTags.innerHTML = plan.tags.map((t) => `
+    <div class="tag soft">
+      <i class="fa-solid fa-hashtag"></i> ${t}
+    </div>
+  `).join("");
+
+  updateSaveIcon();
+}
+renderUpdate();
+
+/* ===== Save (Bookmark) ===== */
+function getSaved(){
+  return JSON.parse(localStorage.getItem("saved_updates") || "[]");
+}
+
+function isSaved(){
+  return getSaved().includes(plan.id);
+}
+
+function updateSaveIcon(){
+  saveBtn.innerHTML = isSaved()
+    ? `<i class="fa-solid fa-bookmark"></i>`
+    : `<i class="fa-regular fa-bookmark"></i>`;
+}
+
+saveBtn.addEventListener("click", ()=>{
+  let saved = getSaved();
+
+  if(saved.includes(plan.id)){
+    saved = saved.filter(x => x !== plan.id);
+    showToast("Removed from saved updates", "warn");
+  }else{
+    saved.push(plan.id);
+    showToast("Saved successfully", "success");
+  }
+
+  localStorage.setItem("saved_updates", JSON.stringify(saved));
+  updateSaveIcon();
+});
+
+/* ===== Share ===== */
+shareBtn.addEventListener("click", async ()=>{
+  const shareData = {
+    title: plan.title,
+    text: plan.description.slice(0, 120) + "...",
+    url: window.location.href
+  };
+
+  if(navigator.share){
+    try{
+      await navigator.share(shareData);
+      showToast("Shared successfully", "success");
+    }catch(e){
+      showToast("Share cancelled", "warn");
+    }
+  }else{
+    try{
+      await navigator.clipboard.writeText(plan.title + "\n\n" + window.location.href);
+      showToast("Link copied to clipboard", "success");
+    }catch(e){
+      showToast("Copy failed! Please try again", "warn");
+    }
+  }
+});
+</script>
+</body>
+</html>

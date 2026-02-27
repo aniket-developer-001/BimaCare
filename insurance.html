@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Insurance - BimaCare</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="main.css">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;}
+  body{
+    background:#f5f7ff;
+    padding-bottom:85px;
+    color:#0A1A3C;
+  }
+
+  /* ===== Header ===== */
+  .topHeader{
+    width:100%;
+    position:sticky;
+    top:0;
+    z-index:999;
+    background:#0A1A3C;
+    padding:12px 14px;
+    border-bottom:1px solid rgba(255,255,255,0.12);
+  }
+
+  .headerRow{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+  }
+
+  .backBtn{
+    width:42px;height:42px;
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(255,255,255,0.14);
+    border:1px solid rgba(255,255,255,0.18);
+    color:#fff;
+    text-decoration:none;
+  }
+
+  .title{
+    font-size:17px;
+    font-weight:1000;
+    color:#fff;
+    letter-spacing:0.2px;
+  }
+
+  .headerIcon{
+    width:42px;height:42px;
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(255,255,255,0.14);
+    border:1px solid rgba(255,255,255,0.18);
+    color:#fff;
+  }
+
+  /* ===== Search ===== */
+  .searchWrap{
+    margin-top:12px;
+    display:flex;
+    gap:10px;
+  }
+
+  .searchBox{
+    flex:1;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:12px 12px;
+    border-radius:16px;
+    background:rgba(255,255,255,0.12);
+    border:1px solid rgba(255,255,255,0.18);
+    color:#fff;
+  }
+
+  .searchBox i{opacity:0.9;}
+
+  .searchBox input{
+    width:100%;
+    border:none;
+    outline:none;
+    background:transparent;
+    color:#fff;
+    font-size:14px;
+    font-weight:850;
+  }
+
+  .searchBox input::placeholder{
+    color:rgba(255,255,255,0.75);
+    font-weight:800;
+  }
+
+  /* ===== Filter + Sort ===== */
+  .controls{
+    padding:14px 14px 0;
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+
+  .controlBox{
+    flex:1;
+    min-width:160px;
+    background:#fff;
+    border-radius:16px;
+    padding:12px;
+    border:1px solid rgba(0,0,0,0.06);
+    box-shadow:0 12px 28px rgba(0,0,0,0.05);
+  }
+
+  .controlBox label{
+    display:block;
+    font-size:12px;
+    font-weight:950;
+    color:#0A1A3C;
+    margin-bottom:6px;
+  }
+
+  select{
+    width:100%;
+    border:none;
+    outline:none;
+    font-size:13.5px;
+    font-weight:900;
+    color:#0A1A3C;
+    background:transparent;
+  }
+
+  /* ===== List ===== */
+  .list{
+    padding:14px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    max-width:820px;
+    margin:auto;
+  }
+
+  .plan{
+    background:#fff;
+    border-radius:22px;
+    overflow:hidden;
+    border:1px solid rgba(0,0,0,0.06);
+    box-shadow:0 16px 40px rgba(0,0,0,0.06);
+    cursor:pointer;
+    transition:0.2s;
+  }
+
+  .plan:active{transform:scale(0.995);}
+
+  .planImg{
+    width:100%;
+    height:160px;
+    object-fit:cover;
+    display:block;
+  }
+
+  .planBody{
+    padding:14px;
+  }
+
+  .planTitleRow{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:10px;
+  }
+
+  .planTitle{
+    font-size:16px;
+    font-weight:1000;
+    color:#0A1A3C;
+    line-height:1.2;
+  }
+
+  .viewBtn{
+    border:none;
+    outline:none;
+    cursor:pointer;
+    padding:10px 12px;
+    border-radius:14px;
+    font-size:12px;
+    font-weight:1000;
+    background:#eef2ff;
+    color:#2563eb;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+
+  .meta{
+    margin-top:10px;
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+
+  .pill{
+    padding:9px 12px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:950;
+    background:#f6f8ff;
+    border:1px solid rgba(37,99,235,0.12);
+    color:#0A1A3C;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+
+  .desc{
+    margin-top:10px;
+    font-size:13px;
+    font-weight:800;
+    color:#2c3a57;
+    line-height:1.55;
+  }
+
+  .tags{
+    margin-top:12px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+
+  .tag{
+    padding:9px 12px;
+    border-radius:999px;
+    background:#0A1A3C;
+    color:#fff;
+    font-size:11px;
+    font-weight:950;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+
+  /* Empty */
+  .empty{
+    background:#fff;
+    border-radius:20px;
+    padding:18px;
+    border:1px solid rgba(0,0,0,0.06);
+    text-align:center;
+    font-weight:950;
+    color:#374151;
+  }
+
+  /* ===== Bottom Nav ===== */
+    .bottomNav{
+    width:100%;
+    position:fixed;
+    bottom:0;
+    left:0;
+    background:#fff;
+    border-top:1px solid rgba(0,0,0,0.08);
+    display:flex;
+    justify-content:space-around;
+    padding:10px 8px;
+    z-index:999;
+  }
+
+  .navItem{
+    text-decoration:none;
+    color:#555;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:4px;
+    font-size:12px;
+    font-weight:900;
+    padding:8px 10px;
+    border-radius:16px;
+    transition:0.2s;
+  }
+
+  .navItem i{font-size:18px;}
+  .navItem.active{color:#2563eb;background:#eef2ff;}
+  body.dark #search, body.dark #sort, body.dark #filter{
+    background: transparent;
+    border: none;
+    
+  }
+</style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="topHeader">
+    <div class="headerRow">
+      <a class="backBtn" href="https://aniket-developer-001.github.io/BimaCare/home.html"><i class="fa-solid fa-arrow-left"></i></a>
+      <div class="title">All Insurance</div>
+      <div class="headerIcon"><i class="fa-solid fa-shield-heart"></i></div>
+    </div>
+
+    <div class="searchWrap">
+      <div class="searchBox">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input id="search" type="text" placeholder="Search insurance..." />
+      </div>
+    </div>
+  </header>
+
+  <!-- FILTER + SORT -->
+  <section class="controls">
+    <div class="controlBox">
+      <label><i class="fa fa-filter"></i> Filter</label>
+      <select id="filter">
+        <option value="all">All Plans</option>
+        <option value="life">Life Insurance</option>
+        <option value="health">Health Insurance</option>
+        <option value="term">Term Insurance</option>
+        <option value="pension">Pension</option>
+        <option value="child">Child Plan</option>
+      </select>
+    </div>
+
+    <div class="controlBox">
+      <label><i class="fa fa-arrows-v"></i> Sort</label>
+      <select id="sort">
+        <option value="popular">Popular</option>
+        <option value="premiumLow">Premium Low → High</option>
+        <option value="premiumHigh">Premium High → Low</option>
+        <option value="interestHigh">Interest High → Low</option>
+      </select>
+    </div>
+  </section>
+
+  <!-- LIST -->
+  <main class="list" id="list"></main>
+
+ 
+  <!-- BOTTOM NAV -->
+  <nav class="bottomNav">
+    <a class="navItem" href="https://aniket-developer-001.github.io/BimaCare/home.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
+    <a class="navItem active" href="https://aniket-developer-001.github.io/BimaCare/insurance.html"><i class="fa-solid fa-shield"></i><span>Insurance</span></a>
+    <a class="navItem" href="https://aniket-developer-001.github.io/BimaCare/update.html"><i class="fa-solid fa-bullhorn"></i><span>Updates</span></a>
+    <a class="navItem" href="https://aniket-developer-001.github.io/BimaCare/reminder.html"><i class="fa-solid fa-clock"></i><span>Reminder</span></a>
+    <a class="navItem" href="https://aniket-developer-001.github.io/BimaCare/account.html"><i class="fa-solid fa-user"></i><span>Account</span></a>
+  </nav>
+
+
+<script>
+/* ===========================
+   SIMPLE DARK MODE LOADER
+   =========================== */
+
+const THEME_KEY = "dark_mode"; // localStorage key
+
+function loadThemeFromStorage() {
+  const mode = localStorage.getItem(THEME_KEY);
+  
+  if (mode === "yes") {
+    document.body.classList.add("dark");
+  } else {
+    document.body.classList.remove("dark");
+  }
+}
+
+/* Run when page loads */
+document.addEventListener("DOMContentLoaded", loadThemeFromStorage);
+  const INSURANCE_LIST = [
+    { id:1, type:"life", title:"LIC Jeevan Anand", premium:8233, interest:13.82,
+      image:"https://images.unsplash.com/photo-1554224154-26032ffc0d07?q=80&w=1400&auto=format&fit=crop",
+      desc:"A popular long-term plan with maturity + life cover benefits.",
+      tags:["Fast Approval","Secure","High p.a"]
+    },
+    { id:2, type:"life", title:"LIC Jeevan Labh", premium:6540, interest:12.60,
+      image:"https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?q=80&w=1400&auto=format&fit=crop",
+      desc:"Limited premium paying plan with guaranteed additions and bonuses.",
+      tags:["Bonus","Trusted","Top Plan"]
+    },
+    { id:3, type:"life", title:"LIC New Endowment", premium:4999, interest:11.90,
+      image:"https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=1400&auto=format&fit=crop",
+      desc:"Safe endowment plan for savings + protection for family.",
+      tags:["Safe","Savings","Family"]
+    },
+    { id:4, type:"life", title:"LIC Money Back", premium:3699, interest:11.40,
+      image:"https://images.unsplash.com/photo-1556742400-b5c8a9a7f6f0?q=80&w=1400&auto=format&fit=crop",
+      desc:"Periodic survival benefits + maturity value with insurance cover.",
+      tags:["MoneyBack","Periodic","Popular"]
+    },
+    { id:5, type:"health", title:"Health Insurance Plus", premium:1299, interest:10.20,
+      image:"https://images.unsplash.com/photo-1580281657527-47f249e8f6b8?q=80&w=1400&auto=format&fit=crop",
+      desc:"Medical coverage plan with hospitalization support.",
+      tags:["Hospital","Cashless","Quick"]
+    },
+    { id:6, type:"term", title:"Term Life Secure", premium:899, interest:9.50,
+      image:"https://images.unsplash.com/photo-1580519542036-c47de6196ba5?q=80&w=1400&auto=format&fit=crop",
+      desc:"High life cover with low premium for maximum protection.",
+      tags:["Low Premium","High Cover","Best"]
+    },
+    { id:7, type:"child", title:"Child Future Plan", premium:2499, interest:10.90,
+      image:"https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?q=80&w=1400&auto=format&fit=crop",
+      desc:"Child education + future protection with long-term returns.",
+      tags:["Child","Education","Future"]
+    },
+    { id:8, type:"pension", title:"Pension Guarantee Plan", premium:5200, interest:12.10,
+      image:"https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=1400&auto=format&fit=crop",
+      desc:"Retirement pension plan with guaranteed annuity options.",
+      tags:["Retirement","Guaranteed","Secure"]
+    }
+  ];
+
+  const list = document.getElementById("list");
+  const search = document.getElementById("search");
+  const filter = document.getElementById("filter");
+  const sort = document.getElementById("sort");
+
+  function formatINR(num){
+    return "₹" + Number(num).toLocaleString("en-IN");
+  }
+
+  function openInsurance(id){
+    localStorage.setItem("selected_insurance_id", id);
+    window.location.href = "https://aniket-developer-001.github.io/BimaCare/view.html";
+  }
+
+  function render(){
+    const q = search.value.trim().toLowerCase();
+    const f = filter.value;
+    const s = sort.value;
+
+    let data = [...INSURANCE_LIST];
+
+    // filter
+    if(f !== "all"){
+      data = data.filter(p => p.type === f);
+    }
+
+    // search
+    if(q){
+      data = data.filter(p =>
+        p.title.toLowerCase().includes(q) ||
+        p.desc.toLowerCase().includes(q)
+      );
+    }
+
+    // sort
+    if(s === "premiumLow") data.sort((a,b)=>a.premium - b.premium);
+    if(s === "premiumHigh") data.sort((a,b)=>b.premium - a.premium);
+    if(s === "interestHigh") data.sort((a,b)=>b.interest - a.interest);
+
+    // render
+    if(data.length === 0){
+      list.innerHTML = `<div class="empty"><i class="fa-solid fa-circle-info"></i> No insurance found</div>`;
+      return;
+    }
+
+    list.innerHTML = data.map(p => `
+      <div class="plan" onclick="openInsurance(${p.id})">
+        <img class="planImg" src="${p.image}" alt="${p.title}">
+        <div class="planBody">
+          <div class="planTitleRow">
+            <div class="planTitle">${p.title}</div>
+            <button class="viewBtn" type="button">
+              View <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+
+          <div class="meta">
+            <div class="pill"><i class="fa-solid fa-indian-rupee-sign"></i> Monthly: <b>${formatINR(p.premium)}</b></div>
+            <div class="pill"><i class="fa-solid fa-chart-line"></i> Interest: <b>${p.interest}%</b> p.a.</div>
+          </div>
+
+          <div class="desc">${p.desc}</div>
+
+          <div class="tags">
+            <div class="tag"><i class="fa-solid fa-bolt"></i> ${p.tags[0]}</div>
+            <div class="tag"><i class="fa-solid fa-shield"></i> ${p.tags[1]}</div>
+            <div class="tag"><i class="fa-solid fa-check"></i> ${p.tags[2]}</div>
+          </div>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  search.addEventListener("input", render);
+  filter.addEventListener("change", render);
+  sort.addEventListener("change", render);
+
+  render();
+</script>
+</body>
+</html>

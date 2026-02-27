@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>All Insurance Providers</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link rel="stylesheet" href="main.css">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;}
+    body{background:#f4f7ff;color:#0A1A3C;padding-bottom:40px;}
+    a{text-decoration:none;color:inherit;}
+#body{
+  padding:14px;
+}
+    /* ===== Header ===== */
+      .topHeader{
+    width:100%;
+    background:#0A1A3C;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:14px 16px;
+    position:sticky;
+    top:0;
+    z-index:100;
+    border-bottom:1px solid rgba(255,255,255,0.12);
+  }
+  .topHeader h2{font-size:18px;font-weight:1000;}
+  .topHeader a{
+    color:#fff;text-decoration:none;
+    width:42px;height:42px;border-radius:16px;
+    display:flex;align-items:center;justify-content:center;
+    background:rgba(255,255,255,0.12);
+    border:1px solid rgba(255,255,255,0.14);
+  }
+
+    .badge{
+      padding:10px 12px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.10);
+      border:1px solid rgba(255,255,255,0.18);
+      font-size:12px;
+      font-weight:1100;
+      color:#fff;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      white-space:nowrap;
+    }
+
+    /* ===== Layout ===== */
+    .wrap{
+      width:100%;
+      max-width:650px;
+      margin:0 auto;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+
+    /* ===== Search Card ===== */
+    .card{
+      background:#fff;
+      border-radius:22px;
+      padding:14px;
+      border:1px solid rgba(0,0,0,0.06);
+      box-shadow:0 16px 40px rgba(0,0,0,0.06);
+    }
+
+    .searchTitle{
+      font-size:13px;
+      font-weight:1200;
+      margin-bottom:10px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      color:#0A1A3C;
+    }
+
+    .searchRow{
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+
+    .searchBox{
+      flex:1;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:14px 14px;
+      border-radius:18px;
+      background:linear-gradient(180deg,#f8fbff,#f3f7ff);
+      border:1px solid rgba(37,99,235,0.16);
+      box-shadow:0 10px 25px rgba(37,99,235,0.08);
+      transition:.2s ease;
+    }
+
+    .searchBox:focus-within{
+      border:1px solid rgba(37,99,235,0.35);
+      transform:translateY(-1px);
+    }
+
+    .searchBox i{
+      font-size:16px;
+      color:#2563eb;
+    }
+
+    .searchBox input{
+      width:100%;
+      border:none;
+      outline:none;
+      background:transparent;
+      font-size:14px;
+      font-weight:1100;
+      color:#0A1A3C;
+    }
+
+    .smallNote{
+      margin-top:10px;
+      font-size:12px;
+      font-weight:900;
+      color:#64748b;
+      line-height:1.5;
+    }
+
+    /* ===== Providers List ===== */
+    .grid{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:12px;
+    }
+
+    .provider{
+      background:#fff;
+      border-radius:22px;
+      padding:14px;
+      border:1px solid rgba(0,0,0,0.06);
+      box-shadow:0 16px 40px rgba(0,0,0,0.06);
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      justify-content:space-between;
+    }
+
+    .pLeft{
+      display:flex;
+      gap:12px;
+      flex:1;
+    }
+
+    .logo{
+      width:52px;height:52px;
+      border-radius:18px;
+      background:linear-gradient(135deg,#2563eb,#7c3aed);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#fff;
+      font-size:20px;
+      flex-shrink:0;
+      box-shadow:0 16px 40px rgba(37,99,235,0.25);
+    }
+
+    .pInfo h3{
+      font-size:14px;
+      font-weight:1200;
+      margin-bottom:4px;
+    }
+
+    .metaRow{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:6px;
+    }
+
+    .tag{
+      padding:7px 10px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:1100;
+      border:1px solid rgba(0,0,0,0.08);
+      background:#f8fafc;
+      color:#0A1A3C;
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+    .tag i{color:#2563eb;}
+
+    .desc{
+      margin-top:8px;
+      font-size:12px;
+      font-weight:900;
+      color:#64748b;
+      line-height:1.5;
+    }
+
+    .pRight{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      align-items:flex-end;
+      flex-shrink:0;
+    }
+
+    .wishBtn{
+      width:44px;height:44px;
+      border-radius:16px;
+      border:1px solid rgba(0,0,0,0.06);
+      background:#f8fafc;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:18px;
+      transition:.2s ease;
+    }
+    .wishBtn:active{transform:scale(.97);}
+    .wishBtn i{color:#64748b;}
+    .wishBtn.active{
+      background:rgba(239,68,68,0.10);
+      border:1px solid rgba(239,68,68,0.18);
+    }
+    .wishBtn.active i{color:#ef4444;}
+
+    .visitBtn{
+      border:none;
+      cursor:pointer;
+      padding:11px 12px;
+      border-radius:16px;
+      font-size:12px;
+      font-weight:1100;
+      color:#fff;
+      background:linear-gradient(135deg,#0ea5e9,#2563eb);
+      box-shadow:0 16px 40px rgba(37,99,235,0.20);
+      display:flex;
+      align-items:center;
+      gap:8px;
+      white-space:nowrap;
+      transition:.2s ease;
+    }
+    .visitBtn:active{transform:scale(.98);}
+
+    .empty{
+      text-align:center;
+      padding:20px 10px;
+      font-size:13px;
+      font-weight:1000;
+      color:#64748b;
+      line-height:1.6;
+    } .proOverlay{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100vh;
+  background:rgba(0,0,0,0.45);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:99999;
+  padding:20px;
+}
+
+.proBox{
+  width:100%;
+  max-width:380px;
+  background:#fff;
+  padding:26px 20px;
+  border-radius:22px;
+  text-align:center;
+  box-shadow:0 30px 60px rgba(0,0,0,0.25);
+  animation:fadeUp .25s ease;
+}
+
+.proIcon{
+  font-size:40px;
+  margin-bottom:10px;
+}
+
+.proBox h3{
+  font-size:17px;
+  font-weight:1000;
+  margin-bottom:6px;
+  color:#0A1A3C;
+}
+
+.proBox p{
+  font-size:13px;
+  font-weight:900;
+  color:#475569;
+  margin-bottom:18px;
+}
+
+#proButtons{
+  display:flex;
+  gap:10px;
+}
+
+.proBtn{
+  flex:1;
+  padding:12px;
+  border:none;
+  border-radius:14px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.proPrimary{
+  background:#2563eb;
+  color:#fff;
+}
+
+.proDanger{
+  background:#dc2626;
+  color:#fff;
+}
+
+.proGhost{
+  background:#f1f5ff;
+  border:1px solid rgba(37,99,235,0.25);
+  color:#0A1A3C;
+}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(20px);}
+  to{opacity:1;transform:translateY(0);}
+}body.dark .searchTitle{
+  color: #fff;
+}
+  </style>
+</head>
+
+<body>
+
+  <!-- Header -->
+   <header class="topHeader">
+    <a href="https://aniket-developer-001.github.io/BimaCare/home.html"><i class="fa-solid fa-arrow-left"></i></a>
+    <h2>Insurance Providers</h2>
+    <a href="#" id="clearBtn" title="Logout"><i class="fa-solid fa-shield-heart"></i></a>
+  </header>
+<div id="body">
+  <div class="wrap">
+
+    <!-- Search -->
+    <div class="card">
+      <div class="searchTitle">
+        <i class="fa-solid fa-magnifying-glass"></i> Search Provider
+      </div>
+
+      <div class="searchRow">
+        <div class="searchBox">
+          <i class="fa-solid fa-filter"></i>
+          <input id="search" type="text" placeholder="Search provider name..."/>
+        </div>
+      </div>
+
+      <div class="smallNote">
+        Tip: Search like <b>LIC</b>, <b>HDFC</b>, <b>Star Health</b>, <b>Motor</b>, <b>Life</b>
+      </div>
+    </div>
+
+    <!-- Providers -->
+    <div class="grid" id="providersGrid"></div>
+
+  </div>
+<!-- Popup -->
+<div id="proPopup" class="proOverlay">
+  <div class="proBox">
+    <div class="proIcon" id="proIcon"></div>
+    <h3 id="proTitle"></h3>
+    <p id="proMessage"></p>
+    <div id="proButtons"></div>
+  </div>
+</div>
+</div>
+<script>
+/* ===========================
+   SIMPLE DARK MODE LOADER
+   =========================== */
+
+const THEME_KEY = "dark_mode"; // localStorage key
+
+function loadThemeFromStorage() {
+  const mode = localStorage.getItem(THEME_KEY);
+  
+  if (mode === "yes") {
+    document.body.classList.add("dark");
+  } else {
+    document.body.classList.remove("dark");
+  }
+}
+
+/* Run when page loads */
+document.addEventListener("DOMContentLoaded", loadThemeFromStorage);
+const proPopup = document.getElementById("proPopup");
+const proTitle = document.getElementById("proTitle");
+const proMessage = document.getElementById("proMessage");
+const proIcon = document.getElementById("proIcon");
+const proButtons = document.getElementById("proButtons");
+
+function closePopup() {
+  proPopup.style.display = "none";
+}
+
+function showPopup({ title, message, icon, buttons }) {
+  proTitle.innerText = title;
+  proMessage.innerText = message;
+  proIcon.innerHTML = icon;
+  proButtons.innerHTML = buttons;
+  proPopup.style.display = "flex";
+}
+  const providersGrid = document.getElementById("providersGrid");
+  const search = document.getElementById("search");
+
+  const WISHLIST_KEY = "insurance_wishlisted_providers";
+
+  const providers = [
+    {
+      id: "lic",
+      name: "LIC (Life Insurance Corporation of India)",
+      category: "Life Insurance",
+      rating: 4.7,
+      icon: "fa-landmark",
+      website: "https://licindia.in",
+      desc: "India’s most trusted life insurance brand. Great for long-term plans and traditional policies."
+    },
+    {
+      id: "hdfc-life",
+      name: "HDFC Life",
+      category: "Life Insurance",
+      rating: 4.6,
+      icon: "fa-building-columns",
+      website: "https://www.hdfclife.com",
+      desc: "Popular private life insurer with term plans, ULIPs, and digital claim process."
+    },
+    {
+      id: "icici-pru",
+      name: "ICICI Prudential Life",
+      category: "Life Insurance",
+      rating: 4.5,
+      icon: "fa-shield-heart",
+      website: "https://www.iciciprulife.com",
+      desc: "Strong term insurance options with flexible riders and good customer support."
+    },
+    {
+      id: "sbi-life",
+      name: "SBI Life",
+      category: "Life Insurance",
+      rating: 4.4,
+      icon: "fa-piggy-bank",
+      website: "https://www.sbilife.co.in",
+      desc: "A strong bank-backed insurer with popular savings and term plans."
+    },
+    {
+      id: "max-life",
+      name: "Max Life Insurance",
+      category: "Life Insurance",
+      rating: 4.5,
+      icon: "fa-user-shield",
+      website: "https://www.maxlifeinsurance.com",
+      desc: "Known for good term plan coverage and smooth digital policy experience."
+    },
+    {
+      id: "tata-aia",
+      name: "Tata AIA Life Insurance",
+      category: "Life Insurance",
+      rating: 4.4,
+      icon: "fa-hand-holding-heart",
+      website: "https://www.tataaia.com",
+      desc: "Premium brand for term + savings plans with strong service."
+    },
+    {
+      id: "star-health",
+      name: "Star Health & Allied Insurance",
+      category: "Health Insurance",
+      rating: 4.6,
+      icon: "fa-hospital",
+      website: "https://www.starhealth.in",
+      desc: "One of India’s top health insurance companies with wide hospital network."
+    },
+    {
+      id: "niva-bupa",
+      name: "Niva Bupa Health Insurance",
+      category: "Health Insurance",
+      rating: 4.5,
+      icon: "fa-stethoscope",
+      website: "https://www.nivabupa.com",
+      desc: "Fast cashless claim process with strong family floater health plans."
+    },
+    {
+      id: "care-health",
+      name: "Care Health Insurance",
+      category: "Health Insurance",
+      rating: 4.4,
+      icon: "fa-kit-medical",
+      website: "https://www.careinsurance.com",
+      desc: "Good health insurance plans with add-ons and strong customer options."
+    },
+    {
+      id: "hdfc-ergo",
+      name: "HDFC ERGO",
+      category: "Health + Motor",
+      rating: 4.5,
+      icon: "fa-car-burst",
+      website: "https://www.hdfcergo.com",
+      desc: "Top company for car/bike insurance + health plans. Good digital services."
+    },
+    {
+      id: "icici-lombard",
+      name: "ICICI Lombard",
+      category: "Motor + Health",
+      rating: 4.5,
+      icon: "fa-car",
+      website: "https://www.icicilombard.com",
+      desc: "Popular for motor insurance and claim support with good app experience."
+    },
+    {
+      id: "bajaj-allianz",
+      name: "Bajaj Allianz",
+      category: "Motor + Health",
+      rating: 4.4,
+      icon: "fa-motorcycle",
+      website: "https://www.bajajallianz.com",
+      desc: "Trusted insurer with motor + health plans and fast service."
+    },
+    {
+      id: "new-india",
+      name: "The New India Assurance",
+      category: "General Insurance",
+      rating: 4.2,
+      icon: "fa-globe",
+      website: "https://www.newindia.co.in",
+      desc: "Government-owned general insurance company for health, motor, travel, etc."
+    },
+    {
+      id: "oriental",
+      name: "Oriental Insurance",
+      category: "General Insurance",
+      rating: 4.1,
+      icon: "fa-shield",
+      website: "https://orientalinsurance.org.in",
+      desc: "Public sector insurer offering motor, health, travel and commercial insurance."
+    },
+    {
+      id: "united-india",
+      name: "United India Insurance",
+      category: "General Insurance",
+      rating: 4.1,
+      icon: "fa-umbrella",
+      website: "https://uiic.co.in",
+      desc: "Public sector insurer with wide coverage options across India."
+    }
+  ];
+
+  function getWishlist(){
+    return JSON.parse(localStorage.getItem(WISHLIST_KEY) || "[]");
+  }
+
+  function saveWishlist(list){
+    localStorage.setItem(WISHLIST_KEY, JSON.stringify(list));
+  }
+
+  function isWishlisted(id){
+    return getWishlist().includes(id);
+  }
+
+  function toggleWishlist(id){
+    let list = getWishlist();
+    if(list.includes(id)){
+      list = list.filter(x => x !== id);
+    }else{
+      list.push(id);
+    }
+    saveWishlist(list);
+renderProviders();
+
+if (list.includes(id)) {
+  showPopup({
+  title: "Item Wishlisted",
+  message: "Itrm Added to Wishlist",
+  icon: '<i class="fa-solid fa-heart" style="color:red;"></i>',
+  buttons: `
+      <button class="proBtn proPrimary" onclick="closePopup()">Close</button>
+    `
+});
+} else {
+  showPopup({
+  title: "Item Remove",
+  message: "Item Remive from Wishlist",
+  icon: '<i class="fa-solid fa-heart-crack" style="color:red;"></i>',
+  buttons: `
+      <button class="proBtn proPrimary" onclick="closePopup()">Close</button>
+    `
+});
+}
+  }
+
+  function openWebsite(url){
+    window.open(url, "_blank");
+  }
+
+  function renderProviders(){
+    const q = search.value.trim().toLowerCase();
+    const filtered = providers.filter(p =>
+      p.name.toLowerCase().includes(q) ||
+      p.category.toLowerCase().includes(q)
+    );
+
+    if(filtered.length === 0){
+      providersGrid.innerHTML = `
+        <div class="empty">
+          <i class="fa-solid fa-circle-exclamation" style="font-size:22px;color:#2563eb;"></i><br><br>
+          No providers found.<br>
+          Try searching like: <b>LIC</b>, <b>HDFC</b>, <b>Star</b>
+        </div>
+      `;
+      return;
+    }
+
+    providersGrid.innerHTML = filtered.map(p => {
+      const active = isWishlisted(p.id);
+
+      return `
+        <div class="provider">
+          <div class="pLeft">
+            <div class="logo"><i class="fa-solid ${p.icon}"></i></div>
+
+            <div class="pInfo">
+              <h3>${p.name}</h3>
+
+              <div class="metaRow">
+                <div class="tag"><i class="fa-solid fa-layer-group"></i> ${p.category}</div>
+                <div class="tag"><i class="fa-solid fa-star"></i> ${p.rating} Rating</div>
+              </div>
+
+              <div class="desc">${p.desc}</div>
+            </div>
+          </div>
+
+          <div class="pRight">
+            <button class="wishBtn ${active ? "active" : ""}" onclick="toggleWishlist('${p.id}')">
+              <i class="fa-solid fa-heart"></i>
+            </button>
+
+            <button class="visitBtn" onclick="openWebsite('${p.website}')">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i> Visit
+            </button>
+          </div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  search.addEventListener("input", renderProviders);
+
+  renderProviders();
+</script>
+</body>
+</html>

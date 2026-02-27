@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Insurance Compare - BimaCare</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link rel="stylesheet" href="main.css">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;}
+  body{background:#f5f7ff;color:#0A1A3C;padding-bottom:20px;}
+
+  /* ===== Header ===== */
+  .topHeader{
+    width:100%;
+    background:#0A1A3C;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:14px 16px;
+    position:sticky;
+    top:0;
+    z-index:100;
+    border-bottom:1px solid rgba(255,255,255,0.12);
+  }
+  .topHeader h2{font-size:17px;font-weight:1000;}
+  .topHeader a{
+    color:#fff;text-decoration:none;
+    width:42px;height:42px;border-radius:16px;
+    display:flex;align-items:center;justify-content:center;
+    background:rgba(255,255,255,0.12);
+    border:1px solid rgba(255,255,255,0.14);
+  }
+
+  /* ===== Layout ===== */
+  .wrap{width:100%;max-width:1100px;margin:auto;padding:14px;}
+
+  .card{
+    background:#fff;
+    border-radius:22px;
+    padding:16px;
+    border:1px solid rgba(0,0,0,0.06);
+    box-shadow:0 16px 45px rgba(0,0,0,0.06);
+    margin-bottom:14px;
+  }
+
+  .title{
+    font-size:16px;
+    font-weight:1000;
+    margin-bottom:6px;
+  }
+  .sub{
+    font-size:13px;
+    font-weight:850;
+    color:#64748b;
+    line-height:1.45;
+  }
+
+  /* ===== Search + Filters ===== */
+  .topRow{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-top:12px;
+  }
+
+  .search{
+    flex:1;
+    min-width:210px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:12px 12px;
+    border-radius:16px;
+    border:1px solid rgba(0,0,0,0.10);
+    background:#fbfbff;
+  }
+  .search i{color:#2563eb;}
+  .search input{
+    width:100%;
+    border:none;
+    outline:none;
+    background:transparent;
+    font-size:14px;
+    font-weight:900;
+    color:#111;
+  }
+
+  .select{
+    min-width:170px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:12px 12px;
+    border-radius:16px;
+    border:1px solid rgba(0,0,0,0.10);
+    background:#fbfbff;
+  }
+  .select i{color:#7c3aed;}
+  .select select{
+    width:100%;
+    border:none;
+    outline:none;
+    background:transparent;
+    font-size:14px;
+    font-weight:950;
+    color:#111;
+    cursor:pointer;
+  }
+
+  /* ===== Insurance list ===== */
+  .list{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:12px;
+    margin-top:12px;
+  }
+  @media(min-width:860px){
+    .list{grid-template-columns:1fr 1fr;}
+  }
+
+  .insCard{
+    border:1px solid rgba(0,0,0,0.07);
+    border-radius:22px;
+    padding:14px;
+    background:linear-gradient(180deg,#ffffff,#fbfbff);
+    box-shadow:0 14px 30px rgba(0,0,0,0.05);
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+    position:relative;
+    overflow:hidden;
+  }
+
+  .badge{
+    position:absolute;
+    top:12px;
+    right:12px;
+    font-size:10px;
+    font-weight:1000;
+    padding:4px 5px;
+    border-radius:999px;
+    background:#eef2ff;
+    margin-left: 25px;
+    border:1px solid rgba(37,99,235,0.14);
+    color:#0A1A3C;
+  }
+
+  .logo{
+    width:56px;height:56px;border-radius:18px;
+    display:flex;align-items:center;justify-content:center;
+    background:rgba(37,99,235,0.10);
+    border:1px solid rgba(37,99,235,0.14);
+    flex-shrink:0;
+  }
+  .logo i{font-size:22px;color:#2563eb;}
+
+  .insCard h3{
+    font-size:14px;
+    font-weight:1000;
+    margin-bottom:4px;
+    margin-right: 30px;
+  }
+
+  .meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:8px;
+  }
+  .pill{
+    font-size:11px;
+    font-weight:950;
+    padding:7px 10px;
+    border-radius:999px;
+    background:#f1f5f9;
+    border:1px solid rgba(0,0,0,0.06);
+    color:#334155;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+  }
+
+  .btnRow{
+    display:flex;
+    gap:10px;
+    margin-top:12px;
+  }
+  .btn{
+    flex:1;
+    border:none;
+    outline:none;
+    cursor:pointer;
+    padding:12px 12px;
+    border-radius:16px;
+    font-size:13px;
+    font-weight:1000;
+    transition:0.2s;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+  }
+  .btn:active{transform:scale(0.985);}
+
+  .btnPick{
+    background:#0A1A3C;
+    color:#fff;
+  }
+  .btnCompare{
+    background:linear-gradient(135deg,#2563eb,#7c3aed);
+    color:#fff;
+    box-shadow:0 16px 35px rgba(37,99,235,0.20);
+  }
+
+  /* ===== Compare Section ===== */
+  .compareGrid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:12px;
+    margin-top:12px;
+  }
+  @media(min-width:900px){
+    .compareGrid{grid-template-columns:1fr 1fr;}
+  }
+
+  .compareBox{
+    border:1px solid rgba(0,0,0,0.07);
+    border-radius:22px;
+    padding:14px;
+    background:#fbfbff;
+  }
+
+  .compareTop{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:10px;
+  }
+  .compareTop h4{
+    font-size:14px;
+    font-weight:1000;
+  }
+  .removeBtn{
+    width:40px;height:40px;border-radius:16px;
+    border:none;
+    cursor:pointer;
+    background:#fff;
+    border:1px solid rgba(0,0,0,0.08);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .removeBtn i{color:#e11d48;}
+
+  .row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    padding:10px 0;
+    border-bottom:1px dashed rgba(0,0,0,0.10);
+  }
+  .row:last-child{border-bottom:none;}
+  .k{
+    font-size:12px;
+    font-weight:950;
+    color:#64748b;
+  }
+  .v{
+    font-size:13px;
+    font-weight:1000;
+    color:#0A1A3C;
+    text-align:right;
+  }
+
+  .best{
+    border:2px solid rgba(34,197,94,0.35);
+    background:linear-gradient(180deg,#ffffff,#f0fdf4);
+  }
+  .bestTag{
+    margin-top:10px;
+    font-size:12px;
+    font-weight:1000;
+    color:#166534;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .bestTag i{color:#22c55e;}
+
+  .hint{
+    font-size:12.5px;
+    font-weight:850;
+    color:#475569;
+    line-height:1.5;
+    margin-top:8px;
+  }body.dark .insCard{
+    background: #0A1A3C;
+    background: black;
+color: #fff;
+  }body.dark .meta .pill{
+    background: #0A1A3C;
+color: #fff;
+  }
+
+</style>
+</head>
+
+<body>
+
+<header class="topHeader">
+  <a href="https://aniket-developer-001.github.io/BimaCare/home.html"><i class="fa-solid fa-arrow-left"></i></a>
+  <h2>Insurance Compare</h2>
+  <a href="https://aniket-developer-001.github.io/BimaCare/home.html"><i class="fa-solid fa-house"></i></a>
+</header>
+
+<main class="wrap">
+
+  <!-- TOP INFO -->
+  <section class="card">
+    <div class="title">Compare Insurance Plans</div>
+    <div class="sub">
+      Select any <b>2 plans</b> to compare premium, coverage, tenure, claim ratio and rating.
+      This helps users choose the best plan faster.
+    </div>
+
+    <div class="topRow">
+      <div class="search">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input id="searchInput" placeholder="Search insurance (LIC, Health, Term, Car...)">
+      </div>
+
+      <div class="select">
+        <i class="fa-solid fa-filter"></i>
+        <select id="typeFilter">
+          <option value="all">All Types</option>
+          <option value="life">Life Insurance</option>
+          <option value="health">Health Insurance</option>
+          <option value="term">Term Plan</option>
+          <option value="vehicle">Vehicle Insurance</option>
+        </select>
+      </div>
+
+      <div class="select">
+        <i class="fa-solid fa-arrow-up-wide-short"></i>
+        <select id="sortBy">
+          <option value="popular">Sort: Popular</option>
+          <option value="lowPremium">Lowest Premium</option>
+          <option value="highCoverage">Highest Coverage</option>
+          <option value="bestClaim">Best Claim Ratio</option>
+        </select>
+      </div>
+    </div>
+  </section>
+
+  <!-- LIST -->
+  <section class="card">
+    <div class="title">Available Plans</div>
+    <div class="sub">Tap “Pick” to select plan. Then click “Compare”.</div>
+
+    <div class="list" id="list"></div>
+  </section>
+
+  <!-- COMPARE -->
+  <section class="card" id="compareSection" style="display:none;">
+    <div class="title">Comparison Result</div>
+    <div class="sub">We highlight the best pick based on coverage + claim + premium balance.</div>
+
+    <div class="compareGrid" id="compareGrid"></div>
+
+    <div class="hint">
+      <b>Note:</b> This is an estimated comparison for learning. Final premium & benefits depend on age, city, health and company rules.
+    </div>
+  </section>
+
+</main>
+
+<script>
+/* ===========================
+   SIMPLE DARK MODE LOADER
+   =========================== */
+
+const THEME_KEY = "dark_mode"; // localStorage key
+
+function loadThemeFromStorage() {
+  const mode = localStorage.getItem(THEME_KEY);
+  
+  if (mode === "yes") {
+    document.body.classList.add("dark");
+  } else {
+    document.body.classList.remove("dark");
+  }
+}
+
+/* Run when page loads */
+document.addEventListener("DOMContentLoaded", loadThemeFromStorage);
+/* ==========================
+   INSURANCE COMPARE SYSTEM
+========================== */
+
+const INSURANCES = [
+  {
+    id: 1,
+    name: "LIC Jeevan Anand",
+    type: "life",
+    premium: 1450,
+    coverage: 1200000,
+    tenure: 20,
+    claim: 98.2,
+    rating: 4.7,
+    popular: 98
+  },
+  {
+    id: 2,
+    name: "LIC Jeevan Labh",
+    type: "life",
+    premium: 1650,
+    coverage: 1500000,
+    tenure: 16,
+    claim: 97.5,
+    rating: 4.6,
+    popular: 95
+  },
+  {
+    id: 3,
+    name: "Star Health Family Plan",
+    type: "health",
+    premium: 2100,
+    coverage: 500000,
+    tenure: 1,
+    claim: 93.1,
+    rating: 4.3,
+    popular: 90
+  },
+  {
+    id: 4,
+    name: "HDFC Life Click 2 Protect",
+    type: "term",
+    premium: 990,
+    coverage: 5000000,
+    tenure: 30,
+    claim: 99.0,
+    rating: 4.8,
+    popular: 97
+  },
+  {
+    id: 5,
+    name: "ICICI Lombard Car Insurance",
+    type: "vehicle",
+    premium: 650,
+    coverage: 350000,
+    tenure: 1,
+    claim: 92.2,
+    rating: 4.2,
+    popular: 85
+  },
+  {
+    id: 6,
+    name: "Bajaj Allianz Health Guard",
+    type: "health",
+    premium: 1850,
+    coverage: 700000,
+    tenure: 1,
+    claim: 94.8,
+    rating: 4.4,
+    popular: 88
+  }
+];
+
+const list = document.getElementById("list");
+const compareSection = document.getElementById("compareSection");
+const compareGrid = document.getElementById("compareGrid");
+
+const searchInput = document.getElementById("searchInput");
+const typeFilter = document.getElementById("typeFilter");
+const sortBy = document.getElementById("sortBy");
+
+let selectedA = null;
+let selectedB = null;
+
+/* ===== Load saved selection ===== */
+try{
+  const saved = JSON.parse(localStorage.getItem("compare_selected") || "null");
+  if(saved){
+    selectedA = saved.a || null;
+    selectedB = saved.b || null;
+  }
+}catch(e){}
+
+/* ===== Helpers ===== */
+function fmtINR(n){
+  return "₹" + Math.round(n).toLocaleString("en-IN");
+}
+function fmtCoverage(n){
+  if(n >= 10000000) return (n/10000000).toFixed(1) + " Cr";
+  if(n >= 100000) return (n/100000).toFixed(1) + " Lakh";
+  return "₹" + n.toLocaleString("en-IN");
+}
+
+function getTypeLabel(t){
+  if(t==="life") return "Life";
+  if(t==="health") return "Health";
+  if(t==="term") return "Term";
+  if(t==="vehicle") return "Vehicle";
+  return "Insurance";
+}
+
+function saveSelection(){
+  localStorage.setItem("compare_selected", JSON.stringify({a:selectedA, b:selectedB}));
+}
+
+function pickPlan(id){
+  if(selectedA === id) return;
+  if(selectedB === id) return;
+
+  if(!selectedA) selectedA = id;
+  else if(!selectedB) selectedB = id;
+  else{
+    // replace older A
+    selectedA = selectedB;
+    selectedB = id;
+  }
+
+  saveSelection();
+  render();
+  renderCompare();
+}
+
+function removePick(slot){
+  if(slot==="a") selectedA = null;
+  if(slot==="b") selectedB = null;
+  saveSelection();
+  render();
+  renderCompare();
+}
+
+function getFiltered(){
+  const q = (searchInput.value || "").toLowerCase().trim();
+  const type = typeFilter.value;
+
+  let arr = [...INSURANCES];
+
+  if(type !== "all"){
+    arr = arr.filter(x => x.type === type);
+  }
+
+  if(q){
+    arr = arr.filter(x => x.name.toLowerCase().includes(q));
+  }
+
+  const sort = sortBy.value;
+
+  if(sort === "popular"){
+    arr.sort((a,b)=> b.popular - a.popular);
+  }
+  if(sort === "lowPremium"){
+    arr.sort((a,b)=> a.premium - b.premium);
+  }
+  if(sort === "highCoverage"){
+    arr.sort((a,b)=> b.coverage - a.coverage);
+  }
+  if(sort === "bestClaim"){
+    arr.sort((a,b)=> b.claim - a.claim);
+  }
+
+  return arr;
+}
+
+/* ===== Render List ===== */
+function render(){
+  const arr = getFiltered();
+
+  list.innerHTML = arr.map(x => {
+    const isPicked = (x.id === selectedA || x.id === selectedB);
+
+    return `
+      <div class="insCard">
+        <div class="badge">${getTypeLabel(x.type)}</div>
+
+        <div class="logo">
+          <i class="fa-solid fa-shield-heart"></i>
+        </div>
+
+        <div style="flex:1;">
+          <h3>${x.name}</h3>
+
+          <div class="meta">
+            <div class="pill"><i class="fa-solid fa-indian-rupee-sign"></i> ${fmtINR(x.premium)}/mo</div>
+            <div class="pill"><i class="fa-solid fa-umbrella"></i> ${fmtCoverage(x.coverage)}</div>
+            <div class="pill"><i class="fa-solid fa-calendar-days"></i> ${x.tenure} yrs</div>
+            <div class="pill"><i class="fa-solid fa-chart-line"></i> Claim ${x.claim}%</div>
+            <div class="pill"><i class="fa-solid fa-star"></i> ${x.rating}</div>
+          </div>
+
+          <div class="btnRow">
+            <button class="btn btnPick" onclick="pickPlan(${x.id})">
+              ${isPicked ? '<i class="fa-solid fa-circle-check"></i> Picked' : '<i class="fa-solid fa-hand-pointer"></i> Pick'}
+            </button>
+
+            <button class="btn btnCompare" onclick="renderCompare(true)">
+              <i class="fa-solid fa-code-compare"></i> Compare
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+/* ===== Compare Render ===== */
+function scorePlan(p){
+  // Balanced score: coverage high + claim high + premium low + rating
+  const cov = p.coverage / 100000; // normalize
+  const prem = 5000 / p.premium; // lower premium => higher
+  const claim = p.claim;
+  const rating = p.rating * 20;
+
+  return (cov * 1.2) + (prem * 30) + (claim * 1.1) + (rating * 0.8);
+}
+
+function renderCompare(forceScroll=false){
+  if(!selectedA || !selectedB){
+    compareSection.style.display = "none";
+    compareGrid.innerHTML = "";
+    return;
+  }
+
+  const A = INSURANCES.find(x => x.id === selectedA);
+  const B = INSURANCES.find(x => x.id === selectedB);
+
+  if(!A || !B){
+    compareSection.style.display = "none";
+    return;
+  }
+
+  const scoreA = scorePlan(A);
+  const scoreB = scorePlan(B);
+
+  const best = scoreA >= scoreB ? "A" : "B";
+
+  compareGrid.innerHTML = `
+    ${renderCompareBox(A, "a", best==="A")}
+    ${renderCompareBox(B, "b", best==="B")}
+  `;
+
+  compareSection.style.display = "block";
+
+  if(forceScroll){
+    compareSection.scrollIntoView({behavior:"smooth", block:"start"});
+  }
+}
+
+function renderCompareBox(p, slot, isBest){
+  return `
+    <div class="compareBox ${isBest ? "best" : ""}">
+      <div class="compareTop">
+        <h4>${p.name}</h4>
+        <button class="removeBtn" onclick="removePick('${slot}')">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="row"><div class="k">Type</div><div class="v">${getTypeLabel(p.type)}</div></div>
+      <div class="row"><div class="k">Monthly Premium</div><div class="v">${fmtINR(p.premium)}</div></div>
+      <div class="row"><div class="k">Coverage</div><div class="v">${fmtCoverage(p.coverage)}</div></div>
+      <div class="row"><div class="k">Tenure</div><div class="v">${p.tenure} Years</div></div>
+      <div class="row"><div class="k">Claim Ratio</div><div class="v">${p.claim}%</div></div>
+      <div class="row"><div class="k">Rating</div><div class="v">${p.rating} / 5</div></div>
+
+      ${isBest ? `
+        <div class="bestTag">
+          <i class="fa-solid fa-crown"></i> Best Pick (Balanced Plan)
+        </div>
+      ` : ""}
+    </div>
+  `;
+}
+
+/* ===== Events ===== */
+searchInput.addEventListener("input", ()=>{ render(); });
+typeFilter.addEventListener("change", ()=>{ render(); });
+sortBy.addEventListener("change", ()=>{ render(); });
+
+/* ===== Init ===== */
+render();
+renderCompare();
+
+/* ===== Expose functions ===== */
+window.pickPlan = pickPlan;
+window.removePick = removePick;
+window.renderCompare = renderCompare;
+
+</script>
+</body>
+</html>

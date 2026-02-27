@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Premium Reminder - BimaCare</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="main.css">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;}
+  body{background:#f5f7ff;color:#0A1A3C;padding-bottom:90px;}
+
+  /* ===== Header ===== */
+  .topHeader{
+    width:100%;
+    background:#0A1A3C;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:14px 16px;
+    position:sticky;
+    top:0;
+    z-index:100;
+    border-bottom:1px solid rgba(255,255,255,0.12);
+  }
+  .topHeader h2{font-size:18px;font-weight:1000;}
+  .topHeader a{
+    color:#fff;text-decoration:none;
+    width:42px;height:42px;border-radius:16px;
+    display:flex;align-items:center;justify-content:center;
+    background:rgba(255,255,255,0.12);
+    border:1px solid rgba(255,255,255,0.14);
+  }
+
+  /* ===== Main ===== */
+  .wrap{width:100%;max-width:920px;margin:auto;padding:14px;}
+
+  .card{
+    background:#fff;
+    border-radius:22px;
+    padding:14px;
+    border:1px solid rgba(0,0,0,0.06);
+    box-shadow:0 16px 45px rgba(0,0,0,0.06);
+    margin-bottom:14px;
+  }
+
+  .cardTitle{
+    font-size:15px;
+    font-weight:1000;
+    margin-bottom:12px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .cardTitle i{color:#2563eb;}
+
+  /* ===== Inputs ===== */
+  .grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:12px;
+  }
+  @media(min-width:700px){
+    .grid{grid-template-columns:1fr 1fr;}
+  }
+
+  .inputBox label{
+    display:block;
+    font-size:12px;
+    font-weight:950;
+    color:#334155;
+    margin-bottom:7px;
+  }
+
+  .inputWrap{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:12px 12px;
+    border-radius:16px;
+    border:1px solid rgba(0,0,0,0.10);
+    background:#fbfbff;
+    transition:0.2s;
+  }
+  .inputWrap:focus-within{
+    border-color:#2563eb;
+    box-shadow:0 0 0 4px rgba(37,99,235,0.14);
+    background:#fff;
+  }
+
+  .inputWrap i{color:#2563eb;font-size:16px;}
+
+  input, select{
+    width:100%;
+    border:none;
+    outline:none;
+    background:transparent;
+    font-size:14px;
+    font-weight:900;
+    color:#111;
+  }
+
+  /* ===== Buttons ===== */
+  .btnRow{
+    display:flex;
+    gap:10px;
+    margin-top:12px;
+  }.ab{
+    padding:18px;
+          border-radius:18px;
+          background:#f8faff;
+          border:1px dashed rgba(37,99,235,0.25);
+          text-align:center;
+          font-weight:950;
+          color:#475569;
+       
+  }
+  .btn{
+    flex:1;
+    border:none;
+    outline:none;
+    cursor:pointer;
+    padding:13px 14px;
+    border-radius:16px;
+    font-size:14px;
+    font-weight:1000;
+    transition:0.2s;
+  }
+  .btnPrimary{
+    background:linear-gradient(135deg,#2563eb,#7c3aed);
+    color:#fff;
+    box-shadow:0 16px 35px rgba(37,99,235,0.22);
+  }
+  .btnSoft{
+    background:#eef2ff;
+    color:#2563eb;
+    border:1px solid rgba(37,99,235,0.14);
+  }
+  .btn:active{transform:scale(0.985);}
+
+  /* ===== Reminder List ===== */
+  .listHeader{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:10px;
+  }
+  .listHeader h3{font-size:15px;font-weight:1000;}
+  .pill{
+    padding:8px 12px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:1000;
+    background:#0A1A3C;
+    color:#fff;
+  }
+
+  .remItem{
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    padding:14px;
+    border-radius:20px;
+    border:1px solid rgba(0,0,0,0.06);
+    background:#fff;
+    margin-bottom:12px;
+    box-shadow:0 12px 35px rgba(0,0,0,0.04);
+  }
+
+  .leftInfo{
+    flex:1;
+    min-width:0;
+  }
+  .remTitle{
+    font-size:14px;
+    font-weight:1000;
+    margin-bottom:6px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .remTitle span{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+
+  .meta{
+    font-size:12px;
+    font-weight:900;
+    color:#475569;
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+
+  .status{
+    margin-top:10px;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:8px 12px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:1000;
+  }
+  .due{background:#ffe4e6;color:#be123c;}
+  .upcoming{background:#fff7ed;color:#c2410c;}
+  .paid{background:#dcfce7;color:#166534;}
+
+  .rightActions{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    min-width:120px;
+  }
+
+  .actBtn{
+    width:100%;
+    border:none;
+    cursor:pointer;
+    padding:10px 12px;
+    border-radius:16px;
+    font-size:12px;
+    font-weight:1000;
+    transition:0.2s;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+  }
+  .editBtn{background:#eef2ff;color:#2563eb;border:1px solid rgba(37,99,235,0.14);}
+  .payBtn{background:#dcfce7;color:#166534;border:1px solid rgba(22,101,52,0.14);}
+  .delBtn{background:#ffe4e6;color:#be123c;border:1px solid rgba(190,18,60,0.14);}
+  .actBtn:active{transform:scale(0.985);}
+
+  /* ===== Bottom Nav ===== */
+  .bottomNav{
+    width:100%;
+    position:fixed;
+    bottom:0;
+    left:0;
+    background:#fff;
+    border-top:1px solid rgba(0,0,0,0.08);
+    display:flex;
+    justify-content:space-around;
+    padding:10px 8px;
+    z-index:999;
+  }
+  .navItem{
+    text-decoration:none;
+    color:#555;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:4px;
+    font-size:12px;
+    font-weight:900;
+    padding:8px 10px;
+    border-radius:16px;
+    transition:0.2s;
+  }
+  .navItem i{font-size:18px;}
+  .navItem.active{color:#2563eb;background:#eef2ff;}
+  body.dark .inputBox{
+    background: #0A1A3C;
+color: #fff;
+  }body.dark .inputWrap, body.dark .inputWrap input, body.dark #frequency, body.dark #resetBtn, body.dark .ab, body.dark .remItem{
+    background: black;
+    color: #fff;
+  }body.dark .inputBox label{
+    color: #fff;
+  }body.dark .inputWrap input, body.dark #frequency{
+    border-color: black;
+  }body.dark .meta span{
+    color: gray;
+  }
+</style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="topHeader">
+    <a href="https://aniket-developer-001.github.io/BimaCare/home.html"><i class="fa-solid fa-arrow-left"></i></a>
+    <h2>Premium Reminder</h2>
+    <a href="#" id="clearAllBtn" title="Clear All"><i class="fa-solid fa-trash"></i></a>
+  </header>
+
+  <main class="wrap">
+
+    <!-- ADD REMINDER -->
+    <section class="card">
+      <div class="cardTitle">
+        <i class="fa-solid fa-plus"></i> Add New Reminder
+      </div>
+
+      <div class="grid">
+        <div class="inputBox">
+          <label>Policy Name</label>
+          <div class="inputWrap">
+            <i class="fa-solid fa-file-shield"></i>
+            <input id="policyName" type="text" placeholder="LIC Jeevan Anand">
+          </div>
+        </div>
+
+        <div class="inputBox">
+          <label>Premium Amount (₹)</label>
+          <div class="inputWrap">
+            <i class="fa-solid fa-indian-rupee-sign"></i>
+            <input id="amount" type="number" placeholder="8233">
+          </div>
+        </div>
+
+        <div class="inputBox">
+          <label>Paying Frequency</label>
+          <div class="inputWrap">
+            <i class="fa-solid fa-repeat"></i>
+            <select id="frequency">
+              <option value="Monthly">Monthly</option>
+              <option value="Quarterly">Quarterly</option>
+              <option value="Half-Yearly">Half-Yearly</option>
+              <option value="Yearly">Yearly</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="inputBox">
+          <label>Next Due Date</label>
+          <div class="inputWrap">
+            <i class="fa-solid fa-calendar-check"></i>
+            <input id="dueDate" type="date">
+          </div>
+        </div>
+      </div>
+
+      <div class="btnRow">
+        <button class="btn btnPrimary" id="saveBtn">
+          Save Reminder <i class="fa-solid fa-arrow-right"></i>
+        </button>
+        <button class="btn btnSoft" id="resetBtn">
+          Reset <br /><i class="fa-solid fa-rotate"></i>
+        </button>
+      </div>
+    </section>
+
+    <!-- LIST -->
+    <section class="card">
+      <div class="listHeader">
+        <h3>Saved Reminders</h3>
+        <div class="pill" id="countPill">0</div>
+      </div>
+
+      <div id="list"></div>
+    </section>
+
+  </main>
+<!-- Popup -->
+<div id="popup" style="position:fixed;top:0;left:0;width:100%;height:100%;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.4);z-index:9999;">
+  <div style="background:#fff;padding:20px 24px;border-radius:16px;max-width:300px;text-align:center;box-shadow:0 8px 25px rgba(0,0,0,0.2);">
+    <div id="popupMessage" style="font-weight:900;color:#111;margin-bottom:16px;"></div>
+    <button onclick="closePopup()" style="padding:10px 18px;background:#2563eb;color:#fff;border:none;border-radius:12px;font-weight:900;cursor:pointer;">OK</button>
+  </div>
+</div>
+  <!-- NAV -->
+  <nav class="bottomNav">
+    <a class="navItem" href="https://aniket-developer-001.github.io/BimaCare/home.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
+    <a class="navItem" href="https://aniket-developer-001.github.io/BimaCare/insurance.html"><i class="fa-solid fa-shield"></i><span>Insurance</span></a>
+    <a class="navItem" href="https://aniket-developer-001.github.io/BimaCare/update.html"><i class="fa-solid fa-bullhorn"></i><span>Updates</span></a>
+    <a class="navItem active" href="https://aniket-developer-001.github.io/BimaCare/reminder.html"><i class="fa-solid fa-clock"></i><span>Reminder</span></a>
+    <a class="navItem" href="https://aniket-developer-001.github.io/BimaCare//account.html"><i class="fa-solid fa-user"></i><span>Account</span></a>
+  </nav>
+
+<script>
+/* ===========================
+   SIMPLE DARK MODE LOADER
+   =========================== */
+
+const THEME_KEY = "dark_mode"; // localStorage key
+
+function loadThemeFromStorage() {
+  const mode = localStorage.getItem(THEME_KEY);
+  
+  if (mode === "yes") {
+    document.body.classList.add("dark");
+  } else {
+    document.body.classList.remove("dark");
+  }
+}
+
+/* Run when page loads */
+document.addEventListener("DOMContentLoaded", loadThemeFromStorage);
+  /* =========================
+      PREMIUM REMINDER SYSTEM
+  ========================= */
+function showPopup(msg) {
+  document.getElementById("popupMessage").innerText = msg;
+  document.getElementById("popup").style.display = "flex";
+}
+
+function closePopup() {
+  document.getElementById("popup").style.display = "none";
+}
+  const LS_KEY = "bima_premium_reminders";
+
+  const policyName = document.getElementById("policyName");
+  const amount = document.getElementById("amount");
+  const frequency = document.getElementById("frequency");
+  const dueDate = document.getElementById("dueDate");
+
+  const list = document.getElementById("list");
+  const countPill = document.getElementById("countPill");
+
+  const saveBtn = document.getElementById("saveBtn");
+  const resetBtn = document.getElementById("resetBtn");
+  const clearAllBtn = document.getElementById("clearAllBtn");
+
+  let editId = null;
+
+  function getReminders(){
+    return JSON.parse(localStorage.getItem(LS_KEY) || "[]");
+  }
+
+  function setReminders(arr){
+    localStorage.setItem(LS_KEY, JSON.stringify(arr));
+  }
+
+  function resetForm(){
+    policyName.value = "";
+    amount.value = "";
+    frequency.value = "Monthly";
+    dueDate.value = "";
+    editId = null;
+    saveBtn.innerHTML = `Save Reminder <i class="fa-solid fa-arrow-right"></i>`;
+  }
+
+  function formatDate(dateStr){
+    if(!dateStr) return "No Date";
+    const d = new Date(dateStr);
+    return d.toLocaleDateString("en-IN", {day:"2-digit", month:"short", year:"numeric"});
+  }
+
+  function getStatus(dateStr, paid){
+    if(paid) return {text:"Paid", cls:"paid", icon:"fa-circle-check"};
+
+    const today = new Date();
+    today.setHours(0,0,0,0);
+
+    const due = new Date(dateStr);
+    due.setHours(0,0,0,0);
+
+    const diffDays = Math.ceil((due - today) / (1000*60*60*24));
+
+    if(diffDays < 0) return {text:"Due", cls:"due", icon:"fa-triangle-exclamation"};
+    if(diffDays <= 3) return {text:"Upcoming", cls:"upcoming", icon:"fa-clock"};
+    return {text:"Upcoming", cls:"upcoming", icon:"fa-calendar-days"};
+  }
+
+  function render(){
+    const reminders = getReminders();
+    countPill.innerText = reminders.length;
+
+    if(reminders.length === 0){
+      list.innerHTML = `
+        <div class="ab">
+          <i class="fa-regular fa-bell-slash" style="font-size:22px;color:#2563eb;"></i>
+          <div style="margin-top:10px;">No premium reminders yet</div>
+          <div style="font-size:12px;margin-top:4px;font-weight:800;">Add your first reminder above 👆</div>
+        </div>
+      `;
+      return;
+    }
+
+    list.innerHTML = reminders.map(r=>{
+      const st = getStatus(r.dueDate, r.paid);
+
+      return `
+        <div class="remItem">
+          <div class="leftInfo">
+            <div class="remTitle">
+              <i class="fa-solid fa-shield-heart" style="color:#2563eb;"></i>
+              <span>${r.policyName}</span>
+            </div>
+
+            <div class="meta">
+              <span><i class="fa-solid fa-indian-rupee-sign"></i> ₹${Number(r.amount).toLocaleString("en-IN")}</span>
+              <span><i class="fa-solid fa-repeat"></i> ${r.frequency}</span>
+              <span><i class="fa-solid fa-calendar-check"></i> ${formatDate(r.dueDate)}</span>
+            </div>
+
+            <div class="status ${st.cls}">
+              <i class="fa-solid ${st.icon}"></i> ${st.text}
+            </div>
+          </div>
+
+          <div class="rightActions">
+            <button class="actBtn editBtn" onclick="editReminder('${r.id}')">
+              <i class="fa-solid fa-pen"></i> Edit
+            </button>
+
+            <button class="actBtn payBtn" onclick="markPaid('${r.id}')">
+              <i class="fa-solid fa-circle-check"></i> Paid
+            </button>
+
+            <button class="actBtn delBtn" onclick="deleteReminder('${r.id}')">
+              <i class="fa-solid fa-trash"></i> Delete
+            </button>
+          </div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  saveBtn.addEventListener("click", ()=>{
+    const nameVal = policyName.value.trim();
+    const amtVal = amount.value.trim();
+    const dateVal = dueDate.value;
+
+if (nameVal.length < 3) {
+  showPopup("Enter policy name!");
+  return;
+}
+if (!amtVal || Number(amtVal) <= 0) {
+  showPopup("Enter valid amount!");
+  return;
+}
+if (!dateVal) {
+  showPopup("Select due date!");
+  return;
+}
+
+    let reminders = getReminders();
+
+    if(editId){
+      reminders = reminders.map(r=>{
+        if(r.id === editId){
+          return {
+            ...r,
+            policyName: nameVal,
+            amount: amtVal,
+            frequency: frequency.value,
+            dueDate: dateVal
+          };
+        }
+        return r;
+      });
+    }else{
+      reminders.unshift({
+        id: "REM_" + Date.now(),
+        policyName: nameVal,
+        amount: amtVal,
+        frequency: frequency.value,
+        dueDate: dateVal,
+        paid: false
+      });
+    }
+
+    setReminders(reminders);
+resetForm();
+render();
+showPopup("Reminder saved successfully! 🎉");
+  });
+
+  resetBtn.addEventListener("click", resetForm);
+
+  clearAllBtn.addEventListener("click", ()=>{
+    
+      localStorage.removeItem(LS_KEY);
+      render();
+    
+  });
+
+  /* ===== Global functions for buttons ===== */
+  window.deleteReminder = function(id){
+    let reminders = getReminders().filter(r => r.id !== id);
+    setReminders(reminders);
+    render();
+  }
+
+  window.editReminder = function(id){
+    const reminders = getReminders();
+    const r = reminders.find(x => x.id === id);
+    if(!r) return;
+
+    policyName.value = r.policyName;
+    amount.value = r.amount;
+    frequency.value = r.frequency;
+    dueDate.value = r.dueDate;
+
+    editId = r.id;
+    saveBtn.innerHTML = `Update Reminder <i class="fa-solid fa-rotate-right"></i>`;
+    window.scrollTo({top:0, behavior:"smooth"});
+  }
+
+  window.markPaid = function(id){
+    let reminders = getReminders().map(r=>{
+      if(r.id === id){
+        return {...r, paid:true};
+      }
+      return r;
+    });
+    setReminders(reminders);
+    render();
+  }
+
+  render();
+</script>
+</body>
+</html>

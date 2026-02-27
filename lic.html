@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LIC Plan Details - BimaCare</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link rel="stylesheet" href="main.css">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;}
+  body{background:#f5f7ff;color:#0A1A3C;padding-bottom:22px;}
+  a{color:inherit;text-decoration:none}
+
+  /* ===== Header ===== */
+  .topHeader{
+    width:100%;
+    background:#0A1A3C;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:14px 16px;
+    position:sticky;
+    top:0;
+    z-index:100;
+    border-bottom:1px solid rgba(255,255,255,0.12);
+  }
+  .topHeader h2{
+    font-size:16px;
+    font-weight:1000;
+    letter-spacing:0.2px;
+  }
+  .topHeader .iconBtn{
+    width:42px;height:42px;
+    border-radius:16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(255,255,255,0.12);
+    border:1px solid rgba(255,255,255,0.14);
+  }
+  .topHeader .iconBtn i{font-size:16px}
+
+  /* ===== Layout ===== */
+  .wrap{
+    width:100%;
+    max-width:980px;
+    margin:auto;
+    padding:14px;
+  }
+
+  .card{
+    background:#fff;
+    border-radius:22px;
+    padding:16px;
+    border:1px solid rgba(0,0,0,0.06);
+    box-shadow:0 16px 45px rgba(0,0,0,0.06);
+    margin-bottom:14px;
+  }
+
+  .title{
+    font-size:16px;
+    font-weight:1000;
+    margin-bottom:6px;
+  }
+  .sub{
+    font-size:13px;
+    font-weight:850;
+    color:#64748b;
+    line-height:1.45;
+  }
+
+  /* ===== Select ===== */
+  .selectWrap{
+    margin-top:14px;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+  .selectWrap label{
+    font-size:13px;
+    font-weight:1000;
+    color:#0A1A3C;
+  }
+
+  select{
+    width:100%;
+    border:1px solid rgba(15,23,42,0.12);
+    background:#fbfbff;
+    border-radius:18px;
+    padding:14px 14px;
+    outline:none;
+    font-size:14px;
+    font-weight:1000;
+    color:#0A1A3C;
+    transition:0.2s ease;
+  }
+  select:focus{
+    border-color:rgba(37,99,235,0.55);
+    box-shadow:0 0 0 4px rgba(37,99,235,0.12);
+  }
+
+  /* ===== Plan Top Box ===== */
+  .planBox{
+    margin-top:14px;
+    border-radius:22px;
+    border:1px solid rgba(15,23,42,0.10);
+    background:linear-gradient(180deg,#ffffff,#fbfbff);
+    padding:16px;
+    position:relative;
+    overflow:hidden;
+  }
+  .planBox::before{
+    content:"";
+    position:absolute;
+    left:0;top:0;
+    width:6px;height:100%;
+    background:#2563eb;
+    opacity:0.9;
+  }
+
+  .tag{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:9px 12px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:1000;
+    background:rgba(37,99,235,0.12);
+    border:1px solid rgba(37,99,235,0.18);
+    color:#1d4ed8;
+    margin-left:8px;
+  }
+
+  .planName{
+    margin-top:10px;
+    padding-left:8px;
+    font-size:18px;
+    font-weight:1100;
+    color:#0A1A3C;
+    line-height:1.2;
+  }
+
+  .planDesc{
+    padding-left:8px;
+    margin-top:6px;
+    font-size:13px;
+    font-weight:900;
+    color:#64748b;
+    line-height:1.5;
+  }
+
+  /* ===== Detail Cards ===== */
+  .detailsGrid{
+    margin-top:14px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    padding-left:8px;
+  }
+
+  .dCard{
+    background:#fff;
+    border-radius:20px;
+    border:1px solid rgba(15,23,42,0.10);
+    padding:14px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.04);
+  }
+
+  .dCard .k{
+    font-size:12px;
+    font-weight:1000;
+    color:#64748b;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .dCard .k i{color:#2563eb}
+
+  .dCard .v{
+    margin-top:6px;
+    font-size:15px;
+    font-weight:1100;
+    color:#0A1A3C;
+    line-height:1.3;
+  }
+
+  /* ===== Buttons ===== */
+  .btnRow{
+    margin-top:14px;
+    padding-left:8px;
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+
+  .btn{
+    border:none;
+    cursor:pointer;
+    padding:13px 16px;
+    border-radius:18px;
+    font-weight:1100;
+    font-size:13px;
+    transition:0.2s ease;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+  }
+
+  .btnPrimary{
+    background:#2563eb;
+    color:#fff;
+    flex:1;
+    min-width:160px;
+    box-shadow:0 14px 35px rgba(37,99,235,0.25);
+  }
+  .btnPrimary:hover{transform:translateY(-1px);}
+
+  .btnGhost{
+    background:#f1f5ff;
+    color:#0A1A3C;
+    border:1px solid rgba(37,99,235,0.18);
+    flex:1;
+    min-width:160px;
+  }
+
+  /* ===== Popup Modal ===== */
+  .modal{
+    position:fixed;
+    inset:0;
+    background:rgba(2,6,23,0.45);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:999;
+    padding:14px;
+  }
+  .modalBox{
+    width:100%;
+    max-width:520px;
+    background:#fff;
+    border-radius:22px;
+    padding:16px;
+    border:1px solid rgba(255,255,255,0.2);
+    box-shadow:0 30px 80px rgba(0,0,0,0.25);
+  }
+  .modalHead{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:10px;
+  }
+  .modalHead h3{
+    font-size:15px;
+    font-weight:1100;
+    color:#0A1A3C;
+  }
+  .closeBtn{
+    width:42px;height:42px;
+    border-radius:16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#f1f5ff;
+    border:1px solid rgba(37,99,235,0.18);
+    cursor:pointer;
+  }
+
+  .modalText{
+    font-size:13px;
+    font-weight:950;
+    color:#334155;
+    line-height:1.6;
+  }
+
+  .okBtn{
+    margin-top:14px;
+    width:100%;
+    padding:13px 16px;
+    border-radius:18px;
+    border:none;
+    cursor:pointer;
+    font-weight:1100;
+    font-size:13px;
+    background:#2563eb;
+    color:#fff;
+    box-shadow:0 14px 35px rgba(37,99,235,0.25);
+  }body.dark .planName, body.dark .dCard .v, body.dark #shareBtn{
+    color: #fff;
+  }body.dark .dCard, body.dark #shareBtn{
+    background: #0A1A3C;
+  }
+</style>
+</head>
+
+<body>
+
+<header class="topHeader">
+  <div class="iconBtn">
+    <a href="https://aniket-developer-001.github.io/BimaCare/home.html"><i class="fa-solid fa-arrow-left"></i></a>
+  </div>
+  <h2>LIC Plan Details</h2>
+  <div class="iconBtn"><i class="fa-solid fa-ellipsis-vertical"></i></div>
+</header>
+
+<main class="wrap">
+
+  <section class="card">
+    <div class="title">Select LIC Plan</div>
+    <div class="sub">Choose any plan to view details, wishlist, and share.</div>
+
+    <div class="selectWrap">
+      <label>LIC Plans</label>
+      <select id="planSelect">
+        <option value="512">512 - Bima Shree (Money-Back)</option>
+        <option value="715">715 - Jeevan Anand (Endowment)</option>
+        <option value="749">749 - Nivesh Plus (Unit Linked)</option>
+        <option value="858">858 - Jeevan Shanti (Pension)</option>
+        <option value="860">860 - Bima Jyoti (Endowment)</option>
+        <option value="871" selected>871 - Jeevan Utsav (Whole Life)</option>
+        <option value="873">873 - Index Plus (Market Linked)</option>
+        <option value="880">880 - Jan Suraksha (New 2026)</option>
+        <option value="881">881 - Bima Lakshmi (New 2026)</option>
+        <option value="886">886 - Protection Plus (New 2026)</option>
+        <option value="887">887 - Bima Kavach (New 2026)</option>
+        <option value="912">912 - Nav Jeevan Shree (New 2026)</option>
+        <option value="936">936 - Jeevan Labh (Endowment)</option>
+        <option value="945">945 - Jeevan Umang (Whole Life)</option>
+        <option value="954">954 - New Tech-Term (Term Insurance)</option>
+        <option value="955">955 - New Jeevan Amar (Term Insurance)</option>
+      </select>
+    </div>
+
+    <!-- Plan Details -->
+    <div class="planBox" id="planBox">
+
+      <div class="tag" id="planTag">
+        <i class="fa-solid fa-shield-heart"></i> Whole Life
+      </div>
+
+      <div class="planName" id="planName">871 - Jeevan Utsav</div>
+      <div class="planDesc" id="planDesc">
+        Whole life plan with guaranteed income after premium payment term.
+      </div>
+
+      <div class="detailsGrid">
+
+        <div class="dCard">
+          <div class="k"><i class="fa-solid fa-hashtag"></i> Plan Code</div>
+          <div class="v" id="dCode">871</div>
+        </div>
+
+        <div class="dCard">
+          <div class="k"><i class="fa-solid fa-layer-group"></i> Plan Type</div>
+          <div class="v" id="dType">Whole Life</div>
+        </div>
+
+        <div class="dCard">
+          <div class="k"><i class="fa-solid fa-gauge-high"></i> Risk Level</div>
+          <div class="v" id="dRisk">Low</div>
+        </div>
+
+        <div class="dCard">
+          <div class="k"><i class="fa-solid fa-coins"></i> Return / Bonus</div>
+          <div class="v" id="dReturn">Guaranteed Income</div>
+        </div>
+
+        <div class="dCard">
+          <div class="k"><i class="fa-solid fa-user-check"></i> Best For</div>
+          <div class="v" id="dBest">People who want lifetime income.</div>
+        </div>
+
+        <div class="dCard">
+          <div class="k"><i class="fa-solid fa-star"></i> Key Benefit</div>
+          <div class="v" id="dBenefit">Guaranteed yearly income + Life cover.</div>
+        </div>
+
+      </div>
+
+      <div class="btnRow">
+        <button class="btn btnPrimary" id="wishlistBtn">
+          <i class="fa-solid fa-heart"></i> Wishlist
+        </button>
+
+        <button class="btn btnGhost" id="shareBtn">
+          <i class="fa-solid fa-share-nodes"></i> Share
+        </button>
+      </div>
+
+    </div>
+
+  </section>
+
+</main>
+
+<!-- Popup Modal -->
+<div class="modal" id="modal">
+  <div class="modalBox">
+    <div class="modalHead">
+      <h3 id="mTitle">Done</h3>
+      <div class="closeBtn" onclick="closeModal()">
+        <i class="fa-solid fa-xmark"></i>
+      </div>
+    </div>
+
+    <div class="modalText" id="mText"></div>
+    <button class="okBtn" onclick="closeModal()">OK</button>
+  </div>
+</div>
+
+<script>
+/* ===========================
+   SIMPLE DARK MODE LOADER
+   =========================== */
+
+const THEME_KEY = "dark_mode"; // localStorage key
+
+function loadThemeFromStorage() {
+  const mode = localStorage.getItem(THEME_KEY);
+  
+  if (mode === "yes") {
+    document.body.classList.add("dark");
+  } else {
+    document.body.classList.remove("dark");
+  }
+}
+
+/* Run when page loads */
+document.addEventListener("DOMContentLoaded", loadThemeFromStorage);
+  const planSelect = document.getElementById("planSelect");
+
+  const planTag = document.getElementById("planTag");
+  const planName = document.getElementById("planName");
+  const planDesc = document.getElementById("planDesc");
+
+  const dCode = document.getElementById("dCode");
+  const dType = document.getElementById("dType");
+  const dRisk = document.getElementById("dRisk");
+  const dReturn = document.getElementById("dReturn");
+  const dBest = document.getElementById("dBest");
+  const dBenefit = document.getElementById("dBenefit");
+
+  const wishlistBtn = document.getElementById("wishlistBtn");
+  const shareBtn = document.getElementById("shareBtn");
+
+  const modal = document.getElementById("modal");
+  const mTitle = document.getElementById("mTitle");
+  const mText = document.getElementById("mText");
+
+  const WISHLIST_KEY = "bimaBondhu_licWishlist";
+
+  // ===== Plans Database =====
+  const LIC = {
+    "512": {
+      code:"512",
+      name:"Bima Shree",
+      type:"Money-Back",
+      risk:"Low",
+      returns:"Bonus + Guaranteed Payouts",
+      best:"People who want money-back benefits.",
+      benefit:"Periodic payouts + maturity + life cover.",
+      desc:"Money-back plan with bonus and guaranteed periodic benefits."
+    },
+    "715": {
+      code:"715",
+      name:"Jeevan Anand",
+      type:"Endowment",
+      risk:"Low",
+      returns:"Bonus + Maturity",
+      best:"People who want savings + life cover.",
+      benefit:"Maturity benefit + continues cover after maturity.",
+      desc:"Endowment plan with bonus and lifetime risk cover after maturity."
+    },
+    "749": {
+      code:"749",
+      name:"Nivesh Plus",
+      type:"Unit Linked",
+      risk:"Medium",
+      returns:"Market Linked",
+      best:"People who want investment + insurance.",
+      benefit:"Investment growth + life cover.",
+      desc:"ULIP plan with market-linked returns and life cover."
+    },
+    "858": {
+      code:"858",
+      name:"Jeevan Shanti",
+      type:"Pension",
+      risk:"Low",
+      returns:"Guaranteed Pension",
+      best:"People who want retirement income.",
+      benefit:"Guaranteed pension after purchase.",
+      desc:"Single premium pension plan with deferred annuity."
+    },
+    "860": {
+      code:"860",
+      name:"Bima Jyoti",
+      type:"Endowment",
+      risk:"Low",
+      returns:"Guaranteed Additions",
+      best:"People who want guaranteed benefits.",
+      benefit:"Guaranteed additions + maturity + cover.",
+      desc:"Non-linked, non-participating plan with guaranteed additions."
+    },
+    "871": {
+      code:"871",
+      name:"Jeevan Utsav",
+      type:"Whole Life",
+      risk:"Low",
+      returns:"Guaranteed Income",
+      best:"People who want lifetime income.",
+      benefit:"Guaranteed yearly income + life cover.",
+      desc:"Whole life plan with guaranteed income after premium payment term."
+    },
+    "873": {
+      code:"873",
+      name:"Index Plus",
+      type:"Market Linked",
+      risk:"High",
+      returns:"Index Linked Returns",
+      best:"People who want market exposure.",
+      benefit:"Index linked growth + life cover.",
+      desc:"Market linked plan where returns depend on index performance."
+    },
+    "880": {
+      code:"880",
+      name:"Jan Suraksha",
+      type:"New 2026",
+      risk:"Low",
+      returns:"Protection + Basic Bonus",
+      best:"New customers & low budget users.",
+      benefit:"Affordable premium + cover.",
+      desc:"New LIC plan introduced for broad protection needs."
+    },
+    "881": {
+      code:"881",
+      name:"Bima Lakshmi",
+      type:"New 2026",
+      risk:"Low",
+      returns:"Guaranteed Benefits",
+      best:"Women & family financial planning.",
+      benefit:"Guaranteed payouts + cover.",
+      desc:"New plan focused on savings + protection."
+    },
+    "886": {
+      code:"886",
+      name:"Protection Plus",
+      type:"New 2026",
+      risk:"Low",
+      returns:"Pure Protection",
+      best:"High cover seekers.",
+      benefit:"High life cover at affordable premium.",
+      desc:"New protection-focused plan."
+    },
+    "887": {
+      code:"887",
+      name:"Bima Kavach",
+      type:"New 2026",
+      risk:"Low",
+      returns:"Protection + Add-ons",
+      best:"Families & salaried people.",
+      benefit:"Protection with flexible benefits.",
+      desc:"New LIC plan with flexible protection options."
+    },
+    "912": {
+      code:"912",
+      name:"Nav Jeevan Shree",
+      type:"New 2026",
+      risk:"Medium",
+      returns:"Savings + Bonus",
+      best:"Long-term savers.",
+      benefit:"Bonus + maturity + cover.",
+      desc:"New savings plan with bonus structure."
+    },
+    "936": {
+      code:"936",
+      name:"Jeevan Labh",
+      type:"Endowment",
+      risk:"Low",
+      returns:"Bonus + Maturity",
+      best:"People who want guaranteed maturity.",
+      benefit:"Limited pay + maturity + cover.",
+      desc:"Popular limited premium endowment plan."
+    },
+    "945": {
+      code:"945",
+      name:"Jeevan Umang",
+      type:"Whole Life",
+      risk:"Low",
+      returns:"Yearly Survival Benefits",
+      best:"Lifetime income seekers.",
+      benefit:"Survival benefit + maturity at 100 years.",
+      desc:"Whole life plan with yearly payouts after PPT."
+    },
+    "954": {
+      code:"954",
+      name:"New Tech-Term",
+      type:"Term Insurance",
+      risk:"Low",
+      returns:"No Maturity Return",
+      best:"People who want pure protection.",
+      benefit:"High cover at low premium.",
+      desc:"Online term insurance plan with riders."
+    },
+    "955": {
+      code:"955",
+      name:"New Jeevan Amar",
+      type:"Term Insurance",
+      risk:"Low",
+      returns:"No Maturity Return",
+      best:"People who want pure protection.",
+      benefit:"Affordable high cover.",
+      desc:"Term plan for maximum protection at low premium."
+    }
+  };
+
+  function escapeHtml(text){
+    return String(text)
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+  }
+
+  function setPlan(code){
+    const p = LIC[code];
+    if(!p) return;
+
+    planTag.innerHTML = `<i class="fa-solid fa-shield-heart"></i> ${escapeHtml(p.type)}`;
+    planName.innerHTML = `${escapeHtml(p.code)} - ${escapeHtml(p.name)}`;
+    planDesc.innerHTML = escapeHtml(p.desc);
+
+    dCode.innerHTML = escapeHtml(p.code);
+    dType.innerHTML = escapeHtml(p.type);
+    dRisk.innerHTML = escapeHtml(p.risk);
+    dReturn.innerHTML = escapeHtml(p.returns);
+    dBest.innerHTML = escapeHtml(p.best);
+    dBenefit.innerHTML = escapeHtml(p.benefit);
+
+    updateWishlistButton(code);
+  }
+
+  function getWishlist(){
+    return JSON.parse(localStorage.getItem(WISHLIST_KEY) || "[]");
+  }
+
+  function saveWishlist(arr){
+    localStorage.setItem(WISHLIST_KEY, JSON.stringify(arr));
+  }
+
+  function updateWishlistButton(code){
+    const w = getWishlist();
+    const isSaved = w.includes(code);
+
+    wishlistBtn.innerHTML = isSaved
+      ? `<i class="fa-solid fa-heart"></i> Wishlisted`
+      : `<i class="fa-regular fa-heart"></i> Wishlist`;
+  }
+
+  function openModal(title, text){
+    mTitle.innerHTML = title;
+    mText.innerHTML = text;
+    modal.style.display = "flex";
+  }
+
+  function closeModal(){
+    modal.style.display = "none";
+  }
+
+  modal.addEventListener("click",(e)=>{
+    if(e.target === modal) closeModal();
+  });
+
+  // ===== Plan Change =====
+  planSelect.addEventListener("change", ()=>{
+    setPlan(planSelect.value);
+  });
+
+  // ===== Wishlist =====
+  wishlistBtn.addEventListener("click", ()=>{
+    const code = planSelect.value;
+    const w = getWishlist();
+
+    if(w.includes(code)){
+      openModal("Already Wishlisted ❤️", "This LIC plan is already saved in your wishlist.");
+      return;
+    }
+
+    w.push(code);
+    saveWishlist(w);
+    updateWishlistButton(code);
+
+    openModal("Saved to Wishlist ✅", "This LIC plan has been added to your wishlist successfully.");
+  });
+
+  // ===== Share =====
+  shareBtn.addEventListener("click", async ()=>{
+    const code = planSelect.value;
+    const p = LIC[code];
+
+    const shareText =
+`LIC Plan Details - BimaCare
+
+Plan: ${p.code} - ${p.name}
+Type: ${p.type}
+Risk Level: ${p.risk}
+Return/Bonus: ${p.returns}
+Best For: ${p.best}
+Key Benefit: ${p.benefit}
+
+About:
+${p.desc}
+
+(Shared from BimaCare App)`;
+
+    // Web Share API
+    if(navigator.share){
+      try{
+        await navigator.share({
+          title: `LIC Plan - ${p.name}`,
+          text: shareText
+        });
+      }catch(err){
+        // user cancelled -> no popup needed
+      }
+      return;
+    }
+
+    // fallback -> copy
+    try{
+      await navigator.clipboard.writeText(shareText);
+      openModal("Copied ✅", "Share not supported on this device. LIC details copied to clipboard.");
+    }catch(e){
+      openModal("Not Supported ❌", "Share & copy is not supported on this device browser.");
+    }
+  });
+
+  // ===== Init =====
+  setPlan(planSelect.value);
+</script>
+</body>
+</html>

@@ -1,0 +1,814 @@
+<!DOCTYPE html>  <html lang="en">  
+<head>  
+<meta charset="UTF-8" />  
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />  
+<title>Customer Support - BimaCare</title>  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>  
+<link rel="stylesheet" href="main.css">
+<style>  
+  *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;}  
+  body{background:#f5f7ff;color:#0A1A3C;padding-bottom:24px;}  
+  
+  a{color:inherit;text-decoration:none;}  
+  
+  /* ===== Header ===== */  
+  .topHeader{  
+    width:100%;  
+    background:#0A1A3C;  
+    color:#fff;  
+    display:flex;  
+    align-items:center;  
+    justify-content:space-between;  
+    padding:14px 16px;  
+    position:sticky;  
+    top:0;  
+    z-index:100;  
+    border-bottom:1px solid rgba(255,255,255,0.12);  
+  }  
+  .topHeader h2{  
+    font-size:17px;  
+    font-weight:1000;  
+    letter-spacing:0.2px;  
+  }  
+  .topHeader .iconBtn{  
+    width:42px;height:42px;  
+    border-radius:16px;  
+    display:flex;  
+    align-items:center;  
+    justify-content:center;  
+    background:rgba(255,255,255,0.12);  
+    border:1px solid rgba(255,255,255,0.14);  
+  }  
+  
+  /* ===== Layout ===== */  
+  .wrap{  
+    width:100%;  
+    max-width:980px;  
+    margin:auto;  
+    padding:14px;  
+  }  
+  
+  .card{  
+    background:#fff;  
+    border-radius:22px;  
+    padding:16px;  
+    border:1px solid rgba(0,0,0,0.06);  
+    box-shadow:0 16px 45px rgba(0,0,0,0.06);  
+    margin-bottom:14px;  
+  }  
+  
+  .title{  
+    font-size:16px;  
+    font-weight:1000;  
+    margin-bottom:6px;  
+    display:flex;  
+    align-items:center;  
+    gap:10px;  
+  }  
+  .title i{color:#2563eb;}  
+  
+  .sub{  
+    font-size:13px;  
+    font-weight:850;  
+    color:#64748b;  
+    line-height:1.45;  
+  }  
+  
+  /* ===== Form ===== */  
+  .formGrid{  
+    margin-top:14px;  
+    display:grid;  
+    grid-template-columns:1fr;  
+    gap:12px;  
+  }  
+  @media(min-width:860px){  
+    .formGrid{grid-template-columns:1fr 1fr;}  
+  }  
+  
+  .field{  
+    display:flex;  
+    flex-direction:column;  
+    gap:7px;  
+  }  
+  .field label{  
+    font-size:12px;  
+    font-weight:950;  
+    color:#475569;  
+  }  
+  
+  .inputWrap{  
+    position:relative;  
+  }  
+  .inputWrap i{  
+    position:absolute;  
+    left:14px;  
+    top:50%;  
+    transform:translateY(-50%);  
+    color:#2563eb;  
+    font-size:14px;  
+    opacity:0.9;  
+  }  
+  
+  input, select, textarea{  
+    width:100%;  
+    border:1px solid rgba(15,23,42,0.12);  
+    background:#fbfbff;  
+    border-radius:18px;  
+    padding:13px 14px 13px 42px;  
+    outline:none;  
+    font-size:13px;  
+    font-weight:900;  
+    color:#0A1A3C;  
+    transition:0.2s ease;  
+  }  
+  textarea{  
+    padding:13px 14px;  
+    min-height:120px;  
+    resize:none;  
+  }  
+  
+  input:focus, select:focus, textarea:focus{  
+    border-color:rgba(37,99,235,0.55);  
+    box-shadow:0 0 0 4px rgba(37,99,235,0.12);  
+  }  
+  
+  .full{grid-column:1/-1;}  
+  
+  .btnRow{  
+    display:flex;  
+    gap:10px;  
+    flex-wrap:wrap;  
+    margin-top:12px;  
+  }  
+  
+  .btn{  
+    border:none;  
+    cursor:pointer;  
+    padding:13px 16px;  
+    border-radius:18px;  
+    font-weight:1000;  
+    font-size:13px;  
+    transition:0.2s ease;  
+    display:flex;  
+    align-items:center;  
+    justify-content:center;  
+    gap:10px;  
+  }  
+  .btnPrimary{  
+    background:#2563eb;  
+    color:#fff;  
+    flex:1;  
+    min-width:170px;  
+    box-shadow:0 14px 35px rgba(37,99,235,0.25);  
+  }  
+  .btnPrimary:hover{transform:translateY(-1px);}  
+  .btnGhost{  
+    background:#f1f5ff;  
+    color:#0A1A3C;  
+    border:1px solid rgba(37,99,235,0.18);  
+  }  
+  
+  .error{  
+    font-size:12px;  
+    font-weight:900;  
+    color:#dc2626;  
+    margin-top:4px;  
+    display:none;  
+  }  
+  
+  /* ===== Support List ===== */  
+  .list{  
+    margin-top:14px;  
+    display:flex;  
+    flex-direction:column;  
+    gap:12px;  
+  }  
+  
+  .supportItem{  
+    padding:14px;  
+    border-radius:22px;  
+    border:1px solid rgba(15,23,42,0.10);  
+    background:linear-gradient(180deg,#ffffff,#fbfbff);  
+    position:relative;  
+    overflow:hidden;  
+  }  
+  
+  .supportItem::before{  
+    content:"";  
+    position:absolute;  
+    left:0;top:0;  
+    width:6px;height:100%;  
+    background:#2563eb;  
+    opacity:0.9;  
+  }  
+  
+  .topLine{  
+    display:flex;  
+    justify-content:space-between;  
+    align-items:flex-start;  
+    gap:12px;  
+    padding-left:8px;  
+  }  
+  
+  .name{  
+    font-weight:1000;  
+    font-size:14px;  
+    color:#0A1A3C;  
+  }  
+  
+  .meta{  
+    margin-top:4px;  
+    font-size:12px;  
+    font-weight:900;  
+    color:#64748b;  
+    line-height:1.5;  
+  }  
+  .meta b{color:#0A1A3C;}  
+  
+  .badge{  
+    padding:8px 12px;  
+    border-radius:999px;  
+    font-size:12px;  
+    font-weight:1000;  
+    border:1px solid rgba(0,0,0,0.08);  
+    white-space:nowrap;  
+  }  
+  .pending{  
+    background:rgba(245,158,11,0.10);  
+    color:#b45309;  
+    border-color:rgba(245,158,11,0.25);  
+  }  
+  .resolved{  
+    background:rgba(34,197,94,0.12);  
+    color:#166534;  
+    border-color:rgba(34,197,94,0.25);  
+  }  
+  
+  .msg{  
+    margin-top:10px;  
+    font-size:13px;  
+    font-weight:900;  
+    color:#334155;  
+    line-height:1.6;  
+    padding-left:8px;  
+  }  
+  
+  .msgTitle{  
+    display:flex;  
+    align-items:center;  
+    gap:8px;  
+    font-weight:1000;  
+    color:#0A1A3C;  
+    margin-bottom:6px;  
+  }  
+  .msgTitle i{color:#2563eb;}  
+  
+  .actionRow{  
+    margin-top:12px;  
+    display:flex;  
+    gap:10px;  
+    flex-wrap:wrap;  
+    padding-left:8px;  
+  }  
+  
+  .miniBtn{  
+    padding:10px 12px;  
+    border-radius:16px;  
+    border:none;  
+    cursor:pointer;  
+    font-weight:1000;  
+    font-size:12px;  
+    display:flex;  
+    align-items:center;  
+    gap:8px;  
+    transition:0.2s ease;  
+  }  
+  .miniBtn:hover{transform:translateY(-1px);}  
+  
+  .miniResolve{  
+    background:rgba(34,197,94,0.12);  
+    color:#166534;  
+    border:1px solid rgba(34,197,94,0.25);  
+  }  
+  .miniDelete{  
+    background:rgba(220,38,38,0.10);  
+    color:#b91c1c;  
+    border:1px solid rgba(220,38,38,0.20);  
+  }  
+  .miniCopy{  
+    background:rgba(37,99,235,0.10);  
+    color:#1d4ed8;  
+    border:1px solid rgba(37,99,235,0.18);  
+  }  
+  
+  .empty{  
+    text-align:center;  
+    padding:20px 10px;  
+    color:#64748b;  
+    font-weight:950;  
+    font-size:13px;  
+  }
+  .proOverlay{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100vh;
+  background:rgba(0,0,0,0.45);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:99999;
+  padding:20px;
+}
+
+.proBox{
+  width:100%;
+  max-width:380px;
+  background:#fff;
+  padding:26px 20px;
+  border-radius:22px;
+  text-align:center;
+  box-shadow:0 30px 60px rgba(0,0,0,0.25);
+  animation:fadeUp .25s ease;
+}
+
+.proIcon{
+  font-size:40px;
+  margin-bottom:10px;
+}
+
+.proBox h3{
+  font-size:17px;
+  font-weight:1000;
+  margin-bottom:6px;
+  color:#0A1A3C;
+}
+
+.proBox p{
+  font-size:13px;
+  font-weight:900;
+  color:#475569;
+  margin-bottom:18px;
+}
+
+#proButtons{
+  display:flex;
+  gap:10px;
+}
+
+.proBtn{
+  flex:1;
+  padding:12px;
+  border:none;
+  border-radius:14px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.proPrimary{
+  background:#2563eb;
+  color:#fff;
+}
+
+.proDanger{
+  background:#dc2626;
+  color:#fff;
+}
+
+.proGhost{
+  background:#f1f5ff;
+  border:1px solid rgba(37,99,235,0.25);
+  color:#0A1A3C;
+}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(20px);}
+  to{opacity:1;transform:translateY(0);}
+}
+</style>  </head>  <body>  <header class="topHeader">  
+  <div class="iconBtn"><a href="https://aniket-developer-001.github.io/BimaCare/home.html"><i class="fa-solid fa-arrow-left"></i></a></div>  
+  <h2>Customer Support</h2>  
+  <div class="iconBtn"><i class="fa-solid fa-headset"></i></div>  
+</header>  <main class="wrap">    <!-- Support Form -->    <section class="card">  
+    <div class="title"><i class="fa-solid fa-headset"></i> Submit Support Request</div>  <!-- REAL API FORM -->  
+<form id="supportForm" class="formGrid" action="https://api.web3forms.com/submit" method="POST">  
+
+  <input type="hidden" name="access_key" value="96018cbc-b973-4274-9edc-dd2120e8f623">  
+
+  <!-- Hidden auto ticket -->  
+  <input type="hidden" name="ticket_id" id="ticketHidden">  
+
+  <div class="field">  
+    <label>Full Name</label>  
+    <div class="inputWrap">  
+      <i class="fa-solid fa-user"></i>  
+      <input type="text" id="name" name="name" placeholder="Enter your full name">  
+    </div>  
+    <div class="error" id="nameErr">Please enter a valid name (min 3 letters).</div>  
+  </div>  
+
+  <div class="field">  
+    <label>Phone Number</label>  
+    <div class="inputWrap">  
+      <i class="fa-solid fa-phone"></i>  
+      <input type="tel" id="phone" name="phone" placeholder="Enter 10 digit number">  
+    </div>  
+    <div class="error" id="phoneErr">Please enter a valid 10-digit phone number.</div>  
+  </div>  
+
+  <div class="field full">  
+    <label>Support Category</label>  
+    <div class="inputWrap">  
+      <i class="fa-solid fa-layer-group"></i>  
+      <select id="type" name="category">  
+        <option value="">Select support category</option>  
+        <option value="Insurance Compare">Insurance Compare</option>  
+        <option value="EMI Calculator">EMI Calculator</option>  
+        <option value="Premium Calculator">Premium Calculator</option>  
+        <option value="Premium Reminder">Premium Reminder</option>  
+        <option value="Account / Login">Account / Login</option>  
+        <option value="App Bug / Issue">App Bug / Issue</option>  
+        <option value="Other">Other</option>  
+      </select>  
+    </div>  
+    <div class="error" id="typeErr">Please select a category.</div>  
+  </div>  
+
+  <div class="field full">  
+    <label>Support Message</label>  
+    <textarea id="message" name="message" placeholder="Write your support details..."></textarea>  
+    <div class="error" id="msgErr">Please write message (min 10 characters).</div>  
+  </div>  
+
+  <div class="btnRow full">  
+    <button type="submit" class="btn btnPrimary">  
+      <i class="fa-solid fa-paper-plane"></i> Send Request  
+    </button>  
+
+    
+  </div>  
+
+</form>
+
+  </section>    <!-- Support List -->    <section class="card">  
+    <div class="title"><i class="fa-solid fa-clock-rotate-left"></i> Your Support History</div>  
+    <div class="sub">  
+      Ticket ID is generated like: <b>G-932782</b>  
+    </div>  <div class="list" id="supportList"></div>
+
+  </section>  </main>  
+<!-- Professional Popup -->
+<div id="proPopup" class="proOverlay">
+  <div class="proBox">
+    <div class="proIcon" id="proIcon"></div>
+    <h3 id="proTitle"></h3>
+    <p id="proMessage"></p>
+    <div id="proButtons"></div>
+  </div>
+</div>
+  <script>  
+  /* ===========================
+   SIMPLE DARK MODE LOADER
+   =========================== */
+
+const THEME_KEY = "dark_mode"; // localStorage key
+
+function loadThemeFromStorage() {
+  const mode = localStorage.getItem(THEME_KEY);
+  
+  if (mode === "yes") {
+    document.body.classList.add("dark");
+  } else {
+    document.body.classList.remove("dark");
+  }
+}
+
+/* Run when page loads */
+document.addEventListener("DOMContentLoaded", loadThemeFromStorage);
+  const proPopup = document.getElementById("proPopup");
+const proTitle = document.getElementById("proTitle");
+const proMessage = document.getElementById("proMessage");
+const proIcon = document.getElementById("proIcon");
+const proButtons = document.getElementById("proButtons");
+
+function closePopup() {
+  proPopup.style.display = "none";
+}
+
+function showPopup({ title, message, icon, buttons }) {
+  proTitle.innerText = title;
+  proMessage.innerText = message;
+  proIcon.innerHTML = icon;
+  proButtons.innerHTML = buttons;
+  proPopup.style.display = "flex";
+}
+
+/* =========================
+   DELETE CONFIRM SYSTEM
+========================= */
+
+function deleteTicket(ticket) {
+  
+  showPopup({
+    title: "Delete Request?",
+    message: "Ticket: " + ticket,
+    icon: '<i class="fa-solid fa-triangle-exclamation" style="color:#f59e0b;"></i>',
+    buttons: `
+      <button class="proBtn proGhost" onclick="closePopup()">Cancel</button>
+      <button class="proBtn proDanger" onclick="confirmDelete('${ticket}')">Delete Anyway</button>
+    `
+  });
+  
+}
+
+function confirmDelete(ticket) {
+  
+  const data = getData().filter(x => x.ticket !== ticket);
+  saveData(data);
+  render();
+  
+  showPopup({
+    title: "Deleted Successfully",
+    message: "Ticket has been removed.",
+    icon: '<i class="fa-solid fa-circle-check" style="color:#16a34a;"></i>',
+    buttons: `
+      <button class="proBtn proPrimary" onclick="closePopup()">Close</button>
+    `
+  });
+  
+}
+
+/* =========================
+   COPY SYSTEM
+========================= */
+
+function copyTicket(ticket) {
+  navigator.clipboard.writeText(ticket);
+  
+  showPopup({
+    title: "Copied!",
+    message: "Ticket ID copied to clipboard.",
+    icon: '<i class="fa-solid fa-copy" style="color:#2563eb;"></i>',
+    buttons: `
+      <button class="proBtn proPrimary" onclick="closePopup()">Close</button>
+    `
+  });
+}
+  const form = document.getElementById("supportForm");  
+  
+  const nameEl = document.getElementById("name");  
+  const phoneEl = document.getElementById("phone");  
+  const typeEl = document.getElementById("type");  
+  const messageEl = document.getElementById("message");  
+  
+  const ticketHidden = document.getElementById("ticketHidden");  
+  
+  const nameErr = document.getElementById("nameErr");  
+  const phoneErr = document.getElementById("phoneErr");  
+  const typeErr = document.getElementById("typeErr");  
+  const msgErr = document.getElementById("msgErr");  
+  
+  const listBox = document.getElementById("supportList");  
+  const clearAllBtn = document.getElementById("clearAllBtn");  
+  
+  const STORAGE_KEY = "bimaBondhu_support_requests";  
+  
+  /* =========================  
+      HELPERS  
+  ========================= */  
+  
+  function getData(){  
+    return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");  
+  }  
+  
+  function saveData(data){  
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));  
+  }  
+  
+  function nowDate(){  
+    return new Date().toLocaleString("en-IN", {  
+      day:"2-digit", month:"short", year:"numeric",  
+      hour:"2-digit", minute:"2-digit"  
+    });  
+  }  
+  
+  function showError(el, show){  
+    el.style.display = show ? "block" : "none";  
+  }  
+  
+  function resetErrors(){  
+    showError(nameErr,false);  
+    showError(phoneErr,false);  
+    showError(typeErr,false);  
+    showError(msgErr,false);  
+  }  
+  
+  function escapeHtml(text){  
+    return text  
+      .replaceAll("&","&amp;")  
+      .replaceAll("<","&lt;")  
+      .replaceAll(">","&gt;")  
+      .replaceAll('"',"&quot;")  
+      .replaceAll("'","&#039;");  
+  }  
+  
+  /* =========================  
+      TICKET GENERATOR  
+      Example: G-932782  
+  ========================= */  
+  function generateTicket(){  
+    const num = Math.floor(100000 + Math.random() * 900000);  
+    return "G-" + num;  
+  }  
+  
+  /* =========================  
+      VALIDATION  
+  ========================= */  
+  phoneEl.addEventListener("input", ()=>{  
+    phoneEl.value = phoneEl.value.replace(/[^0-9]/g,"").slice(0,10);  
+  });  
+  
+  function validate(){  
+    resetErrors();  
+  
+    const name = nameEl.value.trim();  
+    const phone = phoneEl.value.trim();  
+    const type = typeEl.value.trim();  
+    const msg = messageEl.value.trim();  
+  
+    let ok = true;  
+  
+    if(name.length < 3){  
+      showError(nameErr,true);  
+      ok = false;  
+    }  
+  
+    if(!/^[0-9]{10}$/.test(phone)){  
+      showError(phoneErr,true);  
+      ok = false;  
+    }  
+  
+    if(type === ""){  
+      showError(typeErr,true);  
+      ok = false;  
+    }  
+  
+    if(msg.length < 10){  
+      showError(msgErr,true);  
+      ok = false;  
+    }  
+  
+    return ok;  
+  }  
+  
+  /* =========================  
+      RENDER  
+  ========================= */  
+  function render(){  
+    const data = getData();  
+  
+    if(data.length === 0){  
+      listBox.innerHTML = `<div class="empty">  
+        <i class="fa-solid fa-inbox" style="font-size:20px;margin-bottom:8px;"></i><br>  
+        No support requests yet.  
+      </div>`;  
+      return;  
+    }  
+  
+    const sorted = [...data].sort((a,b)=> b.timeStamp - a.timeStamp);  
+  
+    listBox.innerHTML = sorted.map(item => {  
+      const badgeClass = item.status === "Resolved" ? "resolved" : "pending";  
+  
+      return `  
+        <div class="supportItem">  
+          <div class="topLine">  
+            <div>  
+              <div class="name">${escapeHtml(item.name)}</div>  
+              <div class="meta">  
+                <b>${escapeHtml(item.type)}</b> <br /> Ticket ID: <b>${escapeHtml(item.ticket)}</b><br>  
+                <i class="fa-solid fa-calendar-days"></i> ${escapeHtml(item.date)}  
+              </div>  
+            </div>  
+  
+              
+          </div>  
+  
+          <div class="msg">  
+            <div class="msgTitle">  
+              <i class="fa-solid fa-message"></i> Message  
+            </div>  
+            ${escapeHtml(item.message)}  
+          </div>  
+  
+          <div class="actionRow">  
+            <button class="miniBtn miniCopy" onclick="copyTicket('${item.ticket}')">  
+              <i class="fa-solid fa-copy"></i> Copy Ticket  
+            </button>  
+  
+              
+  
+            <button class="miniBtn miniDelete" onclick="deleteTicket('${item.ticket}')">  
+              <i class="fa-solid fa-trash"></i> Delete  
+            </button>  
+          </div>  
+        </div>  
+      `;  
+    }).join("");  
+  }  
+  
+/* =========================
+    SUBMIT (API + LOCALSTORAGE + POPUP)
+========================= */
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  
+  if (!validate()) return;
+  
+  // Generate ticket id
+  const ticket = generateTicket();
+  
+  // Set hidden field (this will go to Web3Forms)
+  ticketHidden.value = ticket;
+  
+  // Save local first
+  const obj = {
+    ticket,
+    name: nameEl.value.trim(),
+    phone: phoneEl.value.trim(),
+    type: typeEl.value.trim(),
+    message: messageEl.value.trim(),
+    date: nowDate(),
+    status: "Pending",
+    timeStamp: Date.now()
+  };
+  
+  const data = getData();
+  data.push(obj);
+  saveData(data);
+  
+  // Send to Web3Forms (real)
+  try {
+    const formData = new FormData(form);
+    
+    const res = await fetch(form.action, {
+      method: "POST",
+      body: formData
+    });
+    
+    if (!res.ok) {
+      showPopup({
+        title: "Saved Locally",
+        message: "Request saved but API sending failed. Ticket: " + ticket,
+        icon: '<i class="fa-solid fa-triangle-exclamation" style="color:#f59e0b;"></i>',
+        buttons: `<button class="proBtn proPrimary" onclick="closePopup()">Close</button>`
+      });
+    } else {
+      showPopup({
+        title: "Request Submitted",
+        message: "Ticket ID: " + ticket,
+        icon: '<i class="fa-solid fa-circle-check" style="color:#16a34a;"></i>',
+        buttons: `<button class="proBtn proPrimary" onclick="closePopup()">Close</button>`
+      });
+    }
+  } catch (err) {
+    showPopup({
+      title: "Saved Locally",
+      message: "API sending failed but saved locally. Ticket: " + ticket,
+      icon: '<i class="fa-solid fa-triangle-exclamation" style="color:#f59e0b;"></i>',
+      buttons: `<button class="proBtn proPrimary" onclick="closePopup()">Close</button>`
+    });
+  }
+  
+  form.reset();
+  resetErrors();
+  render();
+});
+
+/* =========================
+    SHOW POPUP FUNCTION
+========================= */
+function showPopup({ title, message, icon, buttons }) {
+  proTitle.innerText = title;
+  proMessage.innerText = message;
+  proIcon.innerHTML = icon;
+  proButtons.innerHTML = buttons;
+  proPopup.style.display = "flex";
+}
+
+function closePopup() {
+  proPopup.style.display = "none";
+}
+  
+  /* =========================  
+      ACTIONS  
+  ========================= */  
+  
+  
+  /* =========================  
+      INIT  
+  ========================= */  
+  render();  
+</script> 
+</body>  
+</html>

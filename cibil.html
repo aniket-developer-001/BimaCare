@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CIBIL Score Checker</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <!-- jsPDF + html2canvas -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<link rel="stylesheet" href="main.css">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;}
+    body{background:#f4f7ff;color:#0A1A3C;}
+#body{
+  padding:14px;
+}
+    /* ===== YOUR HEADER STYLE (SAME) ===== */
+    /* ===== Top Header (Professional) ===== */
+/* ===== Header ===== */
+  .topHeader{
+    width:100%;
+    background:#0A1A3C;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:14px 16px;
+    position:sticky;
+    top:0;
+    z-index:100;
+    border-bottom:1px solid rgba(255,255,255,0.12);
+  }
+  .topHeader h2{font-size:18px;font-weight:1000;}
+  .topHeader a{
+    color:#fff;text-decoration:none;
+    width:42px;height:42px;border-radius:16px;
+    display:flex;align-items:center;justify-content:center;
+    background:rgba(255,255,255,0.12);
+    border:1px solid rgba(255,255,255,0.14);
+  }
+
+.badge{
+  padding:10px 14px;
+  border-radius:999px;
+  background:linear-gradient(135deg,rgba(37,99,235,0.12),rgba(124,58,237,0.10));
+  border:1px solid rgba(37,99,235,0.18);
+  font-size:12px;
+  font-weight:1100;
+  color:#1d4ed8;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  white-space:nowrap;
+  box-shadow:0 12px 30px rgba(37,99,235,0.12);
+}
+
+    /* Main wrap */
+    .wrap{
+      width:100%;
+      max-width:520px;
+      margin:0 auto;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+
+    .card{
+      background:#fff;
+      border-radius:22px;
+      padding:14px;
+      border:1px solid rgba(0,0,0,0.06);
+      box-shadow:0 16px 40px rgba(0,0,0,0.06);
+    }
+
+    .cardTitle{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-bottom:12px;
+    }
+    .cardTitle .icon{
+      width:46px;height:46px;
+      border-radius:18px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:rgba(37,99,235,0.10);
+      border:1px solid rgba(37,99,235,0.18);
+      flex-shrink:0;
+    }
+    .cardTitle .icon i{font-size:18px;color:#2563eb;}
+    .cardTitle h3{font-size:14px;font-weight:1100;}
+    .cardTitle p{font-size:12px;font-weight:900;color:#64748b;margin-top:3px;}
+
+    /* Input */
+    .inputRow{display:flex;gap:10px;align-items:center;}
+    .inputBox{
+      flex:1;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:12px 12px;
+      border-radius:18px;
+      background:#f8fafc;
+      border:1px solid rgba(0,0,0,0.06);
+    }
+    .inputBox i{color:#0f172a;font-size:16px;opacity:.85;}
+    .inputBox input{
+      width:100%;
+      border:none;
+      outline:none;
+      background:transparent;
+      font-size:14px;
+      font-weight:1100;
+      color:#0A1A3C;
+    }
+
+    .btn{
+      border:none;
+      outline:none;
+      cursor:pointer;
+      padding:13px 14px;
+      border-radius:18px;
+      font-size:13px;
+      font-weight:1100;
+      color:#fff;
+      background:linear-gradient(135deg,#2563eb,#7c3aed);
+      box-shadow:0 16px 40px rgba(37,99,235,0.25);
+      transition:.2s ease;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      white-space:nowrap;
+    }
+    .btn:active{transform:scale(.98);}
+
+    /* Result */
+    .hidden{display:none;}
+
+    .resultTop{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+
+    .scoreBig{font-size:26px;font-weight:1200;letter-spacing:.3px;}
+    .levelChip{
+      padding:10px 12px;
+      border-radius:999px;
+      background:#f8fafc;
+      border:1px solid rgba(0,0,0,0.08);
+      font-size:12px;
+      font-weight:1100;
+      color:#0A1A3C;
+      white-space:nowrap;
+    }
+
+    /* Level bar */
+    .barWrap{margin-top:14px;}
+    .barTrack{
+      width:100%;
+      height:12px;
+      border-radius:999px;
+      background:linear-gradient(90deg,#ef4444,#f59e0b,#facc15,#22c55e);
+      position:relative;
+      overflow:hidden;
+      border:1px solid rgba(0,0,0,0.08);
+    }
+    .barFill{
+      height:100%;
+      width:0%;
+      border-radius:999px;
+      background:rgba(255,255,255,0.20);
+      position:absolute;
+      left:0;top:0;
+      transition:0.45s ease;
+    }
+    .dot{
+      width:18px;height:18px;border-radius:50%;
+      background:#fff;
+      border:3px solid rgba(15,23,42,0.85);
+      position:absolute;
+      top:50%;
+      transform:translate(-50%,-50%);
+      left:0%;
+      transition:0.45s ease;
+      box-shadow:0 10px 25px rgba(0,0,0,0.18);
+    }
+    .labels{
+      margin-top:8px;
+      display:flex;
+      justify-content:space-between;
+      font-size:11px;
+      font-weight:950;
+      color:#64748b;
+    }
+
+    .statusBox{
+      margin-top:12px;
+      padding:12px;
+      border-radius:18px;
+      background:#f8fafc;
+      border:1px dashed rgba(0,0,0,0.10);
+      text-align:center;
+      font-size:13px;
+      font-weight:1100;
+    }
+
+    /* Details grid */
+    .grid{
+      margin-top:14px;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+    }
+    .mini{
+      padding:12px;
+      border-radius:18px;
+      border:1px solid rgba(0,0,0,0.06);
+      background:#fff;
+      box-shadow:0 10px 25px rgba(0,0,0,0.05);
+    }
+    .mini .t{
+      font-size:12px;
+      font-weight:950;
+      color:#64748b;
+      margin-bottom:6px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .mini .v{
+      font-size:13px;
+      font-weight:1100;
+      color:#0A1A3C;
+      line-height:1.2;
+    }
+
+    .tipBox{
+      margin-top:12px;
+      padding:12px;
+      border-radius:18px;
+      background:rgba(34,197,94,0.10);
+      border:1px solid rgba(34,197,94,0.16);
+      font-size:13px;
+      font-weight:1100;
+      color:#166534;
+      line-height:1.45;
+    }
+
+    /* Extra professional details */
+    .moreDetails{
+      margin-top:12px;
+      padding:12px;
+      border-radius:18px;
+      background:#f8fafc;
+      border:1px solid rgba(0,0,0,0.06);
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .detailLine{
+      display:flex;
+      align-items:flex-start;
+      gap:10px;
+      font-size:13px;
+      font-weight:1000;
+      color:#0A1A3C;
+      line-height:1.35;
+    }
+    .detailLine i{
+      margin-top:2px;
+      color:#2563eb;
+      font-size:14px;
+      opacity:.9;
+    }
+
+    /* History */
+    .historyWrap{
+      margin-top:12px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .historyItem{
+      padding:12px;
+      border-radius:18px;
+      background:#fff;
+      border:1px solid rgba(0,0,0,0.06);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .historyItem .l{
+      display:flex;
+      flex-direction:column;
+      gap:3px;
+    }
+    .historyItem .l b{font-size:13px;font-weight:1200;}
+    .historyItem .l span{font-size:11px;font-weight:900;color:#64748b;}
+    .historyItem .r{
+      font-size:12px;
+      font-weight:1100;
+      padding:8px 10px;
+      border-radius:999px;
+      background:#f8fafc;
+      border:1px solid rgba(0,0,0,0.08);
+      white-space:nowrap;
+    }
+
+    /* Bottom actions */
+    .actions{
+      margin-top:14px;
+      display:flex;
+      gap:10px;
+    }
+    .actBtn{
+      flex:1;
+      border:none;
+      outline:none;
+      cursor:pointer;
+      padding:13px 14px;
+      border-radius:18px;
+      font-size:13px;
+      font-weight:1100;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:9px;
+      transition:.2s ease;
+      white-space:nowrap;
+    }
+    .actBtn:active{transform:scale(.98);}
+
+    .shareBtn{
+      background:#0f172a;
+      color:#fff;
+      box-shadow:0 16px 40px rgba(15,23,42,0.22);
+    }
+    .pdfBtn{
+      background:linear-gradient(135deg,#16a34a,#22c55e);
+      color:#fff;
+      box-shadow:0 16px 40px rgba(34,197,94,0.22);
+    }
+
+    /* PDF loading overlay */
+    .loading{
+      position:fixed;
+      inset:0;
+      background:rgba(15,23,42,0.35);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:9999;
+      padding:18px;
+    }
+    .loadingBox{
+      width:100%;
+      max-width:380px;
+      background:#fff;
+      border-radius:22px;
+      padding:18px;
+      border:1px solid rgba(0,0,0,0.08);
+      box-shadow:0 20px 60px rgba(0,0,0,0.25);
+      text-align:center;
+    }
+    .loadingBox i{
+      font-size:24px;
+      color:#2563eb;
+      margin-bottom:10px;
+    }
+    .loadingBox b{
+      display:block;
+      font-size:14px;
+      font-weight:1200;
+    }
+    .loadingBox p{
+      margin-top:6px;
+      font-size:12px;
+      font-weight:900;
+      color:#64748b;
+    }a{
+      color: inherit;
+      text-decoration: none;
+    }/* ===== Toast Popup ===== */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%) translateY(20px);
+  width: calc(100% - 26px);
+  max-width: 520px;
+  background: #0A1A3C;
+  color: #fff;
+  padding: 14px 14px;
+  border-radius: 18px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.25);
+  opacity: 0;
+  pointer-events: none;
+  transition: .25s ease;
+  z-index: 9999;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0px);
+}
+
+.toastIcon {
+  font-size: 18px;
+  color: #22c55e;
+}
+
+.toast.error .toastIcon {
+  color: #ef4444;
+}
+
+.toastText {
+  font-size: 13px;
+  font-weight: 1000;
+  line-height: 1.4;
+} .proOverlay{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100vh;
+  background:rgba(0,0,0,0.45);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:99999;
+  padding:20px;
+}
+
+.proBox{
+  width:100%;
+  max-width:380px;
+  background:#fff;
+  padding:26px 20px;
+  border-radius:22px;
+  text-align:center;
+  box-shadow:0 30px 60px rgba(0,0,0,0.25);
+  animation:fadeUp .25s ease;
+}
+
+.proIcon{
+  font-size:40px;
+  margin-bottom:10px;
+}
+
+.proBox h3{
+  font-size:17px;
+  font-weight:1000;
+  margin-bottom:6px;
+  color:#0A1A3C;
+}
+
+.proBox p{
+  font-size:13px;
+  font-weight:900;
+  color:#475569;
+  margin-bottom:18px;
+}
+
+#proButtons{
+  display:flex;
+  gap:10px;
+}
+
+.proBtn{
+  flex:1;
+  padding:12px;
+  border:none;
+  border-radius:14px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.proPrimary{
+  background:#2563eb;
+  color:#fff;
+}
+
+.proDanger{
+  background:#dc2626;
+  color:#fff;
+}
+
+.proGhost{
+  background:#f1f5ff;
+  border:1px solid rgba(37,99,235,0.25);
+  color:#0A1A3C;
+}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(20px);}
+  to{opacity:1;transform:translateY(0);}
+}body.dark #cibilInput{
+  border: transparent;
+}
+  </style>
+</head>
+<body>
+
+  <!-- ===== HEADER (YOUR STYLE) ===== -->
+  <!-- Header -->
+ <header class="topHeader">
+    <a href="https://aniket-developer-001.github.io/BimaCare/home.html"><i class="fa-solid fa-arrow-left"></i></a>
+    <h2>CIBIL Check</h2>
+    <a href="#" id="clearBtn" title="Logout"><i class="fa-solid fa-gauge-high"></i></a>
+  </header>
+</div>
+<div id="body">
+  <div class="wrap">
+
+    <!-- INPUT -->
+    <div class="card">
+      <div class="cardTitle">
+        <div class="icon"><i class="fa-solid fa-gauge-high"></i></div>
+        <div>
+          <h3>Enter CIBIL Score</h3>
+          <p>Score range: 300 to 900</p>
+        </div>
+      </div>
+
+      <div class="inputRow">
+        <div class="inputBox">
+          <i class="fa-solid fa-hashtag"></i>
+          <input id="cibilInput" type="number" placeholder="Example: 782" min="300" max="900" />
+        </div>
+
+        <button class="btn" id="checkBtn">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          Check
+        </button>
+      </div>
+    </div>
+
+    <!-- RESULT (THIS AREA WILL BE PDF) -->
+    <div class="card hidden" id="pdfArea">
+  <div id="resultBox">
+  
+
+      <div class="resultTop">
+        <div>
+          <div style="font-size:12px;font-weight:950;color:#64748b;">Your CIBIL Score</div>
+          <div class="scoreBig" id="scoreBig">--</div>
+        </div>
+        <div class="levelChip" id="levelChip">--</div>
+      </div>
+
+      <div class="barWrap">
+        <div class="barTrack">
+          <div class="barFill" id="barFill"></div>
+          <div class="dot" id="dot"></div>
+        </div>
+
+        <div class="labels">
+          <span>Poor</span>
+          <span>Average</span>
+          <span>Good</span>
+          <span>Excellent</span>
+        </div>
+
+        <div class="statusBox" id="statusBox">--</div>
+
+        <div class="grid">
+          <div class="mini">
+            <div class="t"><i class="fa-solid fa-chart-line"></i> Score Range</div>
+            <div class="v" id="rangeText">--</div>
+          </div>
+
+          <div class="mini">
+            <div class="t"><i class="fa-solid fa-circle-check"></i> Loan Approval</div>
+            <div class="v" id="chanceText">--</div>
+          </div>
+
+          <div class="mini">
+            <div class="t"><i class="fa-solid fa-credit-card"></i> Card Approval</div>
+            <div class="v" id="cardText">--</div>
+          </div>
+
+          <div class="mini">
+            <div class="t"><i class="fa-solid fa-shield-heart"></i> Risk Level</div>
+            <div class="v" id="riskText">--</div>
+          </div>
+        </div>
+
+        <!-- More Details -->
+        <div class="moreDetails" id="moreDetails">
+          <div class="detailLine"><i class="fa-solid fa-user-check"></i> <span id="eligibleText">--</span></div>
+          <div class="detailLine"><i class="fa-solid fa-hand-holding-dollar"></i> <span id="loanText">--</span></div>
+          <div class="detailLine"><i class="fa-solid fa-percent"></i> <span id="interestText">--</span></div>
+          <div class="detailLine"><i class="fa-solid fa-lightbulb"></i> <span id="actionText">--</span></div>
+        </div>
+
+        <!-- Tips -->
+        <div class="tipBox" id="tipBox">--</div>
+
+        <!-- History -->
+        <div class="historyWrap" id="historyWrap">
+          <!-- JS -->
+        </div>
+
+        <!-- Actions -->
+        <div class="actions">
+          <button class="actBtn shareBtn" id="shareBtn" onclick="shareCibilDetails() ">
+            <i class="fa-solid fa-share-nodes"></i>
+            Share
+          </button>
+
+          <button class="actBtn pdfBtn" id="pdfBtn">
+            <i class="fa-solid fa-file-arrow-down"></i>
+            Download PDF
+          </button>
+        </div>
+
+      </div>
+  </div>
+    </div>
+
+  </div>
+</div>
+  <!-- Loading -->
+  <div class="loading" id="loading">
+    <div class="loadingBox">
+      <i class="fa-solid fa-spinner fa-spin"></i>
+      <b>Generating PDF...</b>
+      <p>Please wait a moment</p>
+    </div>
+  </div>
+<!-- ===== Popup Toast ===== -->
+<div id="proPopup" class="proOverlay">
+  <div class="proBox">
+    <div class="proIcon" id="proIcon"></div>
+    <h3 id="proTitle"></h3>
+    <p id="proMessage"></p>
+    <div id="proButtons"></div>
+  </div>
+</div>
+<script>
+/* ===========================
+   SIMPLE DARK MODE LOADER
+   =========================== */
+
+const THEME_KEY = "dark_mode"; // localStorage key
+
+function loadThemeFromStorage() {
+  const mode = localStorage.getItem(THEME_KEY);
+  
+  if (mode === "yes") {
+    document.body.classList.add("dark");
+  } else {
+    document.body.classList.remove("dark");
+  }
+}
+
+/* Run when page loads */
+document.addEventListener("DOMContentLoaded", loadThemeFromStorage);
+const proPopup = document.getElementById("proPopup");
+const proTitle = document.getElementById("proTitle");
+const proMessage = document.getElementById("proMessage");
+const proIcon = document.getElementById("proIcon");
+const proButtons = document.getElementById("proButtons");
+
+function closePopup() {
+  proPopup.style.display = "none";
+}
+
+function showPopup({ title, message, icon, buttons }) {
+  proTitle.innerText = title;
+  proMessage.innerText = message;
+  proIcon.innerHTML = icon;
+  proButtons.innerHTML = buttons;
+  proPopup.style.display = "flex";
+}
+const toast = document.getElementById("toast");
+const toastText = document.getElementById("toastText");
+const toastIcon = document.getElementById("toastIcon");
+
+let toastTimer;
+
+function showToast(msg, type = "success") {
+  clearTimeout(toastTimer);
+  
+  toastText.innerText = msg;
+  
+  toast.classList.remove("show", "error");
+  
+  if (type === "error") {
+    toast.classList.add("error");
+    toastIcon.className = "fa-solid fa-circle-xmark toastIcon";
+  } else {
+    toastIcon.className = "fa-solid fa-circle-check toastIcon";
+  }
+  
+  toast.classList.add("show");
+  
+  toastTimer = setTimeout(() => {
+    toast.classList.remove("show");
+  }, 2200);
+}
+function scrollToResult() {
+  const el = document.getElementById("resultBox");
+  if (el) {
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+}
+
+  const cibilInput = document.getElementById("cibilInput");
+  const checkBtn = document.getElementById("checkBtn");
+
+  const pdfArea = document.getElementById("pdfArea");
+  const scoreBig = document.getElementById("scoreBig");
+  const levelChip = document.getElementById("levelChip");
+  const statusBox = document.getElementById("statusBox");
+
+  const barFill = document.getElementById("barFill");
+  const dot = document.getElementById("dot");
+
+  const rangeText = document.getElementById("rangeText");
+  const chanceText = document.getElementById("chanceText");
+  const cardText = document.getElementById("cardText");
+  const riskText = document.getElementById("riskText");
+
+  const eligibleText = document.getElementById("eligibleText");
+  const loanText = document.getElementById("loanText");
+  const interestText = document.getElementById("interestText");
+  const actionText = document.getElementById("actionText");
+
+  const tipBox = document.getElementById("tipBox");
+  const historyWrap = document.getElementById("historyWrap");
+
+  const shareBtn = document.getElementById("shareBtn");
+  const pdfBtn = document.getElementById("pdfBtn");
+
+  const loading = document.getElementById("loading");
+
+  let isCalculated = false;
+
+  function clamp(n,min,max){
+    return Math.min(Math.max(n,min),max);
+  }
+
+  function getInfo(score){
+    if(score < 580){
+      return {
+        level: "Poor",
+        status: "Low score. Improve your credit behavior.",
+        range: "300 - 579",
+        loan: "Very Low",
+        card: "Very Low",
+        risk: "High Risk",
+        eligible: "Currently, most banks may reject loan applications.",
+        loanText: "Recommended: First improve score before applying for loans.",
+        interest: "Expected Interest: Very High (if approved).",
+        action: "Action: Pay all dues, avoid late payments, reduce credit usage.",
+        tip: "Tip: Pay EMIs on time, keep credit card usage under 30%, and avoid multiple loan enquiries."
+      };
+    }
+
+    if(score < 670){
+      return {
+        level: "Average",
+        status: "Fair score. You can improve easily.",
+        range: "580 - 669",
+        loan: "Medium",
+        card: "Medium",
+        risk: "Medium Risk",
+        eligible: "Some banks may approve, but with limited offers.",
+        loanText: "Recommended: Apply only for small loans or secured loans.",
+        interest: "Expected Interest: Medium to High.",
+        action: "Action: Maintain payment discipline and reduce credit utilization.",
+        tip: "Tip: Pay full credit card bill, avoid minimum payment, keep old accounts active."
+      };
+    }
+
+    if(score < 740){
+      return {
+        level: "Good",
+        status: "Good score. Strong approval chances.",
+        range: "670 - 739",
+        loan: "High",
+        card: "High",
+        risk: "Low Risk",
+        eligible: "Most banks will approve loans and credit cards easily.",
+        loanText: "Recommended: You can apply for personal loan, bike loan, home loan.",
+        interest: "Expected Interest: Low to Medium.",
+        action: "Action: Continue good credit habits and avoid unnecessary enquiries.",
+        tip: "Tip: Keep credit utilization low and always pay on time to reach Excellent."
+      };
+    }
+
+    return {
+      level: "Excellent",
+      status: "Excellent score. Best offers possible.",
+      range: "740 - 900",
+      loan: "Very High",
+      card: "Very High",
+      risk: "Very Low Risk",
+      eligible: "You will get best loan approvals with top bank offers.",
+      loanText: "Recommended: Apply for any loan with best interest rate offers.",
+      interest: "Expected Interest: Lowest interest rate offers.",
+      action: "Action: Maintain score and avoid too many credit applications.",
+      tip: "Tip: You are doing great! Just maintain timely payments and stable credit history."
+    };
+  }
+
+  function updateBar(score){
+    const percent = ((score - 300) / (900 - 300)) * 100;
+    dot.style.left = percent + "%";
+    barFill.style.width = percent + "%";
+  }
+
+  function saveHistory(score, level){
+    let history = JSON.parse(localStorage.getItem("cibil_history") || "[]");
+
+    const now = new Date();
+    const stamp = now.toLocaleString("en-IN", { dateStyle:"medium", timeStyle:"short" });
+
+    history.unshift({ score, level, time: stamp });
+
+    // keep last 5
+    history = history.slice(0, 5);
+
+    localStorage.setItem("cibil_history", JSON.stringify(history));
+  }
+
+  function renderHistory(){
+    let history = JSON.parse(localStorage.getItem("cibil_history") || "[]");
+
+    if(history.length === 0){
+      historyWrap.innerHTML = "";
+      return;
+    }
+
+    historyWrap.innerHTML = `
+      <div style="font-size:13px;font-weight:1200;margin-top:6px;">
+        Recent Checks
+      </div>
+    `;
+
+    history.forEach(item=>{
+      historyWrap.innerHTML += `
+        <div class="historyItem">
+          <div class="l">
+            <b>Score: ${item.score}</b>
+            <span>${item.time}</span>
+          </div>
+          <div class="r">${item.level}</div>
+        </div>
+      `;
+    });
+  }
+
+  function updateUI(score){
+    const s = clamp(score, 300, 900);
+    const info = getInfo(s);
+
+    pdfArea.classList.remove("hidden");
+
+    scoreBig.innerText = s;
+    levelChip.innerText = info.level;
+    statusBox.innerText = info.status;
+
+    rangeText.innerText = info.range;
+    chanceText.innerText = info.loan;
+    cardText.innerText = info.card;
+    riskText.innerText = info.risk;
+
+    eligibleText.innerText = info.eligible;
+    loanText.innerText = info.loanText;
+    interestText.innerText = info.interest;
+    actionText.innerText = info.action;
+
+    tipBox.innerText = info.tip;
+
+    updateBar(s);
+
+    localStorage.setItem("cibil_score", s);
+    saveHistory(s, info.level);
+    renderHistory();
+
+    isCalculated = true;
+  }
+
+  // Only digits
+  cibilInput.addEventListener("input", ()=>{
+    cibilInput.value = cibilInput.value.replace(/[^0-9]/g,"").slice(0,3);
+  });
+
+  checkBtn.addEventListener("click", ()=>{
+    const score = parseInt(cibilInput.value || "0");
+
+    if(isNaN(score)){
+      
+      return;
+    }
+    if(score < 300 || score > 900){
+      showPopup({
+  title: "Enter Valid CIBIL",
+  message: "Please enter a valid CIBIL score!",
+  icon: '<i class="fa-solid fa-triangle-exclamation" style="color:#f59e0b;"></i>',
+  buttons: `
+      <button class="proBtn proPrimary" onclick="closePopup()">Close</button>
+    `
+});
+      return;
+    }
+
+    updateUI(score);
+  });
+
+  // ===== SHARE =====
+  async function shareCibilDetails() {
+  const score = Number(localStorage.getItem("cibil_score") || 0);
+  
+  if (!score || score < 300) {
+    showToast("Please check CIBIL score first!", "error");
+    return;
+  }
+  
+  const msg =
+    `📌 CIBIL Score Report (BimaCare)
+
+✅ Your CIBIL Score: ${score}
+
+💡 Check & improve your credit score using BimaCare app.
+`;
+  
+  try {
+    if (navigator.share) {
+      await navigator.share({
+        title: "CIBIL Score Report",
+        text: msg
+      });
+      showToast("Shared successfully ✅");
+    } else {
+      await navigator.clipboard.writeText(msg);
+      showToast("Share not supported. Copied to clipboard ✅");
+    }
+  } catch (err) {
+    showToast("Share cancelled ❌", "error");
+  }
+}
+
+  // ===== PDF DOWNLOAD (WITH LEVEL BAR + ALL DETAILS) =====
+  pdfBtn.addEventListener("click", async ()=>{
+    if(!isCalculated){
+      showPopup({
+  title: "Check CIBIL Score",
+  message: "Please Check CIBIL Score",
+  icon: '<i class="fa-solid fa-triangle-exclamation" style="color:#f59e0b;"></i>',
+  buttons: `
+      <button class="proBtn proPrimary" onclick="closePopup()">Close</button>
+    `
+});
+      return;
+    }
+
+    loading.style.display = "flex";
+
+    try{
+      // Wait a moment for UI to settle
+      await new Promise(r=>setTimeout(r, 250));
+
+      const canvas = await html2canvas(pdfArea, {
+        scale: 2,
+        backgroundColor: "#ffffff",
+        useCORS: true
+      });
+
+      const imgData = canvas.toDataURL("image/png");
+
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF("p", "mm", "a4");
+
+      const pageW = pdf.internal.pageSize.getWidth();
+      const pageH = pdf.internal.pageSize.getHeight();
+
+      const imgW = pageW;
+      const imgH = (canvas.height * imgW) / canvas.width;
+
+      let y = 10;
+
+      // If content is big, auto split
+      if(imgH <= pageH - 20){
+        pdf.addImage(imgData, "PNG", 0, y, imgW, imgH);
+      }else{
+        // multi page
+        let heightLeft = imgH;
+        let position = 0;
+
+        while(heightLeft > 0){
+          pdf.addImage(imgData, "PNG", 0, position + 10, imgW, imgH);
+          heightLeft -= pageH;
+          position -= pageH;
+
+          if(heightLeft > 0){
+            pdf.addPage();
+          }
+        }
+      }
+
+      const score = localStorage.getItem("cibil_score") || "CIBIL";
+      const fileName = "CIBIL_Report_" + score + ".pdf";
+
+/* Create Blob */
+const pdfBlob = pdf.output("blob");
+
+/* Check if Web Share API supported */
+if (navigator.share && navigator.canShare) {
+  
+  const file = new File([pdfBlob], fileName, {
+    type: "application/pdf"
+  });
+  
+  if (navigator.canShare({ files: [file] })) {
+    
+    await navigator.share({
+      title: "CIBIL Report",
+      text: "Here is my CIBIL Report",
+      files: [file]
+    });
+    
+  } else {
+    pdf.save(fileName);
+  }
+  
+} else {
+  /* Fallback for desktop */
+  pdf.save(fileName);
+}
+
+    }catch(err){
+      alert("PDF failed! Please try again.");
+      console.log(err);
+    }
+
+    loading.style.display = "none";
+  });
+
+  // ===== AUTO LOAD SAVED SCORE =====
+  const saved = parseInt(localStorage.getItem("cibil_score") || "0");
+  if(saved >= 300 && saved <= 900){
+    cibilInput.value = saved;
+    updateUI(saved);
+  }else{
+    renderHistory();
+  }
+  
+</script>
+</body>
+</html>

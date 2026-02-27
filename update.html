@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Updates - BimaCare</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="main.css">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;}
+  body{
+    background:#f5f7ff;
+    padding-bottom:85px;
+    color:#0A1A3C;
+  }
+
+  /* ===== Header ===== */
+  .topHeader{
+    width:100%;
+    position:sticky;
+    top:0;
+    z-index:999;
+    background:#0A1A3C;
+    padding:12px 14px;
+    border-bottom:1px solid rgba(255,255,255,0.12);
+  }
+
+  .headerRow{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+  }
+
+  .backBtn{
+    width:42px;height:42px;
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(255,255,255,0.14);
+    border:1px solid rgba(255,255,255,0.18);
+    color:#fff;
+    text-decoration:none;
+  }
+
+  .title{
+    font-size:17px;
+    font-weight:1000;
+    color:#fff;
+    letter-spacing:0.2px;
+  }
+
+  .headerIcon{
+    width:42px;height:42px;
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(255,255,255,0.14);
+    border:1px solid rgba(255,255,255,0.18);
+    color:#fff;
+  }
+
+  /* ===== Search ===== */
+  .searchWrap{
+    margin-top:12px;
+    display:flex;
+    gap:10px;
+  }
+
+  .searchBox{
+    flex:1;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:12px 12px;
+    border-radius:16px;
+    background:rgba(255,255,255,0.12);
+    border:1px solid rgba(255,255,255,0.18);
+    color:#fff;
+  }
+
+  .searchBox i{opacity:0.9;}
+
+  .searchBox input{
+    width:100%;
+    border:none;
+    outline:none;
+    background:transparent;
+    color:#fff;
+    font-size:14px;
+    font-weight:850;
+  }
+
+  .searchBox input::placeholder{
+    color:rgba(255,255,255,0.75);
+    font-weight:800;
+  }
+
+  /* ===== Page Body ===== */
+  .page{
+    padding:14px;
+    max-width:860px;
+    margin:auto;
+  }
+
+  /* ===== Section Title ===== */
+  .sectionTitle{
+    font-size:15px;
+    font-weight:1000;
+    margin:10px 0 14px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+
+  .sectionTitle i{
+    color:#2563eb;
+  }
+
+  /* ===== Update Cards ===== */
+  .updatesGrid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:14px;
+  }
+
+  .updateCard{
+    background:#fff;
+    border-radius:22px;
+    overflow:hidden;
+    border:1px solid rgba(0,0,0,0.06);
+    box-shadow:0 16px 40px rgba(0,0,0,0.06);
+    transition:0.2s;
+  }
+
+  .updateCard:active{
+    transform:scale(0.995);
+  }
+
+  .updateImg{
+    width:100%;
+    height:170px;
+    object-fit:cover;
+    display:block;
+  }
+
+  .updateBody{
+    padding:14px;
+  }
+
+  .metaRow{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-bottom:10px;
+  }
+
+  .publisher{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-weight:950;
+    font-size:13px;
+    color:#0A1A3C;
+  }
+
+  .publisher .badge{
+    width:34px;height:34px;
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#eef2ff;
+    color:#2563eb;
+    font-size:14px;
+    border:1px solid rgba(37,99,235,0.12);
+  }
+
+  .time{
+    font-size:12px;
+    font-weight:950;
+    color:#475569;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+
+  .updateTitle{
+    font-size:16px;
+    font-weight:1000;
+    line-height:1.25;
+    margin-bottom:8px;
+    color:#0A1A3C;
+  }
+
+  .updateDesc{
+    font-size:13px;
+    font-weight:800;
+    line-height:1.55;
+    color:#334155;
+  }
+
+  .tags{
+    margin-top:12px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+
+  .tag{
+    padding:9px 12px;
+    border-radius:999px;
+    background:#0A1A3C;
+    color:#fff;
+    font-size:11px;
+    font-weight:950;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+
+  .tag.blue{
+    background:#2563eb;
+  }
+
+  .tag.soft{
+    background:#eef2ff;
+    color:#2563eb;
+    border:1px solid rgba(37,99,235,0.14);
+  }
+
+  /* Empty */
+  .empty{
+    background:#fff;
+    border-radius:20px;
+    padding:18px;
+    border:1px solid rgba(0,0,0,0.06);
+    text-align:center;
+    font-weight:950;
+    color:#374151;
+  }
+
+  /* ===== Bottom Nav ===== */
+  .bottomNav{
+    width:100%;
+    position:fixed;
+    bottom:0;
+    left:0;
+    background:#fff;
+    border-top:1px solid rgba(0,0,0,0.08);
+    display:flex;
+    justify-content:space-around;
+    padding:10px 8px;
+    z-index:999;
+  }
+
+  .navItem{
+    text-decoration:none;
+    color:#555;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:4px;
+    font-size:12px;
+    font-weight:900;
+    padding:8px 10px;
+    border-radius:16px;
+    transition:0.2s;
+  }
+
+  .navItem i{font-size:18px;}
+  .navItem.active{color:#2563eb;background:#eef2ff;}
+  body.dark .updateCard{
+    background: #0A1A3C;
+color: #fff;
+  }body.dark .updateCard div{
+    color: #fff;
+  }body.dark .badge i{
+    color:#2563eb;
+  }body.dark .updateDesc{
+    color: gray;
+  }body.dark .tag{
+    background: black;
+color: #fff;
+  }
+</style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="topHeader">
+    <div class="headerRow">
+      <a class="backBtn" href="https://aniket-developer-001.github.io/BimaCare/home.html"><i class="fa-solid fa-arrow-left"></i></a>
+      <div class="title">Updates</div>
+      <div class="headerIcon"><i class="fa-solid fa-bullhorn"></i></div>
+    </div>
+
+    <div class="searchWrap">
+      <div class="searchBox">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input id="search" type="text" placeholder="Search updates..." />
+      </div>
+    </div>
+  </header>
+
+  <!-- BODY -->
+  <main class="page">
+
+    <div class="sectionTitle">
+      <i class="fa-solid fa-fire"></i> Latest Updates
+    </div>
+
+    <div class="updatesGrid" id="updatesGrid"></div>
+
+  </main>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottomNav">
+    <a class="navItem" href="https://aniket-developer-001.github.io/BimaCare/home.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
+    <a class="navItem" href="https://aniket-developer-001.github.io/BimaCare/insurance.html"><i class="fa-solid fa-shield"></i><span>Insurance</span></a>
+    <a class="navItem active" href="https://aniket-developer-001.github.io/BimaCare/update.html"><i class="fa-solid fa-bullhorn"></i><span>Updates</span></a>
+    <a class="navItem" href="https://aniket-developer-001.github.io/BimaCare/reminder.html"><i class="fa-solid fa-clock"></i><span>Reminder</span></a>
+    <a class="navItem" href="https://aniket-developer-001.github.io/BimaCare/account.html"><i class="fa-solid fa-user"></i><span>Account</span></a>
+  </nav>
+
+<script>
+/* ===========================
+   SIMPLE DARK MODE LOADER
+   =========================== */
+
+const THEME_KEY = "dark_mode"; // localStorage key
+
+function loadThemeFromStorage() {
+  const mode = localStorage.getItem(THEME_KEY);
+  
+  if (mode === "yes") {
+    document.body.classList.add("dark");
+  } else {
+    document.body.classList.remove("dark");
+  }
+}
+
+/* Run when page loads */
+document.addEventListener("DOMContentLoaded", loadThemeFromStorage);
+  const UPDATES = [
+    {
+      id: 1,
+      image: "https://images.unsplash.com/photo-1521791055366-0d553872125f?q=80&w=1400&auto=format&fit=crop",
+      publishedBy: "LIC Official",
+      dateTime: "16 Feb 2026 • 10:30 AM",
+      title: "New Premium Discount Offer for 2026",
+      description:
+        "LIC has introduced a new discount offer for selected long-term policies. Users can now enjoy special benefits on yearly premium payments.",
+      tags: ["LIC", "Discount", "2026"]
+    },
+    {
+      id: 2,
+      image: "https://images.unsplash.com/photo-1554224154-26032ffc0d07?q=80&w=1400&auto=format&fit=crop",
+      publishedBy: "BimaCare",
+      dateTime: "16 Feb 2026 • 12:15 PM",
+      title: "Policy Renewal Now Faster in Our App",
+      description:
+        "We improved the renewal system. Now you can renew policies quickly with better UI, smooth form, and updated calculation logic.",
+      tags: ["Update", "Renewal", "Fast"]
+    },
+    {
+      id: 3,
+      image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=1400&auto=format&fit=crop",
+      publishedBy: "Insurance News",
+      dateTime: "15 Feb 2026 • 06:45 PM",
+      title: "Health Insurance Demand Increased in India",
+      description:
+        "Due to increasing medical costs, more people are buying health insurance. Experts suggest choosing cashless plans with wide network hospitals.",
+      tags: ["Health", "India", "News"]
+    },
+    {
+      id: 4,
+      image: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?q=80&w=1400&auto=format&fit=crop",
+      publishedBy: "LIC Agent",
+      dateTime: "14 Feb 2026 • 09:10 AM",
+      title: "Top 3 Best LIC Plans for Family Protection",
+      description:
+        "If you want long-term family security, these 3 plans are best: Jeevan Anand, Jeevan Labh, and New Endowment. Compare and select wisely.",
+      tags: ["Top Plans", "Family", "LIC"]
+    }
+  ];
+
+  const updatesGrid = document.getElementById("updatesGrid");
+  const search = document.getElementById("search");
+
+  function renderUpdates(){
+    const q = search.value.trim().toLowerCase();
+
+    let data = [...UPDATES];
+
+    if(q){
+      data = data.filter(u =>
+        u.title.toLowerCase().includes(q) ||
+        u.description.toLowerCase().includes(q) ||
+        u.publishedBy.toLowerCase().includes(q) ||
+        u.tags.join(" ").toLowerCase().includes(q)
+      );
+    }
+
+    // show only first 2 at top (your requirement)
+    const topTwo = data.slice(0, 4);
+
+    if(topTwo.length === 0){
+      updatesGrid.innerHTML = `<div class="empty"><i class="fa-solid fa-circle-info"></i> No updates found</div>`;
+      return;
+    }
+
+    updatesGrid.innerHTML = topTwo.map(u => `
+      <div class="updateCard" onclick="openUpdate(${u.id})">
+        <img class="updateImg" src="${u.image}" alt="${u.title}">
+        <div class="updateBody">
+          <div class="metaRow">
+            <div class="publisher">
+              <div class="badge"><i class="fa-solid fa-user-check"></i></div>
+              ${u.publishedBy}
+            </div>
+            <div class="time">
+              <i class="fa-solid fa-calendar-days"></i>
+              ${u.dateTime}
+            </div>
+          </div>
+
+          <div class="updateTitle">${u.title}</div>
+          <div class="updateDesc">${u.description}</div>
+
+          <div class="tags">
+            ${u.tags.map((t, i) => `
+              <div class="tag ${i===1 ? "blue" : (i===2 ? "soft" : "")}">
+                <i class="fa-solid fa-hashtag"></i> ${t}
+              </div>
+            `).join("")}
+          </div>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  search.addEventListener("input", renderUpdates);
+  renderUpdates();
+  function openUpdate(id) {
+  localStorage.setItem("selected_update_id", id);
+  window.location.href = "view1.html";
+}
+</script>
+</body>
+</html>

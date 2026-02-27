@@ -1,0 +1,55 @@
+/* ===== Light Mode (Default) ===== */
+body {
+  background: #f4f7ff;
+  color: #0A1A3C;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* ===== Dark Mode ===== */
+body.dark {
+  background: #0b1220;
+  color: #e2e8f0;
+}
+
+/* Example Cards */
+body.dark .card,
+body.dark .box,
+body.dark .menuItem {
+  background: #0f1a33 !important;
+  color: #e2e8f0 !important;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Inputs */
+body.dark input,
+body.dark select,
+body.dark textarea {
+  background: #1e293b;
+  color: #fff;
+  border: 1px solid #334155;
+}
+
+/* Navbar */
+body.dark nav,body.dark .quickBox, body.dark .insCard,  body.dark .premium, body.dark .tipCard, body.dark .miniBox , body.dark .miniVal, body.dark .miniTxt, body.dark .recoTop h3, body.dark .recoCard, body.dark .toolCard, body.dark #dropBtn i, body.dark .recoText h4, body.dark .toolCard i, body.dark .ai .bubble, body.dark .bottomRow, body.dark .askBox, body.dark .chip, body.dark .inputBox i, body.dark .mini, body.dark .mini .v, body.dark .statusBox, body.dark .moreDetails, body.dark .historyItem, body.dark .bottomBar, body.dark .controlBox, body.dark .plan, body.dark .planBox, body.dark .searchBox{
+  background: #0A1A3C;
+  color: #fff;
+}body.dark .quickBox, body.dark .insCard, body.dark .inputBox, body.dark .chev{
+  background:#0f1a33;
+}body.dark #dropBtn, body.dark .ai .bubble, body.dark .askBox, body.dark #query, body.dark .inputBox, body.dark .inputBox input, body.dark .historyItem  .r, body.dark .statusBox, body.dark .search, body.dark .search input, body.dark .select, body.dark .select select, body.dark .compareBox, body.dark .note, body.dark .pill, body.dark .planBox, body.dark .welcomeBox, body.dark .searchBox{
+  background: black;
+}body.dark .toolGrid, body.dark #query, body.dark .chip, body.dark .inputBox input .search, body.dark .search input, body.dark .select option, body.dark .select select, body.dark .searchBox input{
+  border-color: black;
+}body.dark .moreDetails .detailLine span, body.dark .compareBox .v, body.dark .note, body.dark .inputBox label, body.dark .stat .v, body.dark .answer p, body.dark .qText, body.dark .controlBox label, body.dark .controlBox label, body.dark .plan .desc, body.dark .planTitle, body.dark .pill, body.dark #welcomeText{
+  color: #fff;
+}body.dark .stat, body.dark .helpBox,   body.dark .searchBox input, body.dark .provider{
+  background: black;
+}body.dark .faqItem, body.dark #notifyStatus, body.dark .tag, body.dark .wishBtn{
+  background: #0A1A3C;
+color: #fff;
+}body.dark .tag{
+  border: 1px solid black;
+}body.dark .dateLine{
+  color: gray;
+}body.dark .provider{
+  color: #fff;
+}
