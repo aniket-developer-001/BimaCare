@@ -346,7 +346,217 @@
     <a class="navItem" href="https://aniket-developer-001.github.io/BimaCare/reminder.html"><i class="fa-solid fa-clock"></i><span>Reminder</span></a>
     <a class="navItem" href="https://aniket-developer-001.github.io/BimaCare/account.html"><i class="fa-solid fa-user"></i><span>Account</span></a>
   </nav>
+<script>
+ /* ===========================
+   DARK MODE LOADER
+=========================== */
+const THEME_KEY = "dark_mode";
 
+document.addEventListener("DOMContentLoaded", () => {
+  if (localStorage.getItem(THEME_KEY) === "yes") {
+    document.body.classList.add("dark");
+  }
+  renderUpdate();
+  updateSaveIcon();
+});
+
+
+/* ===========================
+   UPDATES DATA
+=========================== */
+const UPDATES = [
+  {
+    id: 1,
+    image: "https://images.unsplash.com/photo-1521791055366-0d553872125f?q=80&w=1400&auto=format&fit=crop",
+    publishedBy: "LIC Official",
+    dateTime: "16 Feb 2026 • 10:30 AM",
+    title: "New Premium Discount Offer for 2026",
+    description:
+      "LIC has introduced a new discount offer for selected long-term policies.\n\nUsers can now enjoy special benefits on yearly premium payments.\n\nThis is useful for long-term policy holders who want to save money and get better returns.",
+    tags: ["LIC", "Discount", "2026"],
+    summary:
+      "A new LIC discount is available for selected long-term plans. Paying yearly premium can reduce total cost.",
+    tips:
+      "Check your policy type first. If eligible, pay premium yearly to get maximum benefit."
+  },
+  {
+    id: 2,
+    image: "https://images.unsplash.com/photo-1554224154-26032ffc0d07?q=80&w=1400&auto=format&fit=crop",
+    publishedBy: "BimaCare",
+    dateTime: "16 Feb 2026 • 12:15 PM",
+    title: "Policy Renewal Now Faster in Our App",
+    description:
+      "We improved the renewal system.\n\nNow you can renew policies quickly with better UI, smooth form, and updated calculation logic.\n\nThis update reduces loading time and improves user experience.",
+    tags: ["Update", "Renewal", "Fast"],
+    summary:
+      "Renewal process is now faster and smoother with improved UI + logic.",
+    tips:
+      "Update your saved policy details to avoid errors during renewal."
+  },
+  {
+    id: 3,
+    image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=1400&auto=format&fit=crop",
+    publishedBy: "Insurance News",
+    dateTime: "15 Feb 2026 • 06:45 PM",
+    title: "Health Insurance Demand Increased in India",
+    description:
+      "Due to increasing medical costs, more people are buying health insurance.\n\nExperts suggest choosing cashless plans with wide network hospitals.\n\nA good plan should also cover ICU, surgery and critical illness.",
+    tags: ["Health", "India", "News"],
+    summary:
+      "Health insurance demand is rising due to medical costs. Cashless plans are most recommended.",
+    tips:
+      "Always choose a plan with a wide hospital network and low claim rejection rate."
+  },
+  {
+    id: 4,
+    image: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?q=80&w=1400&auto=format&fit=crop",
+    publishedBy: "LIC Agent",
+    dateTime: "14 Feb 2026 • 09:10 AM",
+    title: "Top 3 Best LIC Plans for Family Protection",
+    description:
+      "If you want long-term family security, these 3 plans are best:\n\n1) Jeevan Anand\n2) Jeevan Labh\n3) New Endowment\n\nCompare and select wisely based on premium and maturity return.",
+    tags: ["Top Plans", "Family", "LIC"],
+    summary:
+      "Top 3 LIC plans suggested for family protection: Anand, Labh, Endowment.",
+    tips:
+      "Compare premium vs maturity return and choose based on your age + income."
+  }
+];
+
+
+/* ===========================
+   SELECT UPDATE
+=========================== */
+const updateId =
+  Number(localStorage.getItem("selected_update_id")) || 1;
+
+const plan =
+  UPDATES.find((u) => u.id === updateId) || UPDATES[0];
+
+
+/* ===========================
+   ELEMENTS
+=========================== */
+const blogImg = document.getElementById("blogImg");
+const blogTitle = document.getElementById("blogTitle");
+const blogPublisher = document.getElementById("blogPublisher");
+const blogDateTime = document.getElementById("blogDateTime");
+const blogDesc = document.getElementById("blogDesc");
+const blogTags = document.getElementById("blogTags");
+const summaryText = document.getElementById("summaryText");
+const tipsText = document.getElementById("tipsText");
+const saveBtn = document.getElementById("saveBtn");
+const shareBtn = document.getElementById("shareBtn");
+const toast = document.getElementById("toast");
+const toastMsg = document.getElementById("toastMsg");
+
+
+/* ===========================
+   RENDER UPDATE
+=========================== */
+function renderUpdate() {
+  if (!blogTitle) return;
+
+  if (blogImg) {
+    blogImg.src = plan.image;
+    blogImg.onerror = () => {
+      blogImg.src =
+        "https://via.placeholder.com/800x400?text=No+Image";
+    };
+  }
+
+  blogTitle.innerText = plan.title || "";
+  blogPublisher.innerText = plan.publishedBy || "";
+  blogDateTime.innerText = plan.dateTime || "";
+  blogDesc.innerText = plan.description || "";
+  summaryText.innerText = plan.summary || "";
+  tipsText.innerText = plan.tips || "";
+
+  blogTags.innerHTML = (plan.tags || [])
+    .map((t) => `<div class="tag soft">${t}</div>`)
+    .join("");
+}
+
+
+/* ===========================
+   TOAST
+=========================== */
+function showToast(message) {
+  if (!toast) return;
+  toastMsg.innerText = message;
+  toast.classList.add("show");
+
+  setTimeout(() => {
+    toast.classList.remove("show");
+  }, 2200);
+}
+
+
+/* ===========================
+   SAVE SYSTEM
+=========================== */
+function getSaved() {
+  return JSON.parse(
+    localStorage.getItem("saved_updates") || "[]"
+  );
+}
+
+function updateSaveIcon() {
+  if (!saveBtn) return;
+
+  const saved = getSaved();
+  saveBtn.innerHTML = saved.includes(plan.id)
+    ? `<i class="fa-solid fa-bookmark"></i>`
+    : `<i class="fa-regular fa-bookmark"></i>`;
+}
+
+if (saveBtn) {
+  saveBtn.addEventListener("click", () => {
+    let saved = getSaved();
+
+    if (saved.includes(plan.id)) {
+      saved = saved.filter((x) => x !== plan.id);
+      showToast("Removed from saved updates");
+    } else {
+      saved.push(plan.id);
+      showToast("Saved successfully");
+    }
+
+    localStorage.setItem(
+      "saved_updates",
+      JSON.stringify(saved)
+    );
+    updateSaveIcon();
+  });
+}
+
+
+/* ===========================
+   SHARE SYSTEM
+=========================== */
+if (shareBtn) {
+  shareBtn.addEventListener("click", async () => {
+    const shareData = {
+      title: plan.title,
+      text: plan.summary,
+      url: window.location.href
+    };
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
+        await navigator.clipboard.writeText(
+          plan.title + "\n\n" + window.location.href
+        );
+        showToast("Link copied to clipboard");
+      }
+    } catch (e) {
+      showToast("Action cancelled");
+    }
+  });
+   }
+</script>
 
 </body>
 </html>
