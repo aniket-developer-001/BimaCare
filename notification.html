@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Notifications • BimaCare</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+}
+
+body{
+background:#f4f7ff;
+color:#0A1A3C;
+}
+
+/* HEADER */
+
+.header{
+position:sticky;
+top:0;
+z-index:100;
+background:#0A1A3C;
+color:#fff;
+padding:14px 16px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+border-bottom:1px solid rgba(255,255,255,0.15);
+}
+
+.headerLeft{
+display:flex;
+align-items:center;
+gap:12px;
+}
+
+.backBtn{
+width:38px;
+height:38px;
+border-radius:12px;
+background:rgba(255,255,255,0.15);
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+}
+
+.headerTitle{
+font-weight:700;
+font-size:18px;
+}
+
+.headerRight{
+display:flex;
+gap:10px;
+align-items:center;
+}
+
+.clearBtn{
+background:rgba(255,255,255,0.12);
+border:1px solid rgba(255,255,255,0.2);
+padding:8px 12px;
+border-radius:12px;
+font-size:12px;
+cursor:pointer;
+}
+
+/* PAGE WRAP */
+
+.container{
+max-width:650px;
+margin:auto;
+padding:14px;
+}
+
+/* NOTIFICATION CARD */
+
+.notification{
+background:#fff;
+border-radius:18px;
+padding:14px;
+display:flex;
+gap:12px;
+align-items:flex-start;
+border:1px solid rgba(0,0,0,0.06);
+box-shadow:0 10px 30px rgba(0,0,0,0.06);
+margin-bottom:12px;
+cursor:pointer;
+transition:.25s;
+animation:fadeUp .35s ease;
+}
+
+.notification:hover{
+transform:translateY(-2px);
+box-shadow:0 20px 45px rgba(0,0,0,0.08);
+}
+
+/* UNREAD STYLE */
+
+.notification.unread{
+border-left:4px solid #2563eb;
+background:#f6f9ff;
+}
+
+/* ICON */
+
+.nIcon{
+width:44px;
+height:44px;
+border-radius:14px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:18px;
+color:#fff;
+flex-shrink:0;
+}
+
+.iconReward{background:linear-gradient(135deg,#f59e0b,#f97316);}
+.iconInfo{background:linear-gradient(135deg,#2563eb,#4f46e5);}
+.iconAlert{background:linear-gradient(135deg,#ef4444,#dc2626);}
+
+/* TEXT */
+
+.nContent{
+flex:1;
+}
+
+.nTitle{
+font-size:14px;
+font-weight:700;
+margin-bottom:4px;
+}
+
+.nText{
+font-size:12px;
+color:#64748b;
+line-height:1.5;
+}
+
+.nTime{
+font-size:11px;
+margin-top:6px;
+color:#94a3b8;
+}
+
+/* BADGE */
+
+.badge{
+background:#2563eb;
+color:#fff;
+font-size:10px;
+padding:4px 7px;
+border-radius:10px;
+margin-left:6px;
+}
+
+/* EMPTY */
+
+.empty{
+text-align:center;
+padding:50px 20px;
+color:#64748b;
+}
+
+.empty i{
+font-size:40px;
+color:#2563eb;
+margin-bottom:10px;
+}
+
+/* ANIMATION */
+
+@keyframes fadeUp{
+from{
+opacity:0;
+transform:translateY(15px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}/* DARK MODE */
+
+body.dark{
+background:#0b1220;
+color:#e2e8f0;
+}
+
+/* HEADER */
+
+body.dark .header{
+background:#111827;
+border-bottom:1px solid rgba(255,255,255,0.08);
+}
+
+/* BACK BUTTON */
+
+body.dark .backBtn{
+background:rgba(255,255,255,0.08);
+}
+
+/* NOTIFICATION CARD */
+
+body.dark .notification{
+background:#1e293b;
+border:1px solid rgba(255,255,255,0.06);
+box-shadow:none;
+}
+
+/* UNREAD */
+
+body.dark .notification.unread{
+background:#1e293b;
+border-left:4px solid #6366f1;
+}
+
+/* TEXT */
+
+body.dark .nText{
+color:#94a3b8;
+}
+
+body.dark .nTime{
+color:#64748b;
+}
+
+/* EMPTY */
+
+body.dark .empty{
+color:#94a3b8;
+}
+
+/* BADGE */
+
+body.dark .badge{
+background:#6366f1;
+}
+
+</style>
+</head>
+
+<body onload="loadTheme()">
+
+<!-- HEADER -->
+
+<div class="header">
+
+<div class="headerLeft">
+<div class="backBtn" onclick="history.back()">
+<i class="fa-solid fa-arrow-left"></i>
+</div>
+
+<div class="headerTitle">
+Notifications
+<span class="badge" id="notifCount">0</span>
+</div>
+</div>
+
+</div>
+
+
+<div class="container">
+
+<div id="notifList"></div>
+
+<div class="empty" id="emptyBox" style="display:none">
+
+<i class="fa-solid fa-bell-slash"></i>
+
+<div>No notifications yet</div>
+
+</div>
+
+</div>
+
+
+<script>
+const THEME_KEY = "dark_mode";
+
+function loadTheme() {
+  
+  let mode = localStorage.getItem(THEME_KEY);
+  
+  if (mode === "yes") {
+    document.body.classList.add("dark");
+  } else {
+    document.body.classList.remove("dark");
+  }
+  
+}
+/* STORAGE KEY */
+
+const STORAGE = "bima_notifications";
+
+/* SAMPLE NOTIFICATIONS */
+
+const defaultNotifications = [
+
+{
+id:1,
+title:"Welcome to BimaCare 🎉",
+text:"Your account has been created successfully.",
+icon:"iconInfo",
+unread:true
+},
+
+{
+id:2,
+title:"Daily Reward",
+text:"You earned 5 coins for daily login.",
+icon:"iconReward",
+unread:true
+}
+];
+
+/* LOAD DATA */
+
+function loadNotifications(){
+
+let data = JSON.parse(localStorage.getItem(STORAGE));
+
+if(!data){
+
+data = defaultNotifications;
+
+localStorage.setItem(STORAGE,JSON.stringify(data));
+
+}
+
+return data;
+
+}
+
+/* SAVE */
+
+function saveNotifications(data){
+
+localStorage.setItem(STORAGE,JSON.stringify(data));
+
+}
+
+/* RENDER */
+
+function render(){
+
+const list = document.getElementById("notifList");
+
+const empty = document.getElementById("emptyBox");
+
+const count = document.getElementById("notifCount");
+
+let data = loadNotifications();
+
+if(data.length === 0){
+
+list.innerHTML = "";
+empty.style.display="block";
+count.innerText="0";
+return;
+
+}
+
+empty.style.display="none";
+
+let unread = 0;
+
+list.innerHTML = data.map(n=>{
+
+if(n.unread) unread++;
+
+return `
+
+<div class="notification ${n.unread ? "unread":""}" onclick="markRead(${n.id})">
+
+<div class="nIcon ${n.icon}">
+<i class="fa-solid fa-bell"></i>
+</div>
+
+<div class="nContent">
+
+<div class="nTitle">${n.title}</div>
+
+<div class="nText">${n.text}</div>
+
+
+</div>
+
+</div>
+
+`;
+
+}).join("");
+
+count.innerText = unread;
+
+}
+
+/* MARK READ */
+
+function markRead(id){
+
+let data = loadNotifications();
+
+data = data.map(n=>{
+
+if(n.id === id) n.unread=false;
+
+return n;
+
+});
+
+saveNotifications(data);
+
+render();
+
+}
+
+
+/* INIT */
+
+render();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Insurance Compare - BimaCare</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:system-ui;
+}
+
+body{
+background:#f5f7ff;
+color:#0A1A3C;
+}
+
+/* HEADER */
+
+.header{
+background:#0A1A3C;
+color:#fff;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:12px 16px;
+}
+
+.header h2{
+font-size:16px;
+font-weight:900;
+}
+
+.header a{
+color:#fff;
+text-decoration:none;
+width:40px;
+height:40px;
+display:flex;
+align-items:center;
+justify-content:center;
+background:rgba(255,255,255,0.15);
+border-radius:12px;
+}
+
+/* WRAP */
+
+.wrap{
+max-width:600px;
+margin:auto;
+padding:18px;
+}
+
+/* PICK BOX */
+
+.pickBox{
+background:#fff;
+border-radius:20px;
+padding:18px;
+margin-bottom:14px;
+border:1px solid rgba(0,0,0,0.08);
+box-shadow:0 10px 30px rgba(0,0,0,0.05);
+cursor:pointer;
+transition:0.2s;
+}
+
+.pickBox:hover{
+transform:translateY(-3px);
+}
+
+.pickTitle{
+font-size:13px;
+font-weight:900;
+color:#64748b;
+}
+
+.pickValue{
+margin-top:6px;
+font-size:15px;
+font-weight:900;
+}
+
+/* BUTTON */
+
+.compareBtn{
+width:100%;
+padding:14px;
+border:none;
+border-radius:16px;
+background:linear-gradient(135deg,#2563eb,#7c3aed);
+color:#fff;
+font-weight:900;
+font-size:14px;
+cursor:pointer;
+margin-top:10px;
+opacity:.5;
+pointer-events:none;
+}
+
+.compareBtn.active{
+opacity:1;
+pointer-events:auto;
+}
+
+/* POPUP */
+
+.popup{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.5);
+display:none;
+align-items:center;
+justify-content:center;
+z-index:100;
+}
+
+.popupBox{
+width:92%;
+max-width:500px;
+background:#fff;
+border-radius:20px;
+padding:18px;
+max-height:80vh;
+overflow:auto;
+animation:pop .3s ease;
+}
+
+@keyframes pop{
+from{transform:scale(.9);opacity:0}
+to{transform:scale(1);opacity:1}
+}
+
+/* SEARCH */
+
+.search{
+display:flex;
+align-items:center;
+gap:8px;
+border:1px solid rgba(0,0,0,0.1);
+padding:10px;
+border-radius:12px;
+margin-bottom:12px;
+}
+
+.search input{
+border:none;
+outline:none;
+width:100%;
+}
+
+/* PLAN LIST */
+
+.plan{
+padding:12px;
+border-radius:14px;
+border:1px solid rgba(0,0,0,0.08);
+margin-bottom:8px;
+cursor:pointer;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.plan:hover{
+background:#f1f5ff;
+}
+
+.plan.disabled{
+opacity:.4;
+pointer-events:none;
+}
+
+/* RESULT */
+
+.result{
+margin-top:20px;
+display:none;
+animation:fade .4s ease;
+}
+
+@keyframes fade{
+from{opacity:0;transform:translateY(10px)}
+to{opacity:1;transform:translateY(0)}
+}
+
+.resCard{
+background:#fff;
+border-radius:20px;
+padding:16px;
+border:1px solid rgba(0,0,0,0.07);
+margin-bottom:10px;
+}
+
+.resCard.best{
+border:2px solid #22c55e;
+}.pickBox {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border-radius: 18px;
+  padding: 16px;
+  margin-bottom: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+  transition: .2s;
+}
+
+.pickLeft {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pickIcon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: #eef2ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #2563eb;
+}
+
+.pickText {
+  display: flex;
+  flex-direction: column;
+}
+
+.pickTitle {
+  font-size: 12px;
+  font-weight: 900;
+  color: #64748b;
+}
+
+.pickValue {
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.pickArrow {
+  color: #64748b;
+  font-size: 14px;
+}.compareBtn {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  color: #fff;
+  font-weight: 900;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 12px 30px rgba(37, 99, 235, 0.3);
+  opacity: .5;
+  pointer-events: none;
+}
+
+.compareBtn.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.compareBtn:hover {
+  transform: translateY(-2px);
+}.popupBox {
+  width: 92%;
+  max-width: 500px;
+  background: #fff;
+  border-radius: 20px;
+  padding: 18px;
+  max-height: 70vh;
+  overflow-y: auto;
+}/* COMPARE RESULT */
+
+.result {
+  margin-top: 20px;
+  display: none;
+  animation: fade .4s ease;
+}
+
+.compareGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+@media(min-width:700px) {
+  .compareGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.compareCard {
+  background: #fff;
+  border-radius: 20px;
+  padding: 18px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
+  position: relative;
+  transition: .25s;
+}
+
+.compareCard.best {
+  border: 2px solid #22c55e;
+  background: linear-gradient(180deg, #ffffff, #f0fdf4);
+}
+
+.planTitle {
+  font-size: 15px;
+  font-weight: 900;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.planRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.1);
+  font-size: 13px;
+}
+
+.planRow:last-child {
+  border-bottom: none;
+}
+
+.rowLeft {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #64748b;
+  font-weight: 800;
+}
+
+.rowRight {
+  font-weight: 900;
+  color: #0A1A3C;
+}
+
+.bestBadge {
+  margin-top: 10px;
+  font-size: 12px;
+  font-weight: 900;
+  color: #166534;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+body.dark{
+background:#0f172a;
+color:#e5e7eb;
+}
+
+/* HEADER */
+
+body.dark .header{
+background:#020617;
+color:#fff;
+}
+
+/* PICK BOX */
+
+body.dark .pickBox{
+background:#1e293b;
+border:1px solid rgba(255,255,255,0.08);
+box-shadow:none;
+}
+
+body.dark .pickBox:hover{
+background:#273449;
+}
+
+body.dark .pickTitle{
+color:#94a3b8;
+}
+
+body.dark .pickValue{
+color:#f1f5f9;
+}
+
+body.dark .pickIcon{
+background:#1e40af33;
+color:#60a5fa;
+}
+
+body.dark .pickArrow{
+color:#94a3b8;
+}
+
+/* BUTTON */
+
+body.dark .compareBtn{
+box-shadow:none;
+}
+
+/* POPUP */
+
+body.dark .popup{
+background:rgba(0,0,0,0.7);
+}
+
+body.dark .popupBox{
+background:#1e293b;
+}
+
+body.dark .search{
+border:1px solid rgba(255,255,255,0.1);
+background:#0f172a;
+}
+
+body.dark .search input{
+background:transparent;
+color:#fff;
+}
+
+body.dark .search i{
+color:#94a3b8;
+}
+
+/* PLAN LIST */
+
+body.dark .plan{
+background:#1e293b;
+border:1px solid rgba(255,255,255,0.08);
+color:#e5e7eb;
+}
+
+body.dark .plan:hover{
+background:#334155;
+}
+
+body.dark .plan.disabled{
+opacity:.35;
+}
+
+/* RESULT */
+
+body.dark .compareCard{
+background:#1e293b;
+border:1px solid rgba(255,255,255,0.08);
+box-shadow:none;
+}
+
+body.dark .compareCard.best{
+border:2px solid #22c55e;
+background:#052e1a;
+}
+
+body.dark .planTitle{
+color:#f1f5f9;
+}
+
+body.dark .rowLeft{
+color:#94a3b8;
+}
+
+body.dark .rowRight{
+color:#ffffff;
+}
+
+body.dark .bestBadge{
+color:#4ade80;
+}
+</style>
+</head>
+
+<body onload="loadThemeFromStorage()">
+
+<div class="header">
+<a href="https://aniket-developer-001.github.io/BimaCare//home.html"><i class="fa-solid fa-arrow-left"></i></a>
+<h2>Insurance Compare</h2>
+<a href="#"><i class="fa-solid fa-house"></i></a>
+</div>
+
+<div class="wrap">
+
+<div class="pickBox" onclick="openPopup(1)">
+  
+  <div class="pickLeft">
+    
+    <div class="pickIcon">
+      <i class="fa-solid fa-shield"></i>
+    </div>
+    
+    <div class="pickText">
+      <div class="pickTitle">Option 1</div>
+      <div class="pickValue" id="pick1">Select Plan</div>
+    </div>
+    
+  </div>
+  
+  <i class="fa-solid fa-chevron-right pickArrow"></i>
+  
+</div>
+
+
+<div class="pickBox" onclick="openPopup(2)">
+  
+  <div class="pickLeft">
+    
+    <div class="pickIcon">
+      <i class="fa-solid fa-shield-heart"></i>
+    </div>
+    
+    <div class="pickText">
+      <div class="pickTitle">Option 2</div>
+      <div class="pickValue" id="pick2">Select Plan</div>
+    </div>
+    
+  </div>
+  
+  <i class="fa-solid fa-chevron-right pickArrow"></i>
+  
+</div>
+
+<button id="compareBtn" class="compareBtn" onclick="comparePlans()">
+  <i class="fa-solid fa-code-compare"></i>
+  Compare Plans
+</button>
+
+<div id="result" class="result">
+  
+  <div class="compareGrid" id="compareGrid"></div>
+  
+</div>
+</div>
+
+<!-- POPUP -->
+
+<div id="popup" class="popup">
+
+<div class="popupBox">
+
+<div class="search">
+<i class="fa-solid fa-search"></i>
+<input id="search" placeholder="Search insurance">
+</div>
+
+<div id="planList"></div>
+
+</div>
+
+</div>
+<script async
+      data-adbreak-test="on"
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-123456789"
+      crossorigin="anonymous">
+</script>
+<script src="lic.js"></script>
+<script>
+const THEME_KEY = "dark_mode"; // localStorage key
+
+function loadThemeFromStorage() {
+  const mode = localStorage.getItem(THEME_KEY);
+  
+  if (mode === "yes") {
+    document.body.classList.add("dark");
+  } else {
+    document.body.classList.remove("dark");
+  }
+}
+
+const plans = LIC_PLANS.map(p => ({
+  number: p.plan_number,
+  name: p.plan_name,
+  type: p.plan_type,
+  age: p.age_entry,
+  premium_term: p.premium_term,
+  sum: p.minimum_sum_assured,
+  return: p.expected_return
+}));
+
+let option=0;
+let pick1=null;
+let pick2=null;
+
+function openPopup(o){
+option=o;
+document.getElementById("popup").style.display="flex";
+renderPlans();
+}
+
+function closePopup(){
+document.getElementById("popup").style.display="none";
+}
+
+function renderPlans(){
+
+const search=document.getElementById("search").value.toLowerCase();
+
+let html="";
+
+plans
+.filter(p=>p.name.toLowerCase().includes(search))
+.forEach(p=>{
+
+let disabled=false;
+
+if(option==2 && pick1 && pick1.name===p.name)
+disabled=true;
+
+if(option==1 && pick2 && pick2.name===p.name)
+disabled=true;
+
+html+=`
+<div class="plan ${disabled?'disabled':''}"
+onclick='selectPlan(${JSON.stringify(p)})'>
+
+${p.number} - ${p.name}
+<span>${p.type}</span>
+
+</div>
+`;
+
+});
+
+document.getElementById("planList").innerHTML=html;
+
+}
+
+document.getElementById("search").oninput=renderPlans;
+
+function selectPlan(p){
+
+if(option==1){
+pick1=p;
+document.getElementById("pick1").innerText=p.name;
+}
+
+if(option==2){
+pick2=p;
+document.getElementById("pick2").innerText=p.name;
+}
+
+closePopup();
+
+if(pick1 && pick2){
+document.getElementById("compareBtn").classList.add("active");
+}
+
+}
+
+function score(p) {
+  
+  return parseFloat(p.return) || 0;
+  
+}
+
+function comparePlans() {
+  
+  const res = document.getElementById("result");
+  const grid = document.getElementById("compareGrid");
+  
+  const s1 = score(pick1);
+  const s2 = score(pick2);
+  
+  const best = s1 > s2 ? 1 : 2;
+  
+  grid.innerHTML = `
+
+${renderCard(pick1,best==1)}
+
+${renderCard(pick2,best==2)}
+
+`;
+  
+  res.style.display = "block";
+  
+  window.scrollTo({
+    top: document.body.scrollHeight,
+    behavior: "smooth"
+  });
+  
+}
+
+window.onclick=e=>{
+if(e.target.id==="popup")closePopup();
+};
+let visibleCount = 5;
+
+function renderCard(p, isBest) {
+  
+  return `
+
+<div class="compareCard ${isBest?'best':''}">
+
+<div class="planTitle">
+<i class="fa-solid fa-shield-heart"></i>
+${p.number} - ${p.name}
+</div>
+
+<div class="planRow">
+<div class="rowLeft">
+<i class="fa-solid fa-layer-group"></i>
+Plan Type
+</div>
+<div class="rowRight">
+${p.type}
+</div>
+</div>
+
+<div class="planRow">
+<div class="rowLeft">
+<i class="fa-solid fa-user"></i>
+Entry Age
+</div>
+<div class="rowRight">
+${p.age}
+</div>
+</div>
+
+<div class="planRow">
+<div class="rowLeft">
+<i class="fa-solid fa-coins"></i>
+Min Sum Assured
+</div>
+<div class="rowRight">
+₹${Number(p.sum).toLocaleString("en-IN")}
+</div>
+</div>
+
+<div class="planRow">
+<div class="rowLeft">
+<i class="fa-solid fa-chart-line"></i>
+Expected Return
+</div>
+<div class="rowRight">
+${p.return}
+</div>
+</div>
+
+${isBest?`
+
+<div class="bestBadge">
+<i class="fa-solid fa-crown"></i>
+Better Plan
+</div>
+
+`:''}
+
+</div>
+
+`;
+  
+}
+function renderPlans(){
+
+const search=document.getElementById("search").value.toLowerCase();
+
+let filtered = plans.filter(p =>
+p.name.toLowerCase().includes(search)
+);
+
+let visible = filtered.slice(0,visibleCount);
+
+let html="";
+
+visible.forEach(p=>{
+
+let disabled=false;
+
+if(option==2 && pick1 && pick1.name===p.name) disabled=true;
+if(option==1 && pick2 && pick2.name===p.name) disabled=true;
+
+html+=`
+<div class="plan ${disabled?'disabled':''}"
+onclick='selectPlan(${JSON.stringify(p)})'>
+
+<div>
+<i class="fa-solid fa-shield-heart"></i>
+${p.number} - ${p.name}
+</div>
+
+</div>
+`;
+
+});
+
+document.getElementById("planList").innerHTML=html;
+
+}
+document.querySelector(".popupBox").addEventListener("scroll",function(){
+
+if(this.scrollTop + this.clientHeight >= this.scrollHeight - 5){
+
+visibleCount += 5;
+
+renderPlans();
+
+}
+
+});
+function selectPlan(p){
+
+if(option==1){
+pick1=p;
+
+document.getElementById("pick1").innerHTML =
+`<i class="fa-solid fa-circle-check" style="color:#22c55e"></i> ${p.name}`;
+}
+
+if(option==2){
+pick2=p;
+
+document.getElementById("pick2").innerHTML =
+`<i class="fa-solid fa-circle-check" style="color:#22c55e"></i> ${p.name}`;
+}
+
+closePopup();
+
+if(pick1 && pick2){
+document.getElementById("compareBtn").classList.add("active");
+}
+
+}
+</script>
+
+</body>
+</html>

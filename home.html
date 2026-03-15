@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BimaCare</title>
+<!-- Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu|Lora" />
+<link rel="stylesheet" href="bar.css">
+<style type="text/css" media="all">
+    :root{
+    --bg:#f4f7ff;
+    --card:#ffffff;
+    --text:#0A1A3C;
+    --muted:#6b7280;
+
+    /* Combo 1: Royal Blue Prestige */
+    --primary:#0A1A3C;
+    --accent:#6AA2FF;
+
+    --border: rgba(0,0,0,0.08);
+    
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;}
+
+  body{
+    background:var(--bg);
+    color:var(--text);
+    padding-bottom: 92px;
+  }
+
+/* ===== HEADER ===== */
+
+/* HEADER */
+
+.topHeader {
+  
+  width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  
+  background: white;
+  
+  padding: 10px 16px;
+  
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  
+}
+
+
+/* ROW */
+
+.headRow {
+  
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  
+  position: relative;
+  
+}
+
+
+/* AVATAR */
+
+.avatar {
+  
+  width: 42px;
+  height: 42px;
+  
+  border-radius: 50%;
+  
+  background: linear-gradient(135deg, #3aa0ff, #0f5bff);
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+  
+}
+
+
+/* BRAND CENTER */
+
+.brandCenter {
+  
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  
+}
+
+.brandCenter h1 {
+  
+  font-size: 20px;
+  font-weight: 900;
+  
+  white-space: nowrap;
+  
+}
+
+.bima {
+  
+  color: #1e2b4f;
+  
+}
+
+.care {
+  
+  color: #0f8cff;
+  
+}
+
+
+/* NOTIFICATION */
+
+.notifyBtn {
+  
+  width: 42px;
+  height: 42px;
+  
+  border-radius: 50%;
+  
+  background: #fff;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  position: relative;
+  
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  
+  cursor: pointer;
+  
+}
+
+.notifyBtn i {
+  
+  font-size: 18px;
+  color: #1e2b4f;
+  
+}
+
+.notifyDot {
+  
+  width: 8px;
+  height: 8px;
+  
+  background: #ff3b3b;
+  
+  border-radius: 50%;
+  
+  position: absolute;
+  
+  top: 10px;
+  right: 10px;
+  
+}
+  /* ===== MAIN ===== */
+  .main{
+    padding: 14px;
+    max-width: 980px;
+    margin: 0 auto;
+  }
+
+  .sectionTitle{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin: 12px 2px 10px;
+  }
+
+  .sectionTitle h2{
+    font-size:16px;
+    font-weight:950;
+  }.hiUser{
+  font-size:14px;
+  font-weight:bold;
+  color:#192CFF;
+  margin-right: 15px;
+}
+
+  
+
+  /* ===== QUICK TOOLS ===== */
+  .quickBox{
+    background: var(--card);
+    border-radius: 22px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    overflow:hidden;
+  }
+
+  .quickTop{
+    padding: 14px 14px 10px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+  }
+
+  .quickTop .left{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+
+  .quickIcon{
+    width:42px;height:42px;
+    border-radius:16px;
+    background: rgba(106,162,255,0.15);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border: 1px solid rgba(106,162,255,0.18);
+  }
+  .quickIcon i{color:var(--accent);font-size:20px;}
+
+  .quickTop h3{
+    font-size:16px;
+    font-weight:950;
+  }
+
+  .dropBtn{
+    width:42px;height:42px;
+    border-radius:16px;
+    border:1px solid var(--border);
+    background:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    transition:0.2s;
+  }
+  .dropBtn i{color:var(--primary);transition:0.25s;}
+  .dropBtn.rotate i{transform: rotate(180deg);}
+
+  .toolGrid{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    padding: 5px 12px 12px 12px;
+    /* dropdown animation */
+    max-height: 1000px;
+    transition: 0.35s ease;
+    overflow:hidden;
+    border-top: 1px solid #f0f0f0;
+  }
+
+
+  .toolGrid.hide{
+    max-height: 0px;
+    padding-bottom: 0;
+    opacity: 0;
+  }
+
+  .toolCard{
+    background: #FDFEFF;
+    border-radius: 10px;
+    padding: 5px 0px;
+    align-items:center;
+    gap:12px;
+    cursor:pointer;
+    transition:0.2s;
+  }
+  .toolCard:active{transform: scale(0.99);}
+
+  .toolCard .ic{
+    padding: 12px 0px;
+    display:flex;
+    text-align: center;
+    align-items:center;
+    justify-content:center;
+  }
+  .toolCard .ic i{color:var(--primary);font-size:18px;}
+
+  .toolCard h4{
+    font-size:12px;
+    font-weight:950;
+    line-height:1.1;
+    text-align: center;
+  }
+  
+
+  /* ===== POPULAR INSURANCE ===== */
+  .swipeRow{
+    display:flex;
+    gap: 14px;
+    overflow-x:auto;
+    padding: 2px 2px 12px;
+    scroll-snap-type: x mandatory;
+  }
+  .swipeRow::-webkit-scrollbar{height:0;}
+
+  .insCard{
+    min-width: 270px;
+    max-width: 270px;
+    scroll-snap-align: start;
+background: #FDFEFF;
+    
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    overflow:hidden;
+    box-shadow: var(--shadow);
+  }
+
+  .insTopImg{
+    height: 130px;
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    
+  }
+
+  .insTopImg img{
+    width: 100%;
+    height: 130px;
+    border-start-end-radius: 22.5px;
+    border-start-start-radius: 22.5px;
+    opacity: 0.85;
+  }
+
+  .insBody{
+    padding: 14px;
+  }
+
+  .insTitle{
+    font-size: 14px;
+    font-weight: 950;
+    margin-bottom: 10px;
+  }
+
+  .priceRow{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom: 10px;
+  }
+
+  .premium{
+    font-size: 16px;
+    font-weight: 1000;
+    color: var(--primary);
+    line-height:1.1;
+  }
+  .premium small{
+    display:block;
+    font-size: 12px;
+    font-weight: 900;
+    color: var(--muted);
+    margin-top:2px;
+  }
+
+  .viewBtn{
+    border:none;
+    cursor:pointer;
+    background: linear-gradient(135deg, var(--accent), #3b82f6);
+    color:#fff;
+    padding: 10px 12px;
+    border-radius: 16px;
+    font-size: 12px;
+    font-weight: 950;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    box-shadow: 0 16px 35px rgba(106,162,255,0.30);
+  }
+  .viewBtn:active{transform: scale(0.985);}
+
+  .interest{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    padding-top: 10px;
+    border-top: 1px dashed rgba(0,0,0,0.10);
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 900;
+  }
+
+  .interest b{
+    color: #16a34a;
+    font-weight: 1000;
+  }
+
+
+  /* ===== RESPONSIVE ===== */
+  @media(min-width: 700px){
+    .toolGrid{grid-template-columns: repeat(4, 1fr);}
+    .insCard{min-width: 310px; max-width: 310px;}
+    .sectionTitle h2{font-size:18px;}
+  }
+
+  @media(min-width: 980px){
+    .main{padding: 18px;}
+  }/* ✅ Welcome Box */
+.welcomeBox{
+  width:100%;
+  background:#fff;
+  border-radius:18px;
+  padding:16px 14px;
+  border:1px solid rgba(0,0,0,0.06);
+  box-shadow:0 14px 35px rgba(0,0,0,0.06);
+  margin:14px 0;
+}
+
+.welcomeTop{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+}
+
+#welcomeText{
+  font-size:18px;
+  font-weight:900;
+  color:#0A1A3C;
+}
+
+.brand{
+  font-size:12px;
+  font-weight:800;
+  color:#6b7280;
+  white-space:nowrap;
+}
+
+.brand b{color:#2563eb;}
+
+.dateLine{
+  margin-top:8px;
+  font-size:13px;
+  font-weight:800;
+  color:#374151;
+}
+
+.notifyStatus{
+  margin-top:12px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:12px 12px;
+  border-radius:14px;
+  font-size:13px;
+  font-weight:900;
+  background:#f6f8ff;
+  border:1px solid rgba(37,99,235,0.12);
+  color:#0A1A3C;
+}
+
+.notifyStatus i{
+  font-size:18px;
+  color:#2563eb;
+}/* ===== Extra Bottom Sections ===== */
+.miniText{
+  font-size:12px;
+  font-weight:900;
+  color:#6b7280;
+}
+
+.serviceGrid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:12px;
+  margin-top:10px;
+}
+
+.serviceCard{
+  background:#fff;
+  border:1px solid rgba(0,0,0,0.06);
+  box-shadow:0 14px 35px rgba(0,0,0,0.05);
+  border-radius:18px;
+  padding:14px;
+  text-decoration:none;
+  color:#111;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  transition:0.25s;
+}
+
+.serviceCard i{
+  font-size:20px;
+  width:44px;
+  height:44px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:14px;
+  background:#eef4ff;
+  color:#2b4dff;
+}
+
+.serviceCard h3{
+  font-size:14px;
+  font-weight:950;
+}
+
+.serviceCard p{
+  font-size:12px;
+  font-weight:800;
+  color:#6b7280;
+  margin-top:2px;
+}
+
+.serviceCard .arrow{
+  margin-left:auto;
+  background:transparent;
+  width:auto;
+  height:auto;
+  color:#9ca3af;
+}
+
+.serviceCard:active{
+  transform:scale(0.985);
+}
+
+/* Tips */
+.tipCard{
+  margin-top:12px;
+  background:#fff;
+  border-radius:18px;
+  padding:14px;
+  border:1px solid rgba(0,0,0,0.06);
+  box-shadow:0 14px 35px rgba(0,0,0,0.05);
+  display:flex;
+  gap:12px;
+}
+
+.tipIcon{
+  width:44px;
+  height:44px;
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#eafaf4;
+  color:#00a36c;
+  font-size:18px;
+  flex-shrink:0;
+}
+
+.tipText h3{
+  font-size:14px;
+  font-weight:950;
+  margin-bottom:3px;
+}
+
+.tipText p{
+  font-size:12px;
+  font-weight:800;
+  color:#6b7280;
+  line-height:1.4;
+}
+
+/* Support Banner */
+.supportBanner{
+  margin-top:12px;
+  background:linear-gradient(135deg,#0A1A3C,#6AA2FF);
+  border-radius:22px;
+  padding:18px;
+  color:#fff;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  box-shadow:0 18px 40px rgba(10,26,60,0.25);
+}
+
+.supportBanner h2{
+  font-size:16px;
+  font-weight:1000;
+  margin-bottom:6px;
+}
+
+.supportBanner p{
+  font-size:12px;
+  font-weight:800;
+  opacity:0.9;
+  margin-bottom:12px;
+  line-height:1.4;
+}
+
+.supportBtn{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  background:#fff;
+  color:#0A1A3C;
+  font-weight:950;
+  font-size:13px;
+  padding:10px 14px;
+  border-radius:16px;
+  text-decoration:none;
+}
+
+.supportArt{
+  width:58px;
+  height:58px;
+  border-radius:18px;
+  background:rgba(255,255,255,0.12);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:26px;
+}
+
+/* Desktop */
+@media(min-width:768px){
+  .serviceGrid{
+    grid-template-columns:1fr 1fr;
+  }
+}/* ✅ Fix extra gap between Top Selling & Services */
+.section {
+  margin: 12px 2px 10px;
+}
+
+/* যদি তোমার Top Selling listWrap এর নিচে extra margin থাকে */
+.listWrap {
+  margin-bottom: 6px !important;
+}
+
+/* sectionTitle এর নিচে gap কম */
+.section {
+  padding: 14px;
+max-width: 980px;
+margin: 0 auto;
+}
+.miniRow{
+  width:100%;
+  display:flex;
+  gap:12px;
+  margin-top: 12px;
+}
+
+.miniBox{
+  flex:1;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:12px 14px;
+  border-radius:18px;   /* Paytm style */
+  background:#ffffff;
+  border:1px solid rgba(0,0,0,0.06);
+  box-shadow:0 10px 18px rgba(0,0,0,0.04);
+}
+
+/* ✅ ICON PERFECT CENTER */
+.miniIco{
+  width:36px;
+  height:36px;
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+  position:relative;
+}
+
+/* ✅ Icon size small */
+.miniIco i{
+  font-size:18px;
+  line-height:1;
+  display:block;
+}
+
+/* Ticket */
+.ticketIco{
+  background: rgba(37, 99, 235, 0.10);
+  color:#2563eb;
+}
+
+/* ✅ CIBIL ICON lime → red gradient (icon only) */
+.cibilIco{
+  background: rgba(0,0,0,0.03);
+}
+
+.cibilIco i{
+  background: linear-gradient(135deg, #a3e635, #f97316, #ef4444);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* text */
+.miniTxt{
+  font-size:13px;
+  font-weight:900;
+  color:#111827;
+  line-height:1.1;
+}
+
+/* ✅ Right value + 10px margin */
+.miniVal{
+  margin-left:auto;
+  margin-right:10px; /* 🔥 requested */
+  font-size:15px;
+  font-weight:1000;
+  color:#111827;
+}
+
+/* responsive */
+@media(max-width:420px){
+  .miniBox{
+    padding:10px 12px;
+    gap:8px;
+  }
+  .miniIco{
+    width:34px;
+    height:34px;
+  }
+  .miniIco i{
+    font-size:15px;
+  }
+  .miniTxt{
+    font-size:12px;
+  }
+  .miniVal{
+    font-size:14px;
+    margin-right:8px;
+  }
+}
+/* ===== Recommend For You ===== */
+.recoWrap{
+  padding: 16px 4px;
+  margin:0;
+}
+
+.recoTop{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:12px;
+}
+
+.recoTop h3{
+  font-size:15px;
+  font-weight:1000;
+  color:#0A1A3C;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.recoTop h3 i{
+  color:#2563eb;
+}
+
+.recoSeeAll{
+  font-size:12px;
+  font-weight:950;
+  text-decoration:none;
+  color:#2563eb;
+}
+
+.recoRow{
+  display:flex;
+  gap:12px;
+  overflow-x:auto;
+  padding-bottom:4px;
+  scrollbar-width:none;
+}
+
+.recoRow::-webkit-scrollbar{
+  display:none;
+}
+
+.recoCard{
+  min-width:280px;
+  background:#fff;
+  border-radius:18px;
+  padding: 14px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  border:1px solid rgba(0,0,0,0.06);
+  
+  cursor:pointer;
+  transition:0.2s;
+}
+
+.recoCard:active{
+  transform:scale(0.985);
+}
+
+.recoIcon{
+  width:44px;
+  height:44px;
+  border-radius:16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+  color:#fff;
+  flex-shrink:0;
+}
+
+.recoIcon.blue{background:linear-gradient(135deg,#2563eb,#1d4ed8);}
+.recoIcon.green{background:linear-gradient(135deg,#22c55e,#16a34a);}
+.recoIcon.purple{background:linear-gradient(135deg,#7c3aed,#5b21b6);}
+.recoIcon.orange{background:linear-gradient(135deg,#f97316,#ea580c);}
+
+.recoText{
+  flex:1;
+  min-width:0;
+}
+
+.recoText h4{
+  font-size:14px;
+  font-weight:1000;
+  color:#0A1A3C;
+  margin:0;
+}
+
+.recoText p{
+  font-size:12px;
+  font-weight:850;
+  color:#64748b;
+  margin:3px 0 0 0;
+}
+
+.recoCard .arrow{
+  color:#94a3b8;
+  font-size:14px;
+}  .toolCard{
+  text-decoration:none;
+  color:inherit;  /* যদি আগে div এ ছিল */
+}a{
+  color: inherit;
+  text-decoration: none;
+}/* ===== Floating AI Magic Button ===== */
+.aiMagicFloat {
+  position: fixed;
+  right: 16px;
+  bottom: 100px;
+  z-index: 999;
+  width: 48px;
+  height: 48px;
+  /* ✅ More smooth corner */
+  border-radius: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: #fff;
+  font-size: 18px;
+  
+  /* ✅ More suitable premium background */
+  background: linear-gradient(135deg, #0ea5e9, #8b5cf6, #f43f5e);
+  
+  /* ✅ Better shadow */
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.22);
+  
+  transition: .2s ease;
+}
+
+.aiMagicFloat:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.06);
+}
+
+.aiMagicFloat:active {
+  transform: scale(.92);
+}.top-stats {
+max-width: 980px;
+margin: 15px 0% 0px 0%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding:8px 14px;
+  background:#ffffff;
+  border: 1px solid rgba(0,0,0,0.10);
+  font-family: Poppins, sans-serif;
+  border-radius: 12px;
+}
+
+.stat {
+  
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  
+  font-size: 14px;
+  font-weight: 600;
+  
+}
+
+.stat i {
+  
+  font-size: 16px;
+  
+}
+
+.divider {
+  
+  opacity: .25;
+  font-weight: 600;
+  
+}
+
+/* Icon Colors */
+
+.stat:nth-child(1) i {
+  color: #ff6b00;
+}
+
+.stat:nth-child(3) i {
+  color: #ffd700;
+}
+
+.stat:nth-child(5) i {
+  color: #00e0ff;
+}
+
+/* Hover Animation */
+
+.top-stats:hover {
+  
+  transform: scale(1.01);
+  
+  transition: 0.3s;
+  
+}/* PROFILE BUTTON */
+
+.profileBtn{
+
+width:40px;
+height:40px;
+
+border-radius:50%;
+
+background:#fff;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+box-shadow:0 2px 10px rgba(0,0,0,0.1);
+
+cursor:pointer;
+
+}.rewardBox {
+  display: flex;
+  gap: 14px;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.rewardBtn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  border-radius: 16px;
+  text-decoration: none;
+  color: #fff;
+  font-weight: 600;
+  position: relative;
+  overflow: hidden;
+  transition: .3s;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+
+/* ICON */
+.rewardBtn i {
+  font-size: 22px;
+}
+
+/* TEXT */
+.rewardText {
+  display: flex;
+  flex-direction: column;
+}
+
+.rewardLabel {
+  font-size: 12px;
+  opacity: .85;
+}
+
+.rewardValue {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* STREAK BUTTON */
+.streakBtn,.coinBtn {
+  background: #fff;
+  color: black;
+} .coinBtn i{
+  color: #ffd700;
+} .streakBtn i{
+  color: #ff6b00;
+}
+/* HOVER EFFECT */
+.rewardBtn:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+}
+
+/* LIGHT ANIMATION */
+.rewardBtn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transition: .5s;
+}
+
+.rewardBtn:hover::after {
+  left: 100%;
+}
+
+/* RESPONSIVE */
+@media(max-width:480px) {
+  
+  .rewardBtn {
+    padding: 12px;
+  }
+  
+  .rewardValue {
+    font-size: 16px;
+  }
+  
+  .rewardBtn i {
+    font-size: 20px;
+  }
+  
+}body.dark .rewardText{
+  color: white;
+}body.dark .rewardBtn, body.dark #avatar{
+  background: black;
+}
+body.dark .topHeader{
+  background: black;
+  color: #e2e8f0;
+}body.dark .bima{
+  color: white;
+}body.dark #hiUser{
+  color: #0f8cff;
+}
+
+
+</style>
+<link rel="stylesheet" href="main.css">
+<style>
+
+</style>
+</head>
+
+<body>
+<!-- ===== HEADER ===== -->
+<header class="topHeader">
+  
+  <div class="headRow">
+    
+    <!-- USER PROFILE -->
+    <a href="https://aniket-developer-001.github.io/BimaCare//account.html"><div class="userProfile">
+      <div class="avatar" id="avatarLetter"></div>
+    </div></a>
+    
+    <!-- BRAND -->
+    <div class="brandCenter">
+      <h1>
+        <span class="bima">bima</span>
+        <i class="fa fa-heart" style="color: red; font-size: 16px;"></i>
+        <span class="care">CARE</span>
+      </h1>
+    </div>
+    
+    <!-- NOTIFICATION -->
+    <a href="https://aniket-developer-001.github.io/BimaCare//notification.html"><div class="notifyBtn">
+      <i class="fa-solid fa-bell"></i>
+      <span class="notifyDot"></span>
+    </div></a>
+    
+  </div>
+  
+</header>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- QUICK TOOL -->
+    <div class="sectionTitle">
+  <h2>Quick Tools</h2>
+  <span class="hiUser" id="hiUser">Hey, ...</span>
+</div>
+
+    <section class="quickBox">
+      <div class="quickTop">
+        <div class="left">
+          <div class="quickIcon"><i class="fa-solid fa-bolt"></i></div>
+          <div>
+            <h3>Quick Tool Menu</h3>
+            
+          </div>
+        </div>
+
+        <button class="dropBtn" id="dropBtn">
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
+      </div>
+
+   <div class="toolGrid" id="toolGrid">
+
+  <a href="https://aniket-developer-001.github.io/BimaCare//insurance.html" class="toolCard">
+    <div class="ic"><i class="fa-solid fa-shield"></i></div>
+    <div><h4>All LIC Plans</h4></div>
+  </a>
+
+  <a href="https://aniket-developer-001.github.io/BimaCare/compare.html" class="toolCard">
+    <div class="ic"><i class="fa-solid fa-code-compare"></i></div>
+    <div><h4>LIC Compare</h4></div>
+  </a>
+
+  <a href="https://aniket-developer-001.github.io/BimaCare/ai.html" class="toolCard">
+    <div class="ic"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+    <div><h4>AI Suggest</h4></div>
+  </a>
+
+  <a href="https://aniket-developer-001.github.io/BimaCare//providers.html" class="toolCard">
+    <div class="ic"><i class="fa-solid fa-building-columns"></i></div>
+    <div><h4>Insurance Providers</h4></div>
+  </a>
+
+  <a href="https://aniket-developer-001.github.io/BimaCare/emi.html" class="toolCard">
+    <div class="ic"><i class="fa-solid fa-calculator"></i></div>
+    <div><h4>EMI Calculator</h4></div>
+  </a>
+
+  <a href="https://aniket-developer-001.github.io/BimaCare/insurance-calculator.html" class="toolCard">
+    <div class="ic"><i class="fa-solid fa-percent"></i></div>
+    <div><h4>Insurance Calculator</h4></div>
+  </a>
+  
+   <a href="https://aniket-developer-001.github.io/BimaCare//fd.html" class="toolCard">
+    <div class="ic"><i class="fa-solid fa-piggy-bank"></i></div>
+    <div><h4>FD Calculator</h4></div>
+  </a>
+
+  <a href="https://aniket-developer-001.github.io/BimaCare//rd.html" class="toolCard">
+    <div class="ic"><i class="fa-solid fa-repeat"></i></div>
+    <div><h4>RD Calculator</h4></div>
+  </a>
+</div>
+    </section>
+<div class="rewardBox">
+  
+  <a href="https://aniket-developer-001.github.io/BimaCare/streak.html" class="rewardBtn streakBtn">
+    <i class="fa-solid fa-fire"></i>
+    <div class="rewardText">
+      <span class="rewardLabel">Streak</span>
+      <span class="rewardValue" id="str">0</span>
+    </div>
+  </a>
+  
+  <a href="https://aniket-developer-001.github.io/BimaCare/coin.html" class="rewardBtn coinBtn">
+    <i class="fa-solid fa-coins"></i>
+    <div class="rewardText">
+      <span class="rewardLabel">Coins</span>
+      <span class="rewardValue" id="coins">0</span>
+    </div>
+  </a>
+  
+</div><br />
+
+
+    <!-- POPULAR INSURANCE -->
+    <div class="sectionTitle">
+      <h2><i class="fa-solid fa-arrow-trend-up"></i> Popular LIC Insurance</h2>
+      
+    </div>
+
+    <div class="swipeRow" id="popularPlans">
+
+    </div>
+    </section>
+ </main>
+  </main>
+
+<!-- ===== Extra Section : Mini Tips ===== -->
+<section class="section">
+  <div class="sectionTitle">
+    <h2>Today’s Tips</h2>
+    <span class="miniText">Smart insurance advice</span>
+  </div>
+
+  <div class="tipCard">
+    <div class="tipIcon">
+      <i class="fa-solid fa-lightbulb"></i>
+    </div>
+    <div class="tipText">
+      <h3>Pay yearly premium to save more</h3>
+      <p>
+        Monthly premium looks small, but yearly payment reduces total premium and gives extra benefits.
+      </p>
+    </div>
+  </div>
+
+  <div class="tipCard">
+    <div class="tipIcon">
+      <i class="fa-solid fa-circle-check"></i>
+    </div>
+    <div class="tipText">
+      <h3>Always verify nominee details</h3>
+      <p>
+        Correct nominee details help claim settlement faster without any legal issues.
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===== Extra Section : Support Banner ===== -->
+<section class="section">
+  <div class="supportBanner">
+    <div>
+      <h2>Need help with policy?</h2>
+      <p>Get guidance, renewal support & claim process info.</p>
+      <a class="supportBtn" href="https://aniket-developer-001.github.io/BimaCare//support.html">
+        Get Support <i class="fa-solid fa-arrow-right"></i>
+      </a>
+    </div>
+
+    <div class="supportArt">
+      <i class="fa-solid fa-headset"></i>
+    </div>
+  </div>
+</section>
+
+<!-- Floating AI Magic Button -->
+<!-- Floating AI Magic Button (Right Side) -->
+<a href="https://aniket-developer-001.github.io/BimaCare/ai.html" class="aiMagicFloat" title="AI Magic Tool">
+  <i class="fa-solid fa-wand-magic-sparkles"></i>
+</a>
+ <nav class="bottomNav">
+  <a class="navItem active" href="https://aniket-developer-001.github.io/BimaCare/home.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
+  <a class="navItem" href="https://aniket-developer-001.github.io/BimaCare//insurance.html"><i class="fa-solid fa-shield"></i><span>Insurance</span></a>
+  <a class="navItem" href="https://aniket-developer-001.github.io/BimaCare//refer.html"><i class="fa-solid fa-share-nodes"></i><span>Refer</span></a>
+  <a class="navItem" href="https://aniket-developer-001.github.io/BimaCare//account.html"><i class="fa-solid fa-user"></i><span>Account</span></a>
+</nav>
+
+
+<script>
+const STORAGE_KEY = "user_streak_data";
+
+let state = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {
+  currentStreak: 0,
+  lastCollected: 0,
+  completed: false
+};
+document.getElementById("str").innerText = state.currentStreak + " day";
+let coins = localStorage.getItem("coins") || 0;
+document.getElementById("coins").innerText = coins;
+/* ===========================
+   SIMPLE DARK MODE LOADER
+   =========================== */
+if (localStorage.getItem("is_logged_in") === "no") {
+  window.location.href = "https://aniket-developer-001.github.io/BimaCare/register.html";
+}
+const THEME_KEY = "dark_mode"; // localStorage key
+
+function loadThemeFromStorage() {
+  const mode = localStorage.getItem(THEME_KEY);
+  
+  if (mode === "yes") {
+    document.body.classList.add("dark");
+  } else {
+    document.body.classList.remove("dark");
+  }
+}
+
+/* Run when page loads */
+document.addEventListener("DOMContentLoaded", loadThemeFromStorage);
+  // Dropdown Quick Tools
+  const dropBtn = document.getElementById("dropBtn");
+  const toolGrid = document.getElementById("toolGrid");
+
+  dropBtn.addEventListener("click", ()=>{
+    toolGrid.classList.toggle("hide");
+    dropBtn.classList.toggle("rotate");
+  });
+  let n = localStorage.getItem("user_name"); // change name here
+document.getElementById("hiUser").innerText = "Hey, " + n;
+
+function openInsurance(id){
+  localStorage.setItem("selected_insurance_id", id);
+  window.location.href = "https://aniket-developer-001.github.io/BimaCare/view.html";
+}
+const tips = [
+  {
+    title: "Pay yearly premium to save more",
+    desc: "Yearly payment reduces total premium and gives extra benefits."
+  },
+  {
+    title: "Always verify nominee details",
+    desc: "Correct nominee details help claim settlement faster."
+  },
+  {
+    title: "Keep policy PDF saved",
+    desc: "Policy PDF helps during claim and renewal anytime."
+  }
+];
+
+const randomTip = tips[Math.floor(Math.random() * tips.length)];
+document.querySelectorAll(".tipCard")[0].querySelector("h3").innerText = randomTip.title;
+document.querySelectorAll(".tipCard")[0].querySelector("p").innerText = randomTip.desc;
+
+document.addEventListener("DOMContentLoaded", function(){
+
+let userName = localStorage.getItem("user_name");
+
+let firstLetter = userName.charAt(0).toUpperCase();
+
+document.getElementById("avatarLetter").innerText = firstLetter;
+
+});
+
+</script>
+<script src="lic.js"></script>
+<script src="plans-loader.js"></script>
+</body>
+</html>

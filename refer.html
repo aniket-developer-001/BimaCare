@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Refer & Earn • BimaCare</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="bar.css">
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+}
+
+body{
+background:#f4f7ff;
+color:#0A1A3C;
+}
+
+/* HEADER */
+
+.header{
+position:sticky;
+top:0;
+background:#0A1A3C;
+color:#fff;
+padding:10px 16px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+z-index:100;
+border-bottom:1px solid rgba(255,255,255,0.1);
+}
+
+.headerLeft{
+display:flex;
+align-items:center;
+gap:12px;
+}
+
+.backBtn{
+width:40px;
+height:40px;
+border-radius:12px;
+background:rgba(255,255,255,0.15);
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+}
+
+.title{
+font-size:18px;
+font-weight:700;
+}
+
+/* WRAP */
+
+.container{
+max-width:650px;
+margin:auto;
+padding:20px;
+margin-top: 15px
+}
+
+/* HERO */
+
+.hero{
+text-align:center;
+margin-bottom:30px;
+}
+
+.hero i{
+font-size:55px;
+color:#2563eb;
+margin-bottom:12px;
+animation:float 3s infinite ease-in-out;
+}
+
+.hero h2{
+font-size:22px;
+font-weight:800;
+margin-bottom:6px;
+}
+
+.hero p{
+font-size:13px;
+color:#64748b;
+}
+
+@keyframes float{
+0%,100%{transform:translateY(0)}
+50%{transform:translateY(-8px)}
+}
+
+/* REF CARD */
+
+.refCard{
+background:#fff;
+border-radius:20px;
+padding:20px;
+box-shadow:0 18px 45px rgba(0,0,0,0.08);
+border:1px solid rgba(0,0,0,0.06);
+margin-bottom:20px;
+}
+
+.refTitle{
+font-size:13px;
+font-weight:700;
+color:#64748b;
+margin-bottom:8px;
+}
+
+.refLinkBox{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.refInput{
+flex:1;
+background:#f1f5ff;
+border-radius:12px;
+padding:12px;
+font-size:12px;
+border:1px solid rgba(37,99,235,0.2);
+word-break:break-all;
+}
+
+/* BUTTONS */
+
+.btn{
+border:none;
+cursor:pointer;
+padding:12px 16px;
+border-radius:12px;
+font-size:13px;
+font-weight:700;
+display:flex;
+align-items:center;
+gap:8px;
+transition:.2s;
+}
+
+.copyBtn{
+background:#2563eb;
+color:#fff;
+}
+
+.shareBtn{
+background:#10b981;
+color:#fff;
+margin-top:12px;
+width:100%;
+justify-content:center;
+}
+
+.btn:hover{
+transform:translateY(-2px);
+box-shadow:0 10px 25px rgba(0,0,0,0.15);
+}
+
+.btn:active{
+transform:scale(.95);
+}
+
+/* STATS */
+
+.stats{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+margin-bottom:25px;
+}
+
+.stat{
+background:#fff;
+padding:16px;
+border-radius:16px;
+text-align:center;
+border:1px solid rgba(0,0,0,0.06);
+box-shadow:0 12px 30px rgba(0,0,0,0.06);
+}
+
+.stat i{
+font-size:20px;
+margin-bottom:5px;
+color:#2563eb;
+}
+
+.stat strong{
+font-size:18px;
+display:block;
+}
+
+/* INSTRUCTIONS */
+
+.instructions{
+background:#fff;
+border-radius:20px;
+padding:20px;
+border:1px solid rgba(0,0,0,0.06);
+box-shadow:0 12px 30px rgba(0,0,0,0.06);
+}
+
+.instructions h3{
+font-size:16px;
+margin-bottom:12px;
+}
+
+.step{
+display:flex;
+gap:10px;
+margin-bottom:10px;
+font-size:13px;
+color:#475569;
+}
+
+.step i{
+color:#2563eb;
+}/* DARK MODE */
+
+body.dark {
+  background: #0b1220;
+  color: #e2e8f0;
+}
+
+/* HEADER */
+
+body.dark .header {
+  background: #020617;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* HERO TEXT */
+
+body.dark .hero p {
+  color: #94a3b8;
+}
+
+/* CARDS */
+
+body.dark .refCard,
+body.dark .stat,
+body.dark .instructions {
+  background: #1e293b;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: none;
+}
+
+/* REF LINK BOX */
+
+body.dark .refInput {
+  background: #0f172a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #e2e8f0;
+}
+
+/* TEXT */
+
+body.dark .refTitle {
+  color: #94a3b8;
+}
+
+body.dark .step {
+  color: #cbd5f1;
+}
+
+/* ICON COLOR */
+
+body.dark .stat i,
+body.dark .step i {
+  color: #3b82f6;
+}
+
+</style>
+</head>
+
+<body onload="loadTheme()">
+
+<!-- HEADER -->
+
+<div class="header">
+
+<div class="headerLeft">
+
+<div class="backBtn" onclick="history.back()">
+<i class="fa-solid fa-arrow-left"></i>
+</div>
+
+<div class="title">Refer & Earn</div>
+
+</div>
+
+</div>
+
+
+<div class="container">
+
+<!-- HERO -->
+
+<div class="hero">
+
+<i class="fa-solid fa-gift"></i>
+
+<h2>Invite Friends & Earn Coins</h2>
+
+<p>Share your referral link and earn rewards</p>
+
+</div>
+
+
+<!-- STATS -->
+
+<div class="stats">
+
+<div class="stat">
+<i class="fa-solid fa-user-plus"></i>
+<strong id="refCount">0</strong>
+Invites
+</div>
+
+<div class="stat">
+<i class="fa-solid fa-coins"></i>
+<strong id="earnCoins">0</strong>
+Coins
+</div>
+
+</div>
+
+
+<!-- REF CARD -->
+
+<div class="refCard">
+
+<div class="refTitle">Your Referral Link</div>
+
+<div class="refLinkBox">
+
+<div class="refInput" id="refLink"></div>
+
+<button class="btn copyBtn" onclick="copyLink()">
+<i class="fa-solid fa-copy"></i>
+</button>
+
+</div>
+
+<button class="btn shareBtn" onclick="shareLink()">
+<i class="fa-solid fa-share-nodes"></i>
+Share Link
+</button>
+
+</div>
+
+
+<!-- INSTRUCTIONS -->
+
+<div class="instructions">
+  
+  <h3><i class="fa-solid fa-circle-info"></i> How it works</h3>
+  
+  <div class="step">
+    <i class="fa-solid fa-share-nodes"></i>
+    <span>Share your referral link with your friends.</span>
+  </div>
+  
+  <div class="step">
+    <i class="fa-solid fa-user-plus"></i>
+    <span>Your friend registers using your referral link.</span>
+  </div>
+  
+  <div class="step">
+    <i class="fa-solid fa-calendar-check"></i>
+    <span>Your friend must actively use the app for <b>7 days</b> to validate the referral.</span>
+  </div>
+  
+  <div class="step">
+    <i class="fa-solid fa-coins"></i>
+    <span>You earn reward coins instantly credit</span>
+  </div>
+  
+</div>
+
+</div><br /><br /><br /><br />
+<nav class="bottomNav">
+  <a class="navItem" href="https://aniket-developer-001.github.io/BimaCare/home.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
+  <a class="navItem" href="https://aniket-developer-001.github.io/BimaCare//insurance.html"><i class="fa-solid fa-shield"></i><span>Insurance</span></a>
+  <a class="navItem active" href="https://aniket-developer-001.github.io/BimaCare//refer.html"><i class="fa-solid fa-share-nodes"></i><span>Refer</span></a>
+  <a class="navItem" href="https://aniket-developer-001.github.io/BimaCare//account.html"><i class="fa-solid fa-user"></i><span>Account</span></a>
+</nav>
+
+<script>
+const THEME_KEY = "dark_mode";
+
+function loadTheme(){
+
+let mode = localStorage.getItem(THEME_KEY);
+
+if(mode === "yes"){
+document.body.classList.add("dark");
+}else{
+document.body.classList.remove("dark");
+}
+
+}
+/* USER DATA */
+
+const userId = localStorage.getItem("user_phone") || "0000";
+
+/* REF LINK */
+
+const refLink =
+"https://aniket-developer-001.github.io/BimaCare/register.html?ref=" + userId;
+
+document.getElementById("refLink").innerText = refLink;
+
+/* COPY */
+
+function copyLink(){
+
+navigator.clipboard.writeText(refLink);
+
+alert("Referral link copied");
+
+}
+
+/* SHARE */
+
+function shareLink(){
+
+if(navigator.share){
+
+navigator.share({
+title:"Join BimaCare",
+text:"Use my referral link and earn rewards!",
+url:refLink
+});
+
+}else{
+
+window.open(
+"https://wa.me/?text=" +
+encodeURIComponent("Join BimaCare using my link: " + refLink)
+);
+
+}
+
+}
+
+/* DEMO STATS */
+
+document.getElementById("refCount").innerText =
+localStorage.getItem("ref_invites") || "0";
+
+document.getElementById("earnCoins").innerText =
+localStorage.getItem("ref_coins") || "0";
+
+</script>
+
+</body>
+</html>

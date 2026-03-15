@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Suggest - BimaCare</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link rel="stylesheet" href="main.css">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;}
+    body{
+      background:#f4f7ff;
+      color:#0A1A3C;
+      
+      padding-bottom:110px;
+    }
+    a{color:inherit;text-decoration:none;}
+
+    /* ===== Header ===== */
+    .topHeader{
+    width:100%;
+    background:#0A1A3C;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:10px 16px;
+    position:sticky;
+    top:0;
+    z-index:100;
+    border-bottom:1px solid rgba(255,255,255,0.12);
+  }
+  .topHeader h2{font-size:18px;font-weight:1000;}
+  .topHeader a{
+    color:#fff;text-decoration:none;
+    width:42px;height:42px;border-radius:16px;
+    display:flex;align-items:center;justify-content:center;
+    background:rgba(255,255,255,0.12);
+    border:1px solid rgba(255,255,255,0.14);
+  }
+    .badge{
+      padding:10px 14px;
+      border-radius:999px;
+      background:linear-gradient(135deg,rgba(37,99,235,0.12),rgba(124,58,237,0.10));
+      border:1px solid rgba(37,99,235,0.18);
+      font-size:12px;
+      font-weight:1100;
+      color:#1d4ed8;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      white-space:nowrap;
+      box-shadow:0 12px 30px rgba(37,99,235,0.12);
+    }
+
+    /* ===== Layout ===== */
+    .wrap{
+      width:100%;
+      max-width:580px;
+      margin:0 auto;
+      display:flex;
+      flex-direction:column;
+      display: flex;
+      overflow-x: scroll;
+      gap:14px;
+    }
+
+    /* ===== Card ===== */
+    .card{
+      background:#fff;
+     margin-bottom: 8px;
+      
+    }
+
+    /* ===== Ask Row ===== */
+    .askRow{
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+
+    .askBox{
+      flex:1;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:13px 14px;
+      border-radius:18px;
+      background: white;
+      border:1px solid rgba(0,0,0,0.06);
+    }
+    .askBox i{font-size:16px;opacity:.85;}
+    .askBox input{
+      width:100%;
+      border:none;
+      outline:none;
+      background:transparent;
+      font-size:14px;
+      font-weight:1100;
+      color:#0A1A3C;
+    }
+
+    .sendBtn{
+      border:none;
+      outline:none;
+      cursor:pointer;
+      padding:14px 14px;
+      border-radius:18px;
+      font-size:13px;
+      font-weight:1200;
+      color:#fff;
+      background:linear-gradient(135deg,#2563eb,#7c3aed);
+      box-shadow:0 16px 40px rgba(37,99,235,0.25);
+      transition:.2s ease;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      white-space:nowrap;
+    }
+    .sendBtn:active{transform:scale(.98);}
+    .sendBtn:disabled{opacity:.6;cursor:not-allowed;}
+
+    /* ===== Chips ===== */
+    .chips{
+  display:flex;
+  gap:12px;
+  overflow-x:auto;
+  padding:3px 4px;         /* ✅ top-bottom spacing */
+  margin-bottom:5px;
+  scroll-behavior:smooth;
+}
+
+/* hide scrollbar */
+.chips::-webkit-scrollbar{
+  height:0px;
+}
+
+.chip{
+  padding:8px 10px;       /* ✅ FIX: top-bottom padding increased */
+  border-radius:999px;
+  background: white;
+  border:1px solid rgba(0,0,0,0.10);
+  font-size:13px;
+  font-weight:1100;
+  color:#0A1A3C;
+  cursor:pointer;
+  transition:.2s ease;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  user-select:none;
+  white-space:nowrap;      /* ✅ chip text break hobe na */
+  flex-shrink:0;           /* ✅ scroll e thik thakbe */
+  
+}
+
+.chip:active{
+  transform:scale(.97);
+}
+    .chip i{color:#2563eb;}
+    .chip:active{transform:scale(.98);}
+
+    /* ===== Chat ===== */
+    .chatWrap{
+      padding:10px 10px 0 10px;
+    }
+    .chatBox{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      padding-bottom:10px;
+    }
+
+    .msg{
+      display:flex;
+      gap:10px;
+      align-items:flex-end;
+    }
+    .msg.user{justify-content:flex-end;}
+    .bubble{
+      max-width:86%;
+      padding:12px 12px;
+      border-radius:18px;
+      font-size:13px;
+      font-weight:1000;
+      line-height:1.55;
+      border:1px solid rgba(0,0,0,0.06);
+      box-shadow:0 10px 25px rgba(0,0,0,0.05);
+      white-space:pre-line;
+      position:relative;
+    }
+
+    .user .bubble{
+      background:linear-gradient(135deg,#2563eb,#7c3aed);
+      color:#fff;
+      border:none;
+    }
+    .ai .bubble{
+      background:#fff;
+      color:#0A1A3C;
+    }
+
+    .avatar{
+      width:42px;height:42px;
+      border-radius:16px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid rgba(0,0,0,0.06);
+      background:#f8fafc;
+      flex-shrink:0;
+    }
+    .ai .avatar{
+      background:rgba(37,99,235,0.10);
+      border:1px solid rgba(37,99,235,0.18);
+    }
+    .ai .avatar i{color:#2563eb;font-size:16px;}
+    .user .avatar{display:none;}
+
+    .meta{
+      margin-top:7px;
+      font-size:11px;
+      font-weight:900;
+      opacity:.75;
+    }
+
+    .bubbleActions{
+      display:flex;
+      gap:8px;
+      margin-top:10px;
+    }
+    .miniBtn{
+      border:none;
+      cursor:pointer;
+      padding:9px 10px;
+      border-radius:14px;
+      font-size:12px;
+      font-weight:1100;
+      background:#f8fafc;
+      border:1px solid rgba(0,0,0,0.06);
+      display:flex;
+      align-items:center;
+      gap:8px;
+      transition:.2s ease;
+    }
+    .miniBtn:active{transform:scale(.98);}
+    .miniBtn i{color:#2563eb;}
+
+    /* ===== Typing ===== */
+    .typing{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .dots{
+      display:flex;
+      gap:6px;
+      padding:12px 12px;
+      border-radius:18px;
+      background:#fff;
+      border:1px solid rgba(0,0,0,0.06);
+      box-shadow:0 10px 25px rgba(0,0,0,0.05);
+    }
+    .dot{
+      width:8px;height:8px;border-radius:50%;
+      background:#2563eb;
+      opacity:.35;
+      animation: blink 1.2s infinite;
+    }
+    .dot:nth-child(2){animation-delay:.2s;}
+    .dot:nth-child(3){animation-delay:.4s;}
+    @keyframes blink{
+      0%,100%{opacity:.25;transform:translateY(0);}
+      50%{opacity:1;transform:translateY(-3px);}
+    }
+
+    /* ===== Empty ===== */
+    .empty{
+      text-align:center;
+      padding:18px 10px;
+      color:#64748b;
+      font-weight:1000;
+      font-size:13px;
+      line-height:1.7;
+    }
+
+    /* ===== Bottom Row ===== */
+    .bottomRow{
+      position:fixed;
+      left:0;right:0;bottom:0;
+      padding:6px 14px 12px 14px;
+      background:rgba(244,247,255,0.92);
+      backdrop-filter: blur(12px);
+      border-top:1px solid rgba(0,0,0,0.06);
+      z-index:99;
+    }
+    .bottomInner{
+      width:100%;
+      max-width:580px;
+      margin:0 auto;
+      display:flex;
+      gap:10px;
+    }
+
+    .clearBtn{
+      flex:1;
+      border:none;
+      cursor:pointer;
+      padding:14px 14px;
+      border-radius:18px;
+      font-size:13px;
+      font-weight:1200;
+      background:#0f172a;
+      color:#fff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      box-shadow:0 16px 40px rgba(15,23,42,0.18);
+      transition:.2s ease;
+    }
+    .clearBtn:active{transform:scale(.98);}
+
+    /* ===== Popup ===== */
+    .popupOverlay{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.35);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+      z-index:999;
+    }
+    .popup{
+      width:100%;
+      max-width:420px;
+      background:#fff;
+      border-radius:24px;
+      border:1px solid rgba(0,0,0,0.08);
+      box-shadow:0 30px 80px rgba(0,0,0,0.25);
+      padding:16px;
+      animation: pop .18s ease;
+    }
+    @keyframes pop{
+      from{transform:scale(.96);opacity:.7;}
+      to{transform:scale(1);opacity:1;}
+    }
+    .popupTop{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .popupTop h3{
+      font-size:14px;
+      font-weight:1200;
+    }
+    .popupTop p{
+      font-size:12px;
+      font-weight:900;
+      color:#64748b;
+      margin-top:4px;
+      line-height:1.5;
+    }
+    .closePop{
+      width:42px;height:42px;
+      border-radius:16px;
+      border:1px solid rgba(0,0,0,0.06);
+      background:#f8fafc;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      transition:.2s ease;
+    }
+    .closePop:active{transform:scale(.96);}
+
+    .popupBtns{
+      display:flex;
+      gap:10px;
+      margin-top:14px;
+    }
+    .pBtn{
+      flex:1;
+      border:none;
+      cursor:pointer;
+      padding:13px 14px;
+      border-radius:18px;
+      font-size:13px;
+      font-weight:1200;
+      transition:.2s ease;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+    }
+    .pBtn:active{transform:scale(.98);}
+    .pBtn.gray{
+      background:#f8fafc;
+      border:1px solid rgba(0,0,0,0.06);
+      color:#0A1A3C;
+    }
+    .pBtn.red{
+      background:linear-gradient(135deg,#ef4444,#dc2626);
+      color:#fff;
+      box-shadow:0 16px 40px rgba(239,68,68,0.20);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Header -->
+    <header class="topHeader">
+    <a href="https://aniket-developer-001.github.io/BimaCare/home.html"><i class="fa-solid fa-arrow-left"></i></a>
+    <h2>Ai Suggest</h2>
+    <a href="#" id="clearBtn" title="Logout" onclick="closePopup()"><i class="fa fa-trash"></i></a>
+  </header>
+
+
+    <!-- Ask -->
+    
+
+    <!-- Chat -->
+    <div class="card chatWrap">
+      <div class="chatBox" id="chatBox"></div>
+
+      <!-- typing indicator -->
+      <div class="typing" id="typing" style="display:none;margin-top:12px;">
+        <div class="avatar"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+        <div class="dots">
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom -->
+  <div class="bottomRow">
+    
+
+      <!-- Chips -->
+      <div class="chips">
+        <div class="chip" onclick="chipAsk('Which insurance is best for family?')">
+          <i class="fa-solid fa-people-roof"></i> Family
+        </div>
+        <div class="chip" onclick="chipAsk('How to improve CIBIL score fast?')">
+          <i class="fa-solid fa-gauge-high"></i> CIBIL
+        </div>
+        <div class="chip" onclick="chipAsk('Explain Term insurance in simple words')">
+          <i class="fa-solid fa-shield-heart"></i> Term
+        </div>
+        <div class="chip" onclick="chipAsk('How to claim insurance?')">
+          <i class="fa-solid fa-file-circle-check"></i> Claim
+        </div>
+        <div class="chip" onclick="chipAsk('Suggest health insurance for parents')">
+          <i class="fa-solid fa-hospital"></i> Parents
+        </div>
+        <div class="chip" onclick="chipAsk('Best investment: SIP or Endowment?')">
+          <i class="fa-solid fa-scale-balanced"></i> SIP vs Policy
+        </div>
+      </div>
+    <div class="askRow">
+  <div class="askBox">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input id="query" type="text" placeholder="Ask: Best term plan for family?" />
+  </div>
+  
+  <button class="sendBtn" id="sendBtn">
+    <i class="fa-solid fa-paper-plane"></i> Ask
+  </button>
+</div>
+  </div>
+
+  <!-- Popup -->
+  <div class="popupOverlay" id="popupOverlay">
+    <div class="popup">
+      <div class="popupTop">
+        <div>
+          <h3 id="popTitle">Popup</h3>
+          <p id="popDesc">Message</p>
+        </div>
+      </div>
+
+      <div class="popupBtns" id="popBtns"></div>
+    </div>
+  </div>
+
+<script>
+/* ===========================
+   SIMPLE DARK MODE LOADER
+   =========================== */
+
+const THEME_KEY = "dark_mode"; // localStorage key
+
+function loadThemeFromStorage() {
+  const mode = localStorage.getItem(THEME_KEY);
+  
+  if (mode === "yes") {
+    document.body.classList.add("dark");
+  } else {
+    document.body.classList.remove("dark");
+  }
+}
+
+/* Run when page loads */
+document.addEventListener("DOMContentLoaded", loadThemeFromStorage);
+  const query = document.getElementById("query");
+  const sendBtn = document.getElementById("sendBtn");
+  const chatBox = document.getElementById("chatBox");
+  const clearBtn = document.getElementById("clearBtn");
+  const typing = document.getElementById("typing");
+
+  const popOverlay = document.getElementById("popupOverlay");
+  const popTitle = document.getElementById("popTitle");
+  const popDesc = document.getElementById("popDesc");
+  const popBtns = document.getElementById("popBtns");
+
+  const STORAGE_KEY = "bimaBondhu_ai_chat_v2";
+
+  /* ===== Popup System (No alert/confirm) ===== */
+  function openPopup(title, desc, buttons = []){
+    popTitle.textContent = title;
+    popDesc.textContent = desc;
+
+    popBtns.innerHTML = buttons.map(b => `
+      <button class="pBtn ${b.type || "gray"}" onclick="${b.action}">
+        ${b.icon ? `<i class="fa-solid ${b.icon}"></i>` : ""} ${b.text}
+      </button>
+    `).join("");
+
+    popOverlay.style.display = "flex";
+  }
+  function closePopup(){
+    popOverlay.style.display = "none";
+  }
+  popOverlay.addEventListener("click", (e)=>{
+    if(e.target === popOverlay) closePopup();
+  });
+
+  function nowTime(){
+    return new Date().toLocaleString("en-IN", {
+      day:"2-digit", month:"short",
+      hour:"2-digit", minute:"2-digit"
+    });
+  }
+
+  function escapeHtml(text){
+    return text
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+  }
+
+  function getChat(){
+    return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+  }
+
+  function saveChat(data){
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  }
+
+  function addMessage(role, text){
+    const data = getChat();
+    data.push({ role, text, time: nowTime() });
+    saveChat(data);
+    renderChat();
+  }
+
+  function copyText(text){
+    navigator.clipboard.writeText(text).then(()=>{
+      openPopup("Copied!", "AI answer copied successfully.", [
+        {text:"OK", type:"gray", icon:"fa-check", action:"closePopup()"}
+      ]);
+    });
+  }
+
+  function renderChat(){
+    const data = getChat();
+
+    if(data.length === 0){
+      chatBox.innerHTML = `
+        <div class="empty">
+          <i class="fa-solid fa-robot" style="font-size:24px;color:#2563eb;"></i><br><br>
+          Ask anything like:<br>
+          <b>“Best term insurance for family?”</b><br>
+          <b>“How to improve CIBIL fast?”</b><br>
+          <b>“Claim process step by step”</b>
+        </div>
+      `;
+      return;
+    }
+
+    chatBox.innerHTML = data.map(m=>{
+      const safe = escapeHtml(m.text);
+
+      if(m.role === "user"){
+        return `
+          <div class="msg user">
+            <div class="bubble">
+              ${safe}
+              <div class="meta">${m.time}</div>
+            </div>
+          </div>
+        `;
+      }else{
+        return `
+          <div class="msg ai">
+            <div class="avatar"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+            <div class="bubble">
+              ${safe}
+              <div class="bubbleActions">
+                <button class="miniBtn" onclick="copyText(${JSON.stringify(m.text)})">
+                  <i class="fa-solid fa-copy"></i> Copy
+                </button>
+              </div>
+              <div class="meta">${m.time}</div>
+            </div>
+          </div>
+        `;
+      }
+    }).join("");
+
+    window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+  }
+
+  /* ===== AI Smart Rules ===== */
+  function getAIAnswer(q) {
+  const t = q.toLowerCase().trim();
+  
+  // Helper: quick keyword check
+  const has = (...words) => words.some(w => t.includes(w));
+  
+  /* ===============================
+     1) Greetings / Intro
+  =============================== */
+  if (
+    t === "hi" || t === "hello" || t === "hey" ||
+    has("hii", "hlw", "hey bro", "good morning", "good afternoon", "good evening", "namaste", "হাই", "হ্যালো")
+  ) {
+    return `Hello 👋\nI’m BimaCare AI 🤖✨\n\nYou can ask me about:\n✅ LIC Plans\n✅ Insurance (Term / Health / Vehicle)\n✅ CIBIL Score\n✅ EMI & Loan\n✅ Claims & Policy Process\n\nType like:\n• "LIC best plan"\n• "Term insurance"\n• "How to improve cibil"\n• "EMI calculation"`;
+  }
+  
+  /* ===============================
+     2) Help / Commands
+  =============================== */
+  if (has("help", "commands", "what can you do", "menu", "options", "support")) {
+    return `📌 Available Commands (Ask anything like)\n\n🛡️ Insurance:\n• term insurance\n• health insurance\n• car insurance\n• ulip / endowment / moneyback\n\n🏛️ LIC:\n• lic plans list\n• lic maturity\n• lic surrender value\n• lic loan\n• lic premium\n\n💳 CIBIL:\n• cibil score improve\n• low cibil solution\n\n💰 Loan/EMI:\n• emi tips\n• loan interest\n\n🧾 Claims:\n• claim process\n• documents for claim\n\nType your question now 🙂`;
+  }
+  
+  /* ===============================
+     3) CIBIL / Credit Score
+  =============================== */
+  if (has("cibil", "credit score", "score", "crif", "experian", "equifax", "credit", "সিবিল", "ক্রেডিট")) {
+    return `✅ CIBIL Score Improvement (Best Tips)\n\n⭐ Best Score Range:\n740+ = Excellent\n700–739 = Good\n650–699 = Average\nBelow 650 = Needs Improvement\n\n🔥 10 Powerful Tips:\n1) Pay EMI & credit card bills on time\n2) Keep credit usage below 30%\n3) Don’t apply too many loans at once\n4) Maintain 1–2 old credit accounts\n5) Never miss minimum due\n6) Avoid BNPL / PayLater overuse\n7) Pay overdue immediately\n8) Keep loan tenure balanced\n9) Check report for errors\n10) Use secured card if score is very low\n\nIf you tell me your score + age, I can guide you personally.`;
+  }
+  
+  /* ===============================
+     4) Health Insurance
+  =============================== */
+  if (has("health", "hospital", "medical", "cashless", "mediclaim", "surgery", "treatment", "ডাক্তার", "হাসপাতাল")) {
+    return `🏥 Health Insurance Suggestion\n\n✅ Best for most families:\n• Family Floater (Self + Wife + Kids)\n• Separate plan for Parents\n\n⭐ Must Check Before Buying:\n1) Sum insured (5L / 10L / 20L)\n2) Room rent limit\n3) Waiting period\n4) Cashless hospital network\n5) Pre-existing disease coverage\n6) Claim settlement ratio\n7) No-claim bonus\n8) Co-payment\n\n🔥 Best combo:\nBase Plan + Super Top-Up\n\nTell me your age + family members for best suggestion.`;
+  }
+  
+  /* ===============================
+     5) Term Insurance
+  =============================== */
+  if (has("term", "life cover", "death cover", "pure protection", "family protection", "life insurance", "term plan", "টার্ম")) {
+    return `🛡️ Term Insurance (Simple & Best)\n\n✔ Pure protection plan\n✔ Very high coverage\n✔ Premium is low\n✔ No maturity (usually)\n\n⭐ Best for:\n• Family protection\n• Loan protection\n• Future security\n\n🔥 Best rule:\nCover = 10x to 20x yearly income\n\n📌 Tip:\nAlways choose claim-friendly company + add accidental rider if needed.`;
+  }
+  
+  /* ===============================
+     6) ULIP
+  =============================== */
+  if (has("ulip", "unit linked", "market linked", "equity linked")) {
+    return `📌 ULIP (Truth & Suggestion)\n\n✔ Insurance + Investment\n✔ Lock-in: 5 years\n✔ Returns depend on market\n✔ Charges are higher in early years\n\n⭐ Best for:\n• Long-term investors (10+ years)\n\n⚠️ For most people:\nSIP + Term Insurance = better & flexible.\n\nIf you tell me your goal (savings / wealth / protection), I’ll guide you best.`;
+  }
+  
+  /* ===============================
+     7) Endowment / Moneyback
+  =============================== */
+  if (has("endowment", "moneyback", "money back", "guaranteed plan", "savings plan", "return plan")) {
+    return `💰 Endowment / Moneyback Plan\n\n✔ Insurance + Savings\n✔ Premium higher than term\n✔ Returns moderate\n✔ Bonus depends on company\n\n⭐ Good for:\n• People who want forced savings\n• Low risk savers\n\n📌 Tip:\nAlways compare with:\n• FD + Term\n• SIP + Term\n\nIf you tell me your age + monthly saving amount, I can suggest best.`;
+  }
+  
+  /* ===============================
+     8) Vehicle / Motor Insurance
+  =============================== */
+  if (has("car", "bike", "motor", "vehicle", "third party", "own damage", "zero dep", "accident")) {
+    return `🚗 Vehicle Insurance (Motor)\n\n✅ Types:\n1) Third Party (mandatory)\n2) Comprehensive (best)\n3) Own Damage\n\n⭐ Best Add-ons:\n• Zero Depreciation\n• Engine Protect\n• RSA (Road Side Assistance)\n• Return to Invoice\n\n📌 Tip:\nAlways compare premium + claim reviews before buying.`;
+  }
+  
+  /* ===============================
+     9) Claim Process (All)
+  =============================== */
+  if (has("claim", "policy claim", "insurance claim", "death claim", "hospital claim", "accident claim")) {
+    return `✅ Insurance Claim Process (Step by Step)\n\n1) Inform company within 24 hours\n2) Collect documents (policy, ID, bills)\n3) Fill claim form\n4) Verification / Survey\n5) Approval & payout\n\n📌 Common Required Documents:\n• Policy copy\n• Aadhaar / PAN\n• Bank details\n• Hospital bills / death certificate\n• Nominee ID proof\n\nTip: Keep nominee updated + policy number saved.`;
+  }
+  
+  /* ===============================
+     10) Claim Rejected / Delay
+  =============================== */
+  if (has("claim rejected", "claim denied", "claim pending", "delay", "not approved", "rejection")) {
+    return `⚠️ Claim Rejected / Delayed? (What to do)\n\n✅ Common reasons:\n1) Wrong documents\n2) Waiting period not completed\n3) Non-disclosure (health history)\n4) Policy lapse\n5) Incorrect nominee / bank details\n\n✅ Best solution:\n1) Ask for written rejection reason\n2) Submit missing documents\n3) Escalate to grievance cell\n4) If still not solved → IRDAI complaint\n\nIf you tell me claim type (health/term/vehicle), I can guide step-by-step.`;
+  }
+  
+  /* ===============================
+     11) EMI / Loan
+  =============================== */
+  if (has("emi", "loan", "interest", "home loan", "personal loan", "car loan", "education loan", "emi calculation")) {
+    return `📌 EMI & Loan Smart Guide\n\n✅ Golden Rule:\nEMI should be under 30% of monthly income.\n\n⭐ Smart Tips:\n1) Compare interest rate + processing fee\n2) Keep tenure balanced\n3) Prepay whenever possible\n4) Avoid multiple loans at once\n5) Keep CIBIL above 740\n\n📌 EMI Formula:\nEMI = [P×R×(1+R)^N] / [(1+R)^N − 1]\n\nTell me loan amount + rate + years, I can calculate EMI.`;
+  }
+  
+  /* ===============================
+     12) Loan Eligibility
+  =============================== */
+  if (has("loan eligibility", "how much loan", "loan approve", "loan approval", "eligible")) {
+    return `✅ Loan Eligibility (Simple)\n\nBanks check:\n1) Monthly income\n2) Job/business stability\n3) CIBIL score\n4) Existing EMI\n5) Age\n\n⭐ Quick estimate:\nIf your monthly income = ₹30,000\nSafe EMI = ₹9,000 (30%)\n\nTell me your income + existing EMI + CIBIL, I’ll estimate your loan range.`;
+  }
+  
+  /* ===============================
+     13) LIC Plans (General)
+  =============================== */
+  if (has("lic", "life insurance corporation")) {
+    return `🏛️ LIC Guide\n\nLIC is trusted for:\n✅ Traditional savings plans\n✅ Guaranteed style returns\n✅ Strong long-term brand\n\nBut for pure protection:\n🛡️ Term Insurance is best (low premium, high cover)\n\nYou can ask:\n• "LIC best plan"\n• "LIC moneyback"\n• "LIC term plan"\n• "LIC surrender value"\n• "LIC loan on policy"\n• "LIC premium payment"`;
+  }
+  
+  /* ===============================
+     14) LIC Plans List
+  =============================== */
+  if (has("lic plans list", "lic plan list", "all lic plans", "lic all plans", "lic policy list")) {
+    return `📌 LIC Popular Plans List (India)\n\n🛡️ Term Plans:\n• LIC Tech Term\n\n💰 Savings / Endowment:\n• LIC Jeevan Anand\n• LIC Jeevan Lakshya\n• LIC Jeevan Labh\n• LIC New Endowment\n\n💸 Moneyback:\n• LIC New Money Back (20 Years)\n• LIC New Money Back (25 Years)\n\n👶 Child Plans:\n• LIC Jeevan Tarun\n\n👴 Pension Plans:\n• LIC Jeevan Akshay\n• LIC Saral Pension\n\nIf you tell me your age + goal, I will suggest the best LIC plan.`;
+  }
+  
+  /* ===============================
+     15) LIC Premium / Payment
+  =============================== */
+  if (has("premium", "pay premium", "payment", "due", "lic premium", "installment", "renewal")) {
+    return `💳 Premium Payment Guide\n\n✅ You can pay premium via:\n1) LIC Official Website\n2) LIC Mobile App\n3) UPI / Netbanking\n4) LIC Branch\n5) Agent\n\n⭐ Important:\n• Always pay before due date\n• Keep receipt screenshot saved\n\nIf you tell me policy type, I can tell exact best payment method.`;
+  }
+  
+  /* ===============================
+     16) Policy Lapse / Revival
+  =============================== */
+  if (has("lapse", "revive", "revival", "policy stopped", "policy closed", "premium not paid")) {
+    return `⚠️ Policy Lapse / Revival Guide\n\nIf premium not paid on time → policy may lapse.\n\n✅ Revival possible if:\n• Within revival period (usually 2–5 years)\n\n⭐ Steps:\n1) Pay pending premium\n2) Pay late fee/interest\n3) Submit revival form\n4) Medical test (sometimes)\n\nTip: Revival early = cheaper & easier.`;
+  }
+  
+  /* ===============================
+     17) Grace Period
+  =============================== */
+  if (has("grace period", "late payment", "after due date", "premium late")) {
+    return `⏳ Grace Period (Important)\n\nMost insurance policies provide:\n✅ 15 to 30 days grace period\n\nDuring grace period:\n✔ Policy remains active\n✔ You can pay without lapse\n\nTip: Always pay within grace to avoid revival process.`;
+  }
+  
+  /* ===============================
+     18) Surrender Value
+  =============================== */
+  if (has("surrender", "surrender value", "close policy", "policy break", "stop policy")) {
+    return `💸 Surrender Value (Policy Close)\n\nSurrender means you close policy before maturity.\n\n⚠️ Important:\n• Most policies give surrender value after 2–3 years\n• Early surrender gives low returns\n\n⭐ Best tip:\nBefore surrender, check:\n1) Paid-up value\n2) Loan on policy option\n3) Revival option\n\nIf you tell me policy years + premium, I can estimate.`;
+  }
+  
+  /* ===============================
+     19) Loan on Policy
+  =============================== */
+  if (has("loan on policy", "policy loan", "loan against policy", "lic loan")) {
+    return `🏦 Loan Against Policy (LIC)\n\n✅ You can take loan if:\n• Policy has surrender value\n• Premium paid for minimum years\n\n⭐ Benefits:\n✔ Quick loan\n✔ Low interest\n✔ No CIBIL impact (mostly)\n\n⚠️ If loan not paid:\nIt can reduce maturity amount.\n\nTell me your policy years & type, I’ll guide.`;
+  }
+  
+  /* ===============================
+     20) Maturity Amount / Bonus
+  =============================== */
+  if (has("maturity", "maturity amount", "bonus", "final amount", "returns", "policy return")) {
+    return `💰 Maturity Amount / Bonus (LIC)\n\nMaturity depends on:\n1) Sum Assured\n2) Policy term\n3) Bonus rate\n4) Final additional bonus\n\n⚠️ Important:\nLIC traditional plans give:\n✅ Stable returns\n❌ Not high returns like stock market\n\nIf you tell me:\n• Policy name\n• Premium\n• Term\nI can explain expected maturity.`;
+  }
+  
+  /* ===============================
+     21) Riders
+  =============================== */
+  if (has("rider", "accidental rider", "critical illness", "waiver", "add-on")) {
+    return `🧩 Insurance Riders (Add-ons)\n\n⭐ Most useful riders:\n1) Accidental Death Benefit\n2) Accidental Disability\n3) Critical Illness\n4) Premium Waiver\n\nTip:\nRiders are good only if premium is affordable.\n\nTell me your plan type, I can suggest best rider.`;
+  }
+  
+  /* ===============================
+     22) GST / Tax
+  =============================== */
+  if (has("gst", "tax", "80c", "tax benefit", "income tax")) {
+    return `🧾 Insurance Tax & GST Info\n\n✅ Income Tax Benefits:\n• Section 80C (premium deduction)\n• Section 10(10D) (maturity benefit in many cases)\n\n✅ GST:\n• Insurance premium includes GST\n\n⚠️ Note:\nTax rules depend on policy type.\n\nTell me your plan name, I’ll guide properly.`;
+  }
+  
+  /* ===============================
+     23) Best Insurance Suggestion
+  =============================== */
+  if (has("best insurance", "which insurance", "suggest insurance", "best plan", "recommend", "kon plan", "best lic")) {
+    return `✅ Best Insurance depends on your goal:\n\n👨‍👩‍👧‍👦 Family Protection → Term Insurance\n🏥 Medical safety → Health Insurance\n🚗 Vehicle → Motor Insurance\n💰 Savings → SIP + Term\n🏛️ LIC Savings → Endowment/Moneyback\n\n⭐ Most powerful combo for 90% people:\nTerm + Health\n\nTell me:\n1) Age\n2) Monthly income\n3) Goal (Protection / Savings / Health)\nThen I will suggest the best.`;
+  }
+  
+  /* ===============================
+     24) Contact / Agent / Branch
+  =============================== */
+  if (has("agent", "branch", "lic office", "near me", "customer care", "helpline")) {
+    return `📍 LIC Branch / Agent Help\n\nYou can get support via:\n✅ LIC Official Website\n✅ LIC Mobile App\n✅ Nearest LIC Branch\n✅ LIC Customer Care\n\nTip:\nAlways keep your policy number & registered phone number ready.`;
+  }
+  
+  /* ===============================
+     25) Free-look cancellation
+  =============================== */
+  if (has("free look", "cancel policy", "policy cancel", "refund", "return policy")) {
+    return `🔁 Free-Look Period (Policy Cancel)\n\nMost policies allow cancellation within:\n✅ 15 days (offline)\n✅ 30 days (online)\n\nYou can get refund after deductions.\n\nTip:\nCancel early if policy is wrong.`;
+  }
+  
+  /* ===============================
+     26) Hindi/Bengali Quick Triggers
+  =============================== */
+  if (has("bima", "bimaCare", "insurance kya", "lic kya", "emi kya", "loan kya", "policy")) {
+    return `🤖 BimaCare AI Here!\n\nAap puch sakte ho:\n✅ LIC Plans\n✅ Term Insurance\n✅ Health Insurance\n✅ EMI / Loan\n✅ CIBIL\n✅ Claim process\n\nबस अपना सवाल लिखो 🙂`;
+  }
+  
+  /* ===============================
+     Default Response
+  =============================== */
+  return `🤖 I understood your question.\n\nTo give you the best suggestion, please tell me:\n1) Your Age\n2) Monthly Income\n3) Goal (Protection / Savings / Health)\n\nThen I will suggest the best option.`;
+}
+
+  /* ===== Ask System ===== */
+  function ask(){
+    const q = query.value.trim();
+
+    if(q.length < 2){
+      openPopup("Write something", "Please type your question to ask AI.", [
+        {text:"OK", type:"gray", icon:"fa-check", action:"closePopup()"}
+      ]);
+      return;
+    }
+
+    addMessage("user", q);
+    query.value = "";
+
+    sendBtn.disabled = true;
+    typing.style.display = "flex";
+
+    setTimeout(()=>{
+      const ans = getAIAnswer(q);
+      typing.style.display = "none";
+      sendBtn.disabled = false;
+      addMessage("ai", ans);
+    }, 600);
+  }
+
+  sendBtn.addEventListener("click", ask);
+
+  query.addEventListener("keydown", (e)=>{
+    if(e.key === "Enter"){
+      ask();
+    }
+  });
+
+  function chipAsk(text){
+    query.value = text;
+    ask();
+  }
+
+  /* ===== Clear Chat ===== */
+  clearBtn.addEventListener("click", ()=>{
+    openPopup(
+      "Clear Chat?",
+      "This will delete all saved AI chat history from this device.",
+      [
+        {text:"Cancel", type:"gray", icon:"fa-xmark", action:"closePopup()"},
+        {text:"Clear", type:"red", icon:"fa-trash", action:"doClearChat()"}
+      ]
+    );
+  });
+
+  function doClearChat(){
+    localStorage.removeItem(STORAGE_KEY);
+    closePopup();
+    renderChat();
+  }
+
+  // Init
+  renderChat();
+  
+</script>
+</body>
+</html>

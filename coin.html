@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Coins - BimaCare</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins, sans-serif;
+}
+
+/* HEADER */
+
+header{
+background:#0f2a66;
+color:#fff;
+padding:16px;
+display:flex;
+align-items:center;
+gap:12px;
+font-weight:600;
+}
+
+header i{
+font-size:18px;
+margin-left: 10px;
+}
+
+/* WALLET */
+
+.wallet{
+display:flex;
+gap:15px;
+padding:20px;
+}
+
+.card{
+flex:1;
+background:#fff;
+border-radius:14px;
+padding:18px;
+display:flex;
+align-items:center;
+gap:12px;
+box-shadow:0 4px 12px rgba(0,0,0,.08);
+}
+
+.card i{
+font-size:22px;
+}
+
+.card .value{
+font-size:20px;
+font-weight:700;
+}
+
+/* WATCH ADS */
+
+.watchBox{
+background:#fff;
+margin:15px;
+padding:20px;
+border-radius:14px;
+box-shadow:0 4px 12px rgba(0,0,0,.08);
+}
+
+.watchBtn{
+width:100%;
+margin-top:10px;
+padding:12px;
+border:none;
+background:#4f46e5;
+color:#fff;
+border-radius:10px;
+font-size:15px;
+cursor:pointer;
+}
+
+.watchBtn:hover{
+opacity:.9;
+}
+
+/* STORE */
+
+.store{
+margin:15px;
+background:#fff;
+padding:20px;
+border-radius:14px;
+box-shadow:0 4px 12px rgba(0,0,0,.08);
+}
+
+.buyBtn{
+width:100%;
+padding:12px;
+border:none;
+background:#10b981;
+color:#fff;
+border-radius:10px;
+font-size:15px;
+cursor:pointer;
+}
+
+.buyBtn:disabled{
+background:#ccc;
+cursor:not-allowed;
+}
+
+/* PROGRESS */
+
+.progress{
+height:8px;
+background:#eee;
+border-radius:6px;
+margin-top:12px;
+overflow:hidden;
+}
+
+.progressBar{
+height:100%;
+width:0%;
+background:#4f46e5;
+}
+
+/* POPUP */
+
+.popup{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.5);
+display:flex;
+align-items:center;
+justify-content:center;
+opacity:0;
+pointer-events:none;
+transition:.3s;
+}
+
+.popup.active{
+opacity:1;
+pointer-events:auto;
+}
+
+.popupBox{
+background:#fff;
+padding:25px;
+border-radius:14px;
+text-align:center;
+width:85%;
+max-width:320px;
+}
+
+.popupBox button{
+margin-top:15px;
+padding:10px 20px;
+border:none;
+background:#4f46e5;
+color:#fff;
+border-radius:8px;
+}a{
+  text-decoration: none;
+  color: inherit;
+  cursor: none;
+}
+/* DARK MODE */
+
+body.dark {
+  background: #0b1220;
+  color: #e2e8f0;
+}
+
+/* HEADER */
+
+body.dark header {
+  background: #111827;
+  color: #fff;
+}
+
+/* CARDS */
+
+body.dark .card {
+  background: #1e293b;
+  color: #e2e8f0;
+  box-shadow: none;
+}
+
+/* WATCH ADS BOX */
+
+body.dark .watchBox {
+  background: #1e293b;
+  color: #e2e8f0;
+}
+
+/* STORE */
+
+body.dark .store {
+  background: #1e293b;
+  color: #e2e8f0;
+}
+
+/* BUTTON */
+
+body.dark .watchBtn {
+  background: #6366f1;
+}
+
+body.dark .buyBtn {
+  background: #22c55e;
+}
+
+/* PROGRESS BAR */
+
+body.dark .progress {
+  background: #374151;
+}
+
+body.dark .progressBar {
+  background: #6366f1;
+}
+
+/* POPUP */
+
+body.dark .popupBox {
+  background: #1e293b;
+  color: #e2e8f0;
+}
+
+body.dark .popupBox button {
+  background: #6366f1;
+}
+</style>
+<link rel="stylesheet" href="/main.css">
+</head>
+
+<body onload="loadThemeFromStorage()">
+
+<header>
+<a href="https://aniket-developer-001.github.io/BimaCare//home.html"><i class="fa-solid fa-arrow-left"></i></a>
+Coins Wallet
+</header>
+
+
+<div class="wallet">
+
+<div class="card">
+<i class="fa-solid fa-fire" style="color:#ff6a00"></i>
+<div>
+<div>Streak</div>
+<div class="value" id="streak">0</div>
+</div>
+</div>
+
+<div class="card">
+<i class="fa-solid fa-coins" style="color:#f6c000"></i>
+<div>
+<div>Coins</div>
+<div class="value" id="coins">0</div>
+</div>
+</div>
+
+</div>
+
+
+<div class="watchBox">
+
+<h3><i class="fa-solid fa-video"></i> Watch Ads & Earn</h3>
+<p>Watch rewarded ads and earn coins.</p>
+
+<button class="watchBtn" onclick="watchAd()">
+<i class="fa-solid fa-play"></i> Watch Ad (+1 Coin)
+</button>
+</div>
+
+
+<div class="store">
+
+<h3><i class="fa-solid fa-store"></i> Store</h3>
+
+<p>Use 30 coins to get 1 day free streak</p>
+<div class="progress">
+<div class="progressBar" id="progress"></div>
+</div>
+
+<p id="adsCount">0 / 30 ads watched</p>
+<br />
+<button class="buyBtn" id="buyBtn" disabled onclick="buyStreak()">
+<i class="fa-solid fa-lock"></i> Locked
+</button>
+
+</div>
+
+
+<div class="popup" id="popup">
+
+<div class="popupBox">
+
+<h3 id="popupTitle">Congratulations</h3>
+<p id="popupText"></p>
+
+<button onclick="closePopup()">
+  Close <i class="fa-solid fa-xmark"></i>
+</button>
+
+</div>
+
+</div>
+
+
+<script>
+const THEME_KEY = "dark_mode"; // localStorage key
+
+function loadThemeFromStorage() {
+  const mode = localStorage.getItem(THEME_KEY);
+  
+  if (mode === "yes") {
+    document.body.classList.add("dark");
+  } else {
+    document.body.classList.remove("dark");
+  }
+}
+/* LOAD DATA */
+
+let coins = Number(localStorage.getItem("coins")) || 0;
+const STORAGE_KEY = "user_streak_data";
+
+let state = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {
+  currentStreak: 0,
+  lastCollected: 0,
+  completed: false
+};
+let streak = state.currentStreak;
+let ads = Number(localStorage.getItem("ads")) || 0;
+
+updateUI();
+
+function updateUI(){
+
+document.getElementById("coins").innerText = coins;
+document.getElementById("streak").innerText = streak + " day";
+
+document.getElementById("adsCount").innerText = ads + " / 30 ads watched";
+
+let progress = (ads/30)*100;
+
+document.getElementById("progress").style.width = progress+"%";
+
+if(coins >= 30){
+
+let btn = document.getElementById("buyBtn");
+
+btn.disabled = false;
+btn.innerHTML = '<i class="fa-solid fa-fire"></i> Get Free 1 Day Streak';
+}
+
+}
+
+/* WATCH AD */
+
+function watchAd() {
+  
+  /* If Android AdMob available */
+  
+  if (typeof Android !== "undefined" && Android.showRewardedAd) {
+    
+    Android.showRewardedAd();
+    
+  } else {
+    
+    /* If AdMob not loaded retry after 1 second */
+    
+    setTimeout(function() {
+      
+      if (typeof Android !== "undefined" && Android.showRewardedAd) {
+        
+        Android.showRewardedAd();
+        
+      } else {
+        
+        /* Demo reward if not inside app */
+        
+        rewardUser();
+        
+      }
+      
+    }, 1000);
+    
+  }
+  
+}
+
+
+/* Reward User After Ad Completed */
+
+function watchAd() {
+  
+  /* If Android AdMob available */
+  
+  if (typeof Android !== "undefined" && Android.showRewardedAd) {
+    
+    Android.showRewardedAd();
+    
+  } else {
+    
+    /* If AdMob not loaded retry after 1 second */
+    
+    setTimeout(function() {
+      
+      if (typeof Android !== "undefined" && Android.showRewardedAd) {
+        
+        Android.showRewardedAd();
+        
+      } else {
+        
+        /* Demo reward if not inside app */
+        
+        rewardUser();
+        
+      }
+      
+    }, 1000);
+    
+  }
+  
+}
+
+
+/* Reward User After Ad Completed */
+
+function watchAd() {
+  
+  /* If Android AdMob available */
+  
+  if (typeof Android !== "undefined" && Android.showRewardedAd) {
+    
+    Android.showRewardedAd();
+    
+  } else {
+    
+    /* If AdMob not loaded retry after 1 second */
+    
+    setTimeout(function() {
+      
+      if (typeof Android !== "undefined" && Android.showRewardedAd) {
+        
+        Android.showRewardedAd();
+        
+      } else {
+        
+        /* Demo reward if not inside app */
+        
+        rewardUser();
+        
+      }
+      
+    }, 1000);
+    
+  }
+  
+}
+
+
+/* Reward User After Ad Completed */
+
+function watchAd(){
+
+  /* If Android AdMob available */
+
+  if(typeof Android !== "undefined" && Android.showRewardedAd){
+
+    Android.showRewardedAd();
+
+  } else {
+
+    /* If AdMob not loaded retry after 1 second */
+
+    setTimeout(function(){
+
+      if(typeof Android !== "undefined" && Android.showRewardedAd){
+
+        Android.showRewardedAd();
+
+      }else{
+
+        /* Demo reward if not inside app */
+
+        rewardUser();
+
+      }
+
+    },1000);
+
+  }
+
+}
+
+
+/* Reward User After Ad Completed */
+
+function rewardUser(){
+
+  coins += 1;
+  ads += 1;
+
+  localStorage.setItem("coins", coins);
+  localStorage.setItem("ads", ads);
+
+  showPopup(
+  '<i class="fa-solid fa-coins" style="color:#f6c000"></i> Congratulations',
+  '<i class="fa-solid fa-plus"></i> +1 Coin Added'
+  );
+
+  updateUI();
+
+}
+
+/* BUY STREAK */
+
+function buyStreak(){
+
+if(coins >= 30){
+
+coins -= 30;
+streak += 1;
+ads -= 30;
+localStorage.setItem("coins",coins);
+
+const STORAGE_KEY = "user_streak_data";
+
+let state = {
+  currentStreak: streak,
+  lastCollected: Date.now(),
+  completed: false
+};
+
+localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+localStorage.setItem("ads", ads);
+let progress = (ads / 30) * 100;
+let btn = document.getElementById("buyBtn");
+btn.disabled = true;
+btn.innerHTML = '<i class="fa-solid fa-lock"></i> Locked';
+
+document.getElementById("progress").style.width = progress + "%";
+showPopup(
+  '<i class="fa-solid fa-fire" style="color:#ff6a00"></i> Congratulations',
+  '<i class="fa-solid fa-calendar-check"></i> 1 Day Streak Activated'
+);
+
+updateUI();
+
+}
+
+}
+
+/* POPUP */
+
+function showPopup(title, text) {
+  
+  document.getElementById("popupTitle").innerHTML = title;
+  document.getElementById("popupText").innerHTML = text;
+  
+  document.getElementById("popup").classList.add("active");
+  
+}
+
+function closePopup(){
+
+document.getElementById("popup").classList.remove("active");
+
+}
+
+</script>
+
+</body>
+</html>
